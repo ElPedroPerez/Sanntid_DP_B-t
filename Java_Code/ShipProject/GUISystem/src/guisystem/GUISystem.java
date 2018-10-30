@@ -9,7 +9,7 @@ package guisystem;
  *
  * @author Haakon
  */
-public class GUISystem
+public class GUISystem  
 {
 
     /**
