@@ -529,7 +529,31 @@ public class DataHandler
             return dataToArduino[Protocol.LEFT_MOTOR_SPEED.getValue()] * (100 / this.getSensitivity());
         }
     }
-
+    
+    public void setLeftThrusterSpeed(float speed)
+    {
+        if (speed > 255.0f)
+        {
+            speed = 255.0f;
+        }
+        //System.out.println("left thruster speed " + speed);
+        dataToArduino[Protocol.LEFT_THRUSTER_SPEED.getValue()] = (byte) ((speed / 100) * this.getSensitivity());
+        this.fireStateChanged();
+           
+    }
+    
+    public int getLeftThrusterSpeed()
+    {
+        if (this.getSensitivity() == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return dataToArduino[Protocol.LEFT_THRUSTER_SPEED.getValue()] * (100 / this.getSensitivity());
+        }
+    }
+    
     /**
      * Sets right motor speed
      *
@@ -557,7 +581,32 @@ public class DataHandler
             return dataToArduino[Protocol.RIGHT_MOTOR_SPEED.getValue()] * (100 / this.getSensitivity());
         }
     }
-
+    
+    
+      public void setRightThrusterSpeed(float speed)
+    {
+        if (speed > 255.0f)
+        {
+            speed = 255.0f;
+        }
+        //System.out.println("left thruster speed " + speed);
+        dataToArduino[Protocol.RIGHT_THRUSTER_SPEED.getValue()] = (byte) ((speed / 100) * this.getSensitivity());
+        this.fireStateChanged();
+           
+    }
+    
+    public int getRightThrusterSpeed()
+    {
+        if (this.getSensitivity() == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return dataToArduino[Protocol.RIGHT_THRUSTER_SPEED.getValue()] * (100 / this.getSensitivity());
+        }
+    }
+    
     /**
      * get right servo status from gui
      *
