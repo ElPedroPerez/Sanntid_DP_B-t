@@ -17,7 +17,7 @@ import jssc.SerialPortList;
  *
  * @author rocio
  */
-public class GetSeriellData
+public class ReadSeriellData
 {
 
     public String[] getAvailableComPorts()
@@ -30,7 +30,6 @@ public class GetSeriellData
         {
             System.out.println("There are no serial-ports :( You can use an emulator, such ad VSPE, to create a virtual serial port.");
             System.out.println("Press Enter to exit...");
-
             try
             {
                 System.in.read();
@@ -48,7 +47,7 @@ public class GetSeriellData
         return portNames;
     }
 
-    public HashMap readSerialData(String comPort, int baudRate)
+    public HashMap readData(String comPort, int baudRate) 
     {
 
         HashMap<String, String> SerialDataList;
@@ -67,6 +66,7 @@ public class GetSeriellData
             serialPort.openPort();
         } catch (SerialPortException ex)
         {
+       
             System.out.println(ex);
         }
 
@@ -106,7 +106,7 @@ public class GetSeriellData
 
             } catch (Exception ex)
             {
-                System.out.println(ex);
+                //System.out.println(ex);
             }
 
         }

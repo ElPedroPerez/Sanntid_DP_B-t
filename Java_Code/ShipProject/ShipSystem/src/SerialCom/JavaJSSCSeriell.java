@@ -15,14 +15,17 @@ import jssc.*;
 public class JavaJSSCSeriell
 {
 
+    static SerialDataHandler serialDataHandler = new SerialDataHandler();
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
-
-        HashMap serialData = new GetSeriellData().readSerialData("com4", 57600);
-        System.out.println("Data is gotten");
+        //HashMap serialData = new ReadSeriellData().readData("com3", 57600);
+//        System.out.println("Data is gøtt'n");
+        serialDataHandler.writeData("Com3", 9600, "This is my data");
+       
 
 //        // getting serial ports list into the array
 //        String[] portNames = SerialPortList.getPortNames();
@@ -103,4 +106,6 @@ public class JavaJSSCSeriell
 //
 //    }
     }
+
+   
 }
