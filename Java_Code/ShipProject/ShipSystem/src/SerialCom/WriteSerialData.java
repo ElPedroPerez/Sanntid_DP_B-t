@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javajsscseriell;
+package SerialCom;
 
+<stbRpm:666>
 import java.awt.BorderLayout;
 import java.util.HashMap;
 import jssc.SerialPort;

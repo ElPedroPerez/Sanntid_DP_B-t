@@ -1,7 +1,5 @@
 package shipsystem;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Logic class
@@ -25,7 +23,7 @@ public class Logic
         GOREVANDRIGHT(19),
         DEFAULT(-99);
         
-        private int value;
+        private final int value;
         
         private STATES(int value)
         {
@@ -201,20 +199,73 @@ public class Logic
                 dh.setRightMotorSpeed(minSpeed);
                 break;
             case GOFWD: 
+                if(dh.getLeftThusterAngle() != 0 && dh.getRightThrusterAngle != 0)
+                {
+                    dh.setLeftThrusterSpeed(maxSpeed);
+                    dh.setRightThrusterSpeed(maxSpeed);
+                }
+                else
+                {
+                    dh.setLeftMotorSpeed(minSpeed);
+                    dh.setRightThrusterSpeed(minSpeed);
+                }
+                if (dh.getLeftThrusterAngle() == 0 && dh.getRightThrusterAngle() == 0)
+                {
                 dh.setLeftMotorSpeed(maxSpeed);
                 dh.setRightMotorSpeed(maxSpeed);
+                }
                 break;
             case GOREV:
+                 if(dh.getLeftThusterAngle() != 0 && dh.getRightThrusterAngle != 0)
+                {
+                    dh.setLeftThrusterSpeed(maxSpeed);
+                    dh.setRightThrusterSpeed(maxSpeed);
+                }
+                else
+                {
+                    dh.setLeftMotorSpeed(minSpeed);
+                    dh.setRightThrusterSpeed(minSpeed);
+                }
+                if (dh.getLeftThrusterAngle() == 0 && dh.getRightThrusterAngle() == 0)
+                {
                 dh.setLeftMotorSpeed(maxSpeed);
                 dh.setRightMotorSpeed(maxSpeed);
+                }
                 break;
             case GOLEFT:
+                if (dh.getLeftThrusterAngle() != 315 && dh.getLeftThrusterAngle() != 315)
+                {
+                    dh.setLeftThrusterSpeed(maxSpeed);
+                    dh.setRightThrusterSpeed(maxSpeed);
+                }
+                else 
+                {
+                   dh.setLeftThrusterSpeed(minSpeed);
+                   dh.setRightThrusterSpeed(minSpeed);
+                }
+                if (dh.getLeftThrusterAngle() == 315 && dh.getRightThrusterAngle() == 315)
+                {
                 dh.setLeftMotorSpeed(maxSpeed);
                 dh.setRightMotorSpeed(maxSpeed);
+                }
                 break;
             case GORIGHT:
+                if (dh.getLeftThrusterAngle() != 45 && dh.getRightThrusterAngle != 45)
+                {
+                    dh.setLeftThrusterSpeed(maxSpeed);
+                    dh.setRightThrusterSpeed(maxSpeed);
+                }
+                else
+                {
+                   dh.setLeftThrusterSpeed(minSpeed);
+                   dh.setRightThrusterSpeed(minSpeed);
+                }
+                
+                if (dh.getLeftThrusterAngle() == 45 && dh.getRightThrusterAngle() == 45)
+                {
                 dh.setLeftMotorSpeed(maxSpeed);
                 dh.setRightMotorSpeed(maxSpeed);
+                }
                 break;
             case GOFWDANDLEFT:
                 System.out.println("fwd and left");

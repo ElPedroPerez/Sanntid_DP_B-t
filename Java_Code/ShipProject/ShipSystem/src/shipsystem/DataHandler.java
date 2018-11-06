@@ -554,6 +554,43 @@ public class DataHandler
         }
     }
     
+ 
+    public void setLeftThrusterAngle(float angle)
+    { 
+        dataToArduino[Protocol.LEFT_THRUSTER_ANGLE.getValue()] = (byte) ((angle / 100) * this.getSensitivity());
+    }
+    
+    
+    public int getLeftThrusterAngle()
+    {
+        if (this.getSensitivity() == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return dataToArduino[Protocol.LEFT_THRUSTER_ANGLE.getValue()] * (100 / this.getSensitivity());
+        }
+    }
+    
+        public void setRightThrusterAngle(float angle)
+    { 
+        dataToArduino[Protocol.RIGHT_THRUSTER_ANGLE.getValue()] = (byte) ((angle / 100) * this.getSensitivity());
+    }
+    
+    
+    public int getRightThrusterAngle()
+    {
+        if (this.getSensitivity() == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            return dataToArduino[Protocol.RIGHT_THRUSTER_ANGLE.getValue()] * (100 / this.getSensitivity());
+        }
+    }
+    
     /**
      * Sets right motor speed
      *
