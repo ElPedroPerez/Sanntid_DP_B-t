@@ -5,6 +5,11 @@
  */
 package shipsystem;
 
+import SerialCom.SerialDataHandler;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
+
 /**
  * Overview protocol: To Arduino: Byte 0: bit 0 - stopp bit 1 - fwd bit 2 - rev
  * bit 3 - left bit 4 - right Byte 1: Left motor speed Byte 2: Right motor speed
@@ -20,6 +25,12 @@ package shipsystem;
 public class DataHandler
 {
 
+    private SerialDataHandler sdh = new SerialDataHandler();
+    private String arduinoFeedbackComPort;
+    private String arduinoCommandComPort;
+    private int arduinoBaudRate;
+    private int imuBaudRate;
+
     private byte[] dataFromArduino;
     private byte[] dataToArduino;
     private byte[] dataFromGui;
@@ -28,11 +39,17 @@ public class DataHandler
     private boolean threadStatus;
     private byte requestCodeFromArduino;
 
-    private int speedSB;
-    private int speedPS;
-    private int podPosSB;
-    private int podPosPS;
-    private boolean ballastSensor;
+    private int fb_speedSB;
+    private int fb_speedPS;
+    private int fb_podPosSB;
+    private int fb_podPosPS;
+    private boolean fb_ballastSensor;
+
+    private int cmd_speedSB;
+    private int cmd_speedPS;
+    private int cmd_podPosSB;
+    private int cmd_podPosPS;
+    private boolean cmd_ballastSensor;
 
     private boolean speedSBavailable;
     private boolean speedPSavailable;
@@ -53,12 +70,19 @@ public class DataHandler
         this.dataFromArduino = new byte[6];
         this.dataToArduino = new byte[6];
         this.dataFromGui = new byte[6];
-        
-        speedSB = 0;
-        speedPS = 0;
-        podPosSB = 0;
-        podPosPS = 0;
-        ballastSensor = false;
+        dataFromArduinoAvaliable = false;
+        dataFromGuiAvailable = false;
+
+        arduinoFeedbackComPort = "Com1";
+        arduinoFeedbackComPort = "Com2";
+        arduinoBaudRate = 9600;
+        imuBaudRate = 57600;
+
+        fb_speedSB = 0;
+        fb_speedPS = 0;
+        fb_podPosSB = 0;
+        fb_podPosPS = 0;
+        fb_ballastSensor = false;
         speedSBavailable = false;
         speedPSavailable = false;
         podPosSBavailable = false;
@@ -66,7 +90,6 @@ public class DataHandler
         ballastSensorAvailable = false;
     }
 
-    
     //*****************************************************************
     //********************** THREAD STATUS METHODS*********************
     /**
@@ -99,7 +122,6 @@ public class DataHandler
         return this.PIDparamChanged;
     }
 
-    
     //*****************************************************************
     //*************** FROM ARDUINO METHODS*****************************
     public void handleDataFromArduino(byte[] data)
@@ -130,54 +152,104 @@ public class DataHandler
         return this.dataFromArduinoAvaliable;
     }
 
-    public int getSpeedSB()
+    public int getFb_speedSB()
     {
-        return speedSB;
+        return fb_speedSB;
     }
 
-    public void setSpeedSB(int speedSB)
+    public void setFb_speedSB(int fb_speedSB)
     {
-        this.speedSB = speedSB;
+        this.fb_speedSB = fb_speedSB;
     }
 
-    public int getSpeedPS()
+    public int getFb_speedPS()
     {
-        return speedPS;
+        return fb_speedPS;
     }
 
-    public void setSpeedPS(int speedPS)
+    public void setFb_speedPS(int fb_speedPS)
     {
-        this.speedPS = speedPS;
+        this.fb_speedPS = fb_speedPS;
     }
 
-    public int getPodPosSB()
+    public int getFb_podPosSB()
     {
-        return podPosSB;
+        return fb_podPosSB;
     }
 
-    public void setPodPosSB(int podPosSB)
+    public void setFb_podPosSB(int fb_podPosSB)
     {
-        this.podPosSB = podPosSB;
+        this.fb_podPosSB = fb_podPosSB;
     }
 
-    public int getPodPosPS()
+    public int getFb_podPosPS()
     {
-        return podPosPS;
+        return fb_podPosPS;
     }
 
-    public void setPodPosPS(int podPosPS)
+    public void setFb_podPosPS(int fb_podPosPS)
     {
-        this.podPosPS = podPosPS;
+        this.fb_podPosPS = fb_podPosPS;
     }
 
-    public boolean isBallastSensor()
+    public boolean isFb_ballastSensor()
     {
-        return ballastSensor;
+        return fb_ballastSensor;
     }
 
-    public void setBallastSensor(boolean ballastSensor)
+    public void setFb_ballastSensor(boolean fb_ballastSensor)
     {
-        this.ballastSensor = ballastSensor;
+        this.fb_ballastSensor = fb_ballastSensor;
+    }
+
+    public int getCmd_speedSB()
+    {
+        return cmd_speedSB;
+    }
+
+    public void setCmd_speedSB(int cmd_speedSB)
+    {
+        this.cmd_speedSB = cmd_speedSB;
+    }
+
+    public int getCmd_speedPS()
+    {
+        return cmd_speedPS;
+    }
+
+    public void setCmd_speedPS(int cmd_speedPS)
+    {
+        this.cmd_speedPS = cmd_speedPS;
+    }
+
+    public int getCmd_podPosSB()
+    {
+        return cmd_podPosSB;
+    }
+
+    public void setCmd_podPosSB(int cmd_podPosSB)
+    {
+        this.cmd_podPosSB = cmd_podPosSB;
+    }
+
+    public int getCmd_podPosPS()
+    {
+        return cmd_podPosPS;
+    }
+
+    public void setCmd_podPosPS(int cmd_podPosPS)
+    {
+        this.cmd_podPosPS = cmd_podPosPS;
+    }
+
+    public boolean isCmd_ballastSensor()
+    {
+        return cmd_ballastSensor;
+    }
+
+    public void setCmd_ballastSensor(boolean cmd_ballastSensor)
+    {
+        this.cmd_ballastSensor = cmd_ballastSensor;
     }
 
     public boolean isSpeedSBavailable()
@@ -230,8 +302,6 @@ public class DataHandler
         this.ballastSensorAvailable = ballastSensorAvailable;
     }
 
-
-
     /**
      * Gets request code from Arduino
      *
@@ -252,9 +322,6 @@ public class DataHandler
         this.requestCodeFromArduino = requestCodeFromArduino;
     }
 
-    
-    
-    
     //****************************************************************
     //************** FROM GUI METHODS*********************************
     /**
@@ -468,7 +535,6 @@ public class DataHandler
         }
     }
 
-
     /**
      * Sets the value of sensitivity given from GUI (in percent)
      *
@@ -521,10 +587,27 @@ public class DataHandler
     {
         return ShipSystem.enumStateEvent == SendEventState.TRUE;
     }
-    
+
     public String getDataToArduino()
     {
-        return "";
+        return "podposps:" + this.getFb_podPosPS()
+                + ":podpossb:" + this.getFb_podPosSB()
+                + ":speedps:" + this.getFb_speedPS()
+                + ":speedsb:" + this.getFb_speedSB();
     }
-    
+
+    public void handleDataFromArduino()
+    {
+        HashMap<String, String> data = new HashMap<>();
+        data = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
+
+        for (Entry e : data.entrySet())
+        {
+            String key = (String) e.getKey();
+            String value = (String) e.getValue();
+            
+        }
+
+    }
+
 }
