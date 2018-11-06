@@ -5,7 +5,6 @@
  */
 package SerialCom;
 
-<stbRpm:666>
 import java.awt.BorderLayout;
 import java.util.HashMap;
 import jssc.SerialPort;
