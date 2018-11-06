@@ -1,5 +1,7 @@
 package shipsystem;
 
+import SerialCom.SerialDataHandler;
+
 
 /**
  * Logic class
@@ -114,7 +116,7 @@ public class Logic
     protected void handleButtonState()
     {
         int buttonState = 0;
-        
+   
         if (0 != dh.getFromGuiByte((byte) 0))
         {
             if(!(((1 == dh.getFwd()) && (1 == dh.getRev())) || 
@@ -195,94 +197,94 @@ public class Logic
         switch (this.getState())
         {
             case STOP:
-                dh.setLeftMotorSpeed(minSpeed);
-                dh.setRightMotorSpeed(minSpeed);
+                dh.setCmd_speedPS(minSpeed);
+                dh.setCmd_speedSB(minSpeed);
                 break;
             case GOFWD: 
-                if(dh.getLeftThusterAngle() != 0 && dh.getRightThrusterAngle != 0)
+                if(dh.getCmd_podPosPS()!= 0 && dh.getCmd_podPosSB() != 0)
                 {
-                    dh.setLeftThrusterSpeed(maxSpeed);
-                    dh.setRightThrusterSpeed(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 else
                 {
-                    dh.setLeftMotorSpeed(minSpeed);
-                    dh.setRightThrusterSpeed(minSpeed);
+                    dh.setCmd_speedPS(minSpeed);
+                    dh.setCmd_speedSB(minSpeed);
                 }
-                if (dh.getLeftThrusterAngle() == 0 && dh.getRightThrusterAngle() == 0)
+                if (dh.getCmd_podPosPS()== 0 && dh.getCmd_podPosSB()== 0)
                 {
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOREV:
-                 if(dh.getLeftThusterAngle() != 0 && dh.getRightThrusterAngle != 0)
+                 if(dh.getCmd_podPosPS()!= 0 && dh.getCmd_podPosSB() != 0)
                 {
-                    dh.setLeftThrusterSpeed(maxSpeed);
-                    dh.setRightThrusterSpeed(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 else
                 {
-                    dh.setLeftMotorSpeed(minSpeed);
-                    dh.setRightThrusterSpeed(minSpeed);
+                    dh.setCmd_speedPS(minSpeed);
+                    dh.setCmd_speedSB(minSpeed);
                 }
-                if (dh.getLeftThrusterAngle() == 0 && dh.getRightThrusterAngle() == 0)
+                if (dh.getCmd_podPosPS()== 0 && dh.getCmd_podPosSB()== 0)
                 {
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOLEFT:
-                if (dh.getLeftThrusterAngle() != 315 && dh.getLeftThrusterAngle() != 315)
+                if (dh.getCmd_podPosPS()!= 315 && dh.getCmd_podPosSB()!= 315)
                 {
-                    dh.setLeftThrusterSpeed(maxSpeed);
-                    dh.setRightThrusterSpeed(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 else 
                 {
-                   dh.setLeftThrusterSpeed(minSpeed);
-                   dh.setRightThrusterSpeed(minSpeed);
+                   dh.setCmd_speedPS(minSpeed);
+                   dh.setCmd_speedSB(minSpeed);
                 }
-                if (dh.getLeftThrusterAngle() == 315 && dh.getRightThrusterAngle() == 315)
+                if (dh.getCmd_podPosPS()== 315 && dh.getCmd_podPosSB()== 315)
                 {
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GORIGHT:
-                if (dh.getLeftThrusterAngle() != 45 && dh.getRightThrusterAngle != 45)
+                if (dh.getCmd_podPosPS()!= 45 && dh.getCmd_podPosSB() != 45)
                 {
-                    dh.setLeftThrusterSpeed(maxSpeed);
-                    dh.setRightThrusterSpeed(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 else
                 {
-                   dh.setLeftThrusterSpeed(minSpeed);
-                   dh.setRightThrusterSpeed(minSpeed);
+                   dh.setCmd_speedPS(minSpeed);
+                   dh.setCmd_speedSB(minSpeed);
                 }
                 
-                if (dh.getLeftThrusterAngle() == 45 && dh.getRightThrusterAngle() == 45)
+                if (dh.getCmd_podPosPS()== 45 && dh.getCmd_podPosSB()== 45)
                 {
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOFWDANDLEFT:
                 System.out.println("fwd and left");
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed/4);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed/4);
                 break;
             case GOFWDANDRIGHT:
-                dh.setLeftMotorSpeed(maxSpeed/4);
-                dh.setRightMotorSpeed(maxSpeed);
+                dh.setCmd_speedPS(maxSpeed/4);
+                dh.setCmd_speedSB(maxSpeed);
                 break;
             case GOREVANDRIGHT:
-                dh.setLeftMotorSpeed(maxSpeed/4);
-                dh.setRightMotorSpeed(maxSpeed);
+                dh.setCmd_speedPS(maxSpeed/4);
+                dh.setCmd_speedSB(maxSpeed);
                 break;
             case GOREVANDLEFT:
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed/4);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed/4);
                 break;
                 // unknown command
             case DEFAULT:
@@ -297,18 +299,18 @@ public class Logic
      * Set right motorspeed
      * @param rightSpeed 
      */   
-    public void setRightSpeed(float rightSpeed)
+    public void setSBSpeed(int SB_Speed)
     {
-        dh.setRightMotorSpeed(rightSpeed);
+        dh.setCmd_speedSB(SB_Speed);
     }
     
     /**
      * Set right thruster speed
      * @param rightThruster 
      */
-    public void setRightThrusterSpeed(float rightThruster)
+    public void setRightThrusterSpeed(int SB_podPos)
     {
-        dh.setRightThrusterSpeed(rightThruster);
+        dh.setCmd_podPosSB(SB_podPos);
     }
     
     
@@ -316,18 +318,18 @@ public class Logic
      * Set left motorspeed
      * @param leftSpeed 
      */
-    public void setLeftSpeed(float leftSpeed)
+    public void setPSSpeed(int PS_Speed)
     {
-        dh.setLeftMotorSpeed(leftSpeed);
+        dh.setCmd_speedPS(PS_Speed);
     }
     
     /**
      * Set left thruster speed
      * @param leftThruster 
      */
-    public void setLeftThrusterSpeed (float leftThruster)
+    public void setLeftThrusterSpeed (int PS_podPos)
     {
-        dh.setLeftThrusterSpeed(leftThruster);
+        dh.setCmd_podPosPS(PS_podPos);
     }
     
     /**
