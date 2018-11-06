@@ -201,90 +201,160 @@ public class Logic
                 dh.setCmd_speedSB(minSpeed);
                 break;
             case GOFWD: 
-                if(dh.getCmd_podPosPS()!= 0 && dh.getCmd_podPosSB() != 0)
+                if(dh.getFb_podPosPS() != 0)
                 {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPodPS(maxSpeed);                   
                 }
                 else
                 {
-                    dh.setCmd_speedPS(minSpeed);
-                    dh.setCmd_speedSB(minSpeed);
+                    dh.setCmd_speedPodPS(minSpeed);             
                 }
-                if (dh.getCmd_podPosPS()== 0 && dh.getCmd_podPosSB()== 0)
+                
+                if(dh.getFb_podPosSB() != 0)
+                {
+                   dh.setCmd_speedPodSB(maxSpeed); 
+                }
+                else
+                {
+                   dh.setCmd_speedPodSB(minSpeed); 
+                }
+                
+                if (dh.getFb_podPosPS()== 0 && dh.getFb_podPosSB()== 0)
                 {
                 dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOREV:
-                 if(dh.getCmd_podPosPS()!= 0 && dh.getCmd_podPosSB() != 0)
+                 if(dh.getFb_podPosPS()!= 0)
                 {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPodPS(maxSpeed);                   
                 }
                 else
                 {
-                    dh.setCmd_speedPS(minSpeed);
-                    dh.setCmd_speedSB(minSpeed);
+                    dh.setCmd_speedPodPS(minSpeed);            
                 }
-                if (dh.getCmd_podPosPS()== 0 && dh.getCmd_podPosSB()== 0)
+                 
+                 if(dh.getFb_podPosSB() != 0)
+                 {
+                     dh.setCmd_speedPodSB(maxSpeed);
+                 }
+                 else
+                 {
+                    dh.setCmd_speedPodSB(minSpeed); 
+                 }
+                 
+                if (dh.getFb_podPosPS()== 0 && dh.getFb_podPosSB()== 0)
                 {
                 dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOLEFT:
-                if (dh.getCmd_podPosPS()!= 315 && dh.getCmd_podPosSB()!= 315)
+                if (dh.getFb_podPosPS()!= 315)
                 {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPodPS(maxSpeed);                   
                 }
                 else 
                 {
-                   dh.setCmd_speedPS(minSpeed);
-                   dh.setCmd_speedSB(minSpeed);
+                   dh.setCmd_speedPodPS(minSpeed);              
                 }
-                if (dh.getCmd_podPosPS()== 315 && dh.getCmd_podPosSB()== 315)
+                
+                if(dh.getFb_podPosSB()!= 315)
+                {
+                  dh.setCmd_speedPodSB(maxSpeed);  
+                }
+                else
+                {
+                    dh.setCmd_speedPodSB(minSpeed);
+                }
+                
+                if (dh.getFb_podPosPS()== 315 && dh.getFb_podPosSB()== 315)
                 {
                 dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GORIGHT:
-                if (dh.getCmd_podPosPS()!= 45 && dh.getCmd_podPosSB() != 45)
+                if (dh.getFb_podPosPS()!= 45)
                 {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPodPS(maxSpeed);
                 }
                 else
                 {
-                   dh.setCmd_speedPS(minSpeed);
-                   dh.setCmd_speedSB(minSpeed);
+                   dh.setCmd_speedPodPS(minSpeed);                  
                 }
                 
-                if (dh.getCmd_podPosPS()== 45 && dh.getCmd_podPosSB()== 45)
+                if(dh.getFb_podPosSB() != 45)
+                {
+                  dh.setCmd_speedPodSB(maxSpeed);  
+                }
+                else
+                {
+                 dh.setCmd_speedPodSB(minSpeed);   
+                }
+                
+                if (dh.getFb_podPosPS()== 45 && dh.getFb_podPosSB()== 45)
                 {
                 dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOFWDANDLEFT:
-                System.out.println("fwd and left");
+                if (dh.getFb_podPosPS() != 345)
+                {
+                    dh.setCmd_speedPodPS(maxSpeed);   
+                }
+                else
+                {
+                    dh.setCmd_speedPodPS(minSpeed);   
+                }
+                
+                if(dh.getFb_podPosSB() != 345)
+                {
+                    dh.setCmd_speedPodSB(maxSpeed);
+                }
+                else
+                {
+                  dh.setCmd_speedPodSB(minSpeed);  
+                }
+                
+                if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
+                {
                 dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed/4);
+                dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOFWDANDRIGHT:
-                dh.setCmd_speedPS(maxSpeed/4);
+                if (dh.getFb_podPosPS() != 15)
+                {
+                    dh.setCmd_speedPodPS(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodPS(minSpeed);
+                }
+                if(dh.getFb_podPosSB() != 15)
+                {
+                    dh.setCmd_speedPodSB(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodSB(minSpeed);
+                }
+                if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
+                {
+                dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOREVANDRIGHT:
-                dh.setCmd_speedPS(maxSpeed/4);
+                dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
                 break;
             case GOREVANDLEFT:
                 dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed/4);
+                dh.setCmd_speedSB(maxSpeed);
                 break;
                 // unknown command
             case DEFAULT:
@@ -296,42 +366,42 @@ public class Logic
     }
        
     /**
-     * Set right motorspeed
-     * @param rightSpeed 
+     * Set starboard motorspeed
+     * @param speedSB 
      */   
-    public void setSBSpeed(int SB_Speed)
+    public void setSBSpeed(int speedSB)
     {
-        dh.setCmd_speedSB(SB_Speed);
+        dh.setCmd_speedSB(speedSB);
     }
     
     /**
-     * Set right thruster speed
-     * @param rightThruster 
+     * Set starboard pod motorspeed
+     * @param speedPodSB 
      */
-    public void setRightThrusterSpeed(int SB_podPos)
+    public void setSBpodSpeed(int speedPodSB)
     {
-        dh.setCmd_podPosSB(SB_podPos);
+        dh.setCmd_speedPodSB(speedPodSB);
     }
     
     
     /**
-     * Set left motorspeed
-     * @param leftSpeed 
+     * Set portside motorspeed
+     * @param speedPS
      */
-    public void setPSSpeed(int PS_Speed)
+    public void setPSSpeed(int speedPS)
     {
-        dh.setCmd_speedPS(PS_Speed);
+        dh.setCmd_speedPS(speedPS);
     }
     
     /**
-     * Set left thruster speed
-     * @param leftThruster 
+     * Set portside pod motorspeed
+     * @param speedPodPS 
      */
-    public void setLeftThrusterSpeed (int PS_podPos)
+    public void setPSpodSpeed(int speedPodPS)
     {
-        dh.setCmd_podPosPS(PS_podPos);
+        dh.setCmd_speedPodPS(speedPodPS);
     }
-    
+        
     /**
      * Get the state the ship is currently in
      * 

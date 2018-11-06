@@ -41,12 +41,16 @@ public class DataHandler
 
     private int fb_speedSB;
     private int fb_speedPS;
+    private int fb_speedPodSB;
+    private int fb_speedPodPS;
     private int fb_podPosSB;
     private int fb_podPosPS;
     private boolean fb_ballastSensor;
 
     private int cmd_speedSB;
     private int cmd_speedPS;
+    private int cmd_speedPodSB;
+    private int cmd_speedPodPS;
     private int cmd_podPosSB;
     private int cmd_podPosPS;
     private boolean cmd_ballastSensor;
@@ -80,6 +84,8 @@ public class DataHandler
 
         fb_speedSB = 0;
         fb_speedPS = 0;
+        fb_speedPodSB = 0;
+        fb_speedPodPS = 0;
         fb_podPosSB = 0;
         fb_podPosPS = 0;
         fb_ballastSensor = false;
@@ -166,12 +172,31 @@ public class DataHandler
     {
         return fb_speedPS;
     }
-
+    
     public void setFb_speedPS(int fb_speedPS)
     {
         this.fb_speedPS = fb_speedPS;
     }
 
+       public int getFb_speedPodSB()
+    {
+        return fb_speedPodSB;
+    }
+    
+    public void setFb_speedPodSB(int fb_speedPodSB)
+    {
+        this.fb_speedPodSB = fb_speedPodSB;
+    }
+    
+       public int getFb_speedPodPS()
+    {
+        return fb_speedPodPS;
+    }
+    
+    public void setFb_speedPodPS(int fb_speedPodPS)
+    {
+        this.fb_speedPodPS = fb_speedPodPS;
+    }
     public int getFb_podPosSB()
     {
         return fb_podPosSB;
@@ -220,6 +245,26 @@ public class DataHandler
     public void setCmd_speedPS(int cmd_speedPS)
     {
         this.cmd_speedPS = cmd_speedPS;
+    }
+    
+    public int getCmd_speedPodSB()
+    {
+        return cmd_speedPodSB;
+    }
+    
+    public void setCmd_speedPodSB(int cmd_speedPodSB)
+    {
+        this.cmd_speedPodSB = cmd_speedPodSB;
+    }
+    
+    public int getCmd_speedPodPS()
+    {
+        return cmd_speedPodPS;
+    }
+    
+    public void setCmd_speedPodPS(int cmd_speedPodPS)
+    {
+        this.cmd_speedPodPS = cmd_speedPodPS;
     }
 
     public int getCmd_podPosSB()
