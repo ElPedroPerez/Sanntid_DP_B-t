@@ -66,34 +66,34 @@ public class Controller implements Runnable
             acquire();
 
             boolean guiCommandUpdated = dh.getDataFromGuiAvailable();
-            if (guiCommandUpdated)
-            {
-                byte controlByte = dh.getFromGuiByte((byte) Protocol.COMMANDS.getValue());
-
-                // auto or manual mode
-                if (getBit(controlByte, Protocol.commands.AUTO_MANUAL.getValue()))
-                {
-                    dh.AUVautoMode();
-                }
-                else
-                {
-                    dh.AUVmanualMode();
-                }
-
-                // start or stop vehicle
-                if (getBit(controlByte, Protocol.commands.START.getValue()))
-                {
-                    dh.enableAUV();
-                }
-                else
-                {
-                    dh.disableAUV();
-                }
-                // finish prosessing commands from gui
-                dh.setDataFromGuiAvailable(false);
-            }
-
-            AUVstate = dh.getAUVautoMode();
+//            if (guiCommandUpdated)
+//            {
+//                byte controlByte = dh.getFromGuiByte((byte) Protocol.COMMANDS.getValue());
+//
+//                // auto or manual mode
+//                if (getBit(controlByte, Protocol.commands.AUTO_MANUAL.getValue()))
+//                {
+//                    dh.AUVautoMode();
+//                }
+//                else
+//                {
+//                    dh.AUVmanualMode();
+//                }
+//
+//                // start or stop vehicle
+//                if (getBit(controlByte, Protocol.commands.START.getValue()))
+//                {
+//                    dh.enableAUV();
+//                }
+//                else
+//                {
+//                    dh.disableAUV();
+//                }
+//                // finish prosessing commands from gui
+//                dh.setDataFromGuiAvailable(false);
+//            }
+//
+//            AUVstate = dh.getAUVautoMode();
             release();
 
             if (AUVstate == 1 && lastAUVstate == 0 && !this.autoRunning)

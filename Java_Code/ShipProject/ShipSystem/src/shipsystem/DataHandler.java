@@ -130,7 +130,7 @@ public class DataHandler
         if (data.length == this.dataFromArduino.length && data[Protocol.REQUEST_FEEDBACK.getValue()] != this.getRequestCodeFromArduino())
         {
             this.dataFromArduino = data;
-            this.setDistanceSensor(data[4]);
+            //this.setDistanceSensor(data[4]);
             this.setRequestCodeFromArduino(data[Protocol.REQUEST_FEEDBACK.getValue()]);
             //this.setPixyXvalue(new BigInteger(Arrays.copyOfRange(data, 0, 2)).intValue());
             //this.setPixyYvalue(new BigInteger(Arrays.copyOfRange(data, 2, 4)).intValue());
@@ -483,9 +483,21 @@ public class DataHandler
         {
             String key = (String) e.getKey();
             String value = (String) e.getValue();
-            
+            switch (key)
+            {
+                case "prtDeg":
+                    this.fb_podPosPS = Integer.parseInt(value);
+                    break;
+                case "stbDeg":
+                    this.fb_podPosSB = Integer.parseInt(value);
+                    break;
+                case "prtRPM":
+                    this.fb_speedPS = Integer.parseInt(value);
+                    break;
+                case "stbRPM":
+                    this.fb_speedSB = Integer.parseInt(value);
+                    break;
+            }
         }
-
     }
-
 }
