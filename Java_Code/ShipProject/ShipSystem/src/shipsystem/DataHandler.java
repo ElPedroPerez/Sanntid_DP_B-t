@@ -5,6 +5,11 @@
  */
 package shipsystem;
 
+import SerialCom.SerialDataHandler;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
+
 /**
  * Overview protocol: To Arduino: Byte 0: bit 0 - stopp bit 1 - fwd bit 2 - rev
  * bit 3 - left bit 4 - right Byte 1: Left motor speed Byte 2: Right motor speed
@@ -20,17 +25,39 @@ package shipsystem;
 public class DataHandler
 {
 
+    private SerialDataHandler sdh = new SerialDataHandler();
+    private String arduinoFeedbackComPort;
+    private String arduinoCommandComPort;
+    private int arduinoBaudRate;
+    private int imuBaudRate;
+
     private byte[] dataFromArduino;
     private byte[] dataToArduino;
     private byte[] dataFromGui;
     private boolean dataFromArduinoAvaliable = false;
     private boolean dataFromGuiAvailable = false;
     private boolean threadStatus;
-    private float pixyXvalue;
-    private float pixyYvalue;
-    private int distanceSensor;
     private byte requestCodeFromArduino;
-    private boolean enableAUV;
+
+    private int fb_speedSB;
+    private int fb_speedPS;
+    private int fb_podPosSB;
+    private int fb_podPosPS;
+    private boolean fb_ballastSensor;
+
+    private int cmd_speedSB;
+    private int cmd_speedPS;
+    private int cmd_speedPodRotSB;
+    private int cmd_speedPodRotPS;
+    private int cmd_podPosSB;
+    private int cmd_podPosPS;
+    private boolean cmd_ballastSensor;
+
+    private boolean speedSBavailable;
+    private boolean speedPSavailable;
+    private boolean podPosSBavailable;
+    private boolean podPosPSavailable;
+    private boolean ballastSensorAvailable;
 
     // pid parameters
     private double P; // prop gain
@@ -45,44 +72,24 @@ public class DataHandler
         this.dataFromArduino = new byte[6];
         this.dataToArduino = new byte[6];
         this.dataFromGui = new byte[6];
-    }
+        dataFromArduinoAvaliable = false;
+        dataFromGuiAvailable = false;
 
-    //*****************************************************************
-    //********** PRIVATE METHODS AREA**********************************
-    /**
-     * Sets a specific bit in a specific byte to 1
-     *
-     * @param b The specific byte
-     * @param bit The specific bit
-     * @return Value of the bit
-     */
-    private byte setBit(byte b, int bit)
-    {
-        return b |= 1 << bit;
-    }
+        arduinoFeedbackComPort = "Com1";
+        arduinoFeedbackComPort = "Com2";
+        arduinoBaudRate = 9600;
+        imuBaudRate = 57600;
 
-    /**
-     * Sets a specific bit in a specific byte to 1
-     *
-     * @param b The specific byte
-     * @param bit The specific bit
-     * @return Value of the bit
-     */
-    private byte releaseBit(byte b, int bit)
-    {
-        return b &= ~(1 << bit);
-    }
-
-    /**
-     * Gets a specific bit in a specific byte
-     *
-     * @param b The specific byte
-     * @param bit The specific bit
-     * @return Value of the bit
-     */
-    private byte getBit(byte b, int bit)
-    {
-        return (byte) ((b >> bit) & 1);
+        fb_speedSB = 0;
+        fb_speedPS = 0;
+        fb_podPosSB = 0;
+        fb_podPosPS = 0;
+        fb_ballastSensor = false;
+        speedSBavailable = false;
+        speedPSavailable = false;
+        podPosSBavailable = false;
+        podPosPSavailable = false;
+        ballastSensorAvailable = false;
     }
 
     //*****************************************************************
@@ -107,33 +114,6 @@ public class DataHandler
         this.threadStatus = threadStatus;
     }
 
-    //*****************************************************************
-    //*************** PID PARAMTERS ***********************************
-    public double getP()
-    {
-        return P;
-    }
-
-    public double getI()
-    {
-        return I;
-    }
-
-    public double getD()
-    {
-        return D;
-    }
-
-    public double getF()
-    {
-        return F;
-    }
-
-    public double getRR()
-    {
-        return RR;
-    }
-
     public void setPidParamChanged(boolean state)
     {
         this.PIDparamChanged = state;
@@ -152,7 +132,7 @@ public class DataHandler
         if (data.length == this.dataFromArduino.length && data[Protocol.REQUEST_FEEDBACK.getValue()] != this.getRequestCodeFromArduino())
         {
             this.dataFromArduino = data;
-            this.setDistanceSensor(data[4]);
+            //this.setDistanceSensor(data[4]);
             this.setRequestCodeFromArduino(data[Protocol.REQUEST_FEEDBACK.getValue()]);
             //this.setPixyXvalue(new BigInteger(Arrays.copyOfRange(data, 0, 2)).intValue());
             //this.setPixyYvalue(new BigInteger(Arrays.copyOfRange(data, 2, 4)).intValue());
@@ -174,64 +154,174 @@ public class DataHandler
         return this.dataFromArduinoAvaliable;
     }
 
-    /**
-     * Gets x-value from Pixy camera
-     *
-     * @return x-value
-     */
-    public float getPixyXvalue()
+    public int getFb_speedSB()
     {
-        return pixyXvalue;
+        return fb_speedSB;
     }
 
-    /**
-     * Sets x-value from Pixy camera
-     *
-     * @param pixyXvalue x-value
-     */
-    public void setPixyXvalue(float pixyXvalue)
+    public void setFb_speedSB(int fb_speedSB)
     {
-        this.pixyXvalue = pixyXvalue;
+        this.fb_speedSB = fb_speedSB;
     }
 
-    /**
-     * Gets y-value from Pixy camera
-     *
-     * @return y-value
-     */
-    public float getPixyYvalue()
+    public int getFb_speedPS()
     {
-        return pixyYvalue;
+        return fb_speedPS;
+    }
+    
+    public void setFb_speedPS(int fb_speedPS)
+    {
+        this.fb_speedPS = fb_speedPS;
     }
 
-    /**
-     * Sets y-value from Pixy camera
-     *
-     * @param pixyYvalue y-value
-     */
-    public void setPixyYvalue(float pixyYvalue)
+    public int getFb_podPosSB()
     {
-        this.pixyYvalue = pixyYvalue;
+        return fb_podPosSB;
     }
 
-    /**
-     * Gets value from distance sensor
-     *
-     * @return Distance
-     */
-    public int getDistanceSensor()
+    public void setFb_podPosSB(int fb_podPosSB)
     {
-        return distanceSensor;
+        this.fb_podPosSB = fb_podPosSB;
     }
 
-    /**
-     * Sets value from distance sensor
-     *
-     * @param distanceSensor Distance
-     */
-    public void setDistanceSensor(int distanceSensor)
+    public int getFb_podPosPS()
     {
-        this.distanceSensor = distanceSensor;
+        return fb_podPosPS;
+    }
+
+    public void setFb_podPosPS(int fb_podPosPS)
+    {
+        this.fb_podPosPS = fb_podPosPS;
+    }
+
+    public boolean isFb_ballastSensor()
+    {
+        return fb_ballastSensor;
+    }
+
+    public void setFb_ballastSensor(boolean fb_ballastSensor)
+    {
+        this.fb_ballastSensor = fb_ballastSensor;
+    }
+
+    public int getCmd_speedSB()
+    {
+        return cmd_speedSB;
+    }
+
+    public void setCmd_speedSB(int cmd_speedSB)
+    {
+        this.cmd_speedSB = cmd_speedSB;
+    }
+
+    public int getCmd_speedPS()
+    {
+        return cmd_speedPS;
+    }
+
+    public void setCmd_speedPS(int cmd_speedPS)
+    {
+        this.cmd_speedPS = cmd_speedPS;
+    }
+    
+    public int getCmd_speedPodRotSB()
+    {
+        return cmd_speedPodRotSB;
+    }
+    
+    public void setCmd_speedPodRotSB(int cmd_speedPodRotSB)
+    {
+        this.cmd_speedPodRotSB = cmd_speedPodRotSB;
+    }
+    
+    public int getCmd_speedPodRotPS()
+    {
+        return cmd_speedPodRotPS;
+    }
+    
+    public void setCmd_speedPodRotPS(int cmd_speedPodRotPS)
+    {
+        this.cmd_speedPodRotPS = cmd_speedPodRotPS;
+    }
+
+    public int getCmd_podPosSB()
+    {
+        return cmd_podPosSB;
+    }
+
+    public void setCmd_podPosSB(int cmd_podPosSB)
+    {
+        this.cmd_podPosSB = cmd_podPosSB;
+    }
+
+    public int getCmd_podPosPS()
+    {
+        return cmd_podPosPS;
+    }
+
+    public void setCmd_podPosPS(int cmd_podPosPS)
+    {
+        this.cmd_podPosPS = cmd_podPosPS;
+    }
+
+    public boolean isCmd_ballastSensor()
+    {
+        return cmd_ballastSensor;
+    }
+
+    public void setCmd_ballastSensor(boolean cmd_ballastSensor)
+    {
+        this.cmd_ballastSensor = cmd_ballastSensor;
+    }
+
+    public boolean isSpeedSBavailable()
+    {
+        return speedSBavailable;
+    }
+
+    public void setSpeedSBavailable(boolean speedSBavailable)
+    {
+        this.speedSBavailable = speedSBavailable;
+    }
+
+    public boolean isSpeedPSavailable()
+    {
+        return speedPSavailable;
+    }
+
+    public void setSpeedPSavailable(boolean speedPSavailable)
+    {
+        this.speedPSavailable = speedPSavailable;
+    }
+
+    public boolean isPodPosSBavailable()
+    {
+        return podPosSBavailable;
+    }
+
+    public void setPodPosSBavailable(boolean podPosSBavailable)
+    {
+        this.podPosSBavailable = podPosSBavailable;
+    }
+
+    public boolean isPodPosPSavailable()
+    {
+        return podPosPSavailable;
+    }
+
+    public void setPodPosPSavailable(boolean podPosPSavailable)
+    {
+        this.podPosPSavailable = podPosPSavailable;
+    }
+
+    public boolean isBallastSensorAvailable()
+    {
+        return ballastSensorAvailable;
+    }
+
+    public void setBallastSensorAvailable(boolean ballastSensorAvailable)
+    {
+        this.ballastSensorAvailable = ballastSensorAvailable;
     }
 
     /**
@@ -346,344 +436,6 @@ public class DataHandler
     }
 
     /**
-     * Returns a specific byte from byte array from GUI
-     *
-     * @param b The specific byte
-     * @return The byte
-     */
-    public byte getFromGuiByte(byte b)
-    {
-        return dataFromGui[b];
-    }
-
-    public void resetToArduinoByte(int i)
-    {
-        dataToArduino[i] = 0;
-    }
-
-    /**
-     * Sets stop bit to high
-     */
-    public void stopAUV()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.setBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.STOP.getValue());
-        //this.fireStateChanged();
-    }
-
-    /**
-     * Sets stop bit to low
-     */
-    public void releaseStopAUV()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.releaseBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.STOP.getValue());
-        //this.fireStateChanged();
-    }
-
-    /**
-     * Gets value of stop bit
-     *
-     * @return stop bit
-     */
-    public byte getStopAUV()
-    {
-        return this.getBit(dataFromGui[Protocol.CONTROLS.getValue()], Protocol.controls.STOP.getValue());
-    }
-
-    /**
-     * Sets forward bit to high
-     */
-    public void goFwd()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.setBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.FORWARD.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets forward bit to low
-     */
-    public void releaseGoFwd()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.releaseBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.FORWARD.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Gets value of forward bit
-     *
-     * @return Forward bit
-     */
-    public byte getFwd()
-    {
-        return this.getBit(dataFromGui[Protocol.CONTROLS.getValue()], Protocol.controls.FORWARD.getValue());
-    }
-
-    /**
-     * Sets reverse bit to high
-     */
-    public void goRev()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.setBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.REVERSE.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets reverse bit to low
-     */
-    public void releaseGoRev()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.releaseBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.REVERSE.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Gets value of reverse bit
-     *
-     * @return Reverse bit
-     */
-    public byte getRev()
-    {
-        return this.getBit(dataFromGui[Protocol.CONTROLS.getValue()], Protocol.controls.REVERSE.getValue());
-    }
-
-    /**
-     * Sets left bit to high
-     */
-    public void goLeft()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.setBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.LEFT.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets left bit to low
-     */
-    public void releaseGoLeft()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.releaseBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.LEFT.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Gets value of left bit
-     *
-     * @return Left bit
-     */
-    public byte getLeft()
-    {
-        return this.getBit(dataFromGui[Protocol.CONTROLS.getValue()], Protocol.controls.LEFT.getValue());
-    }
-
-    /**
-     * Sets right bit to high
-     */
-    public void goRight()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.setBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.RIGHT.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets right bit to low
-     */
-    public void releaseGoRight()
-    {
-        dataToArduino[Protocol.CONTROLS.getValue()] = this.releaseBit(dataToArduino[Protocol.CONTROLS.getValue()], Protocol.controls.RIGHT.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Gets value of right bit
-     *
-     * @return Right bit
-     */
-    public byte getRight()
-    {
-        return this.getBit(dataFromGui[Protocol.CONTROLS.getValue()], Protocol.controls.RIGHT.getValue());
-    }
-
-    /**
-     * Sets left motor speed
-     *
-     * @param speed Speed value between 0-255
-     */
-    public void setLeftMotorSpeed(float speed)
-    {
-        if (speed > 255.0f)
-        {
-            speed = 255.0f;
-        }
-        //System.out.println("left speed " + speed);
-        dataToArduino[Protocol.LEFT_MOTOR_SPEED.getValue()] = (byte) ((speed / 100) * this.getSensitivity());
-        this.fireStateChanged();
-
-    }
-
-    public int getLeftMotorSpeed()
-    {
-        if (this.getSensitivity() == 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return dataToArduino[Protocol.LEFT_MOTOR_SPEED.getValue()] * (100 / this.getSensitivity());
-        }
-    }
-    
-    public void setLeftThrusterSpeed(float speed)
-    {
-        if (speed > 255.0f)
-        {
-            speed = 255.0f;
-        }
-        //System.out.println("left thruster speed " + speed);
-        dataToArduino[Protocol.LEFT_THRUSTER_SPEED.getValue()] = (byte) ((speed / 100) * this.getSensitivity());
-        this.fireStateChanged();
-           
-    }
-    
-    public int getLeftThrusterSpeed()
-    {
-        if (this.getSensitivity() == 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return dataToArduino[Protocol.LEFT_THRUSTER_SPEED.getValue()] * (100 / this.getSensitivity());
-        }
-    }
-    
-    /**
-     * Sets right motor speed
-     *
-     * @param speed Speed value between 0-255
-     */
-    public void setRightMotorSpeed(float speed)
-    {
-        if (speed > 255.0f)
-        {
-            speed = 255.0f;
-        }
-        //System.out.println("right speed " + speed);
-        dataToArduino[Protocol.RIGHT_MOTOR_SPEED.getValue()] = (byte) ((speed / 100) * this.getSensitivity());
-        this.fireStateChanged();
-    }
-
-    public int getRightMotorSpeed()
-    {
-        if (this.getSensitivity() == 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return dataToArduino[Protocol.RIGHT_MOTOR_SPEED.getValue()] * (100 / this.getSensitivity());
-        }
-    }
-    
-    
-      public void setRightThrusterSpeed(float speed)
-    {
-        if (speed > 255.0f)
-        {
-            speed = 255.0f;
-        }
-        //System.out.println("left thruster speed " + speed);
-        dataToArduino[Protocol.RIGHT_THRUSTER_SPEED.getValue()] = (byte) ((speed / 100) * this.getSensitivity());
-        this.fireStateChanged();
-           
-    }
-    
-    public int getRightThrusterSpeed()
-    {
-        if (this.getSensitivity() == 0)
-        {
-            return 0;
-        }
-        else
-        {
-            return dataToArduino[Protocol.RIGHT_THRUSTER_SPEED.getValue()] * (100 / this.getSensitivity());
-        }
-    }
-    
-    /**
-     * get right servo status from gui
-     *
-     * @return byte, value 0 or 1
-     */
-    public byte getServoFromGui()
-    {
-        return this.getBit(dataFromGui[Protocol.COMMANDS.getValue()], Protocol.commands.RIGHT_SERVO.getValue());
-    }
-
-    /**
-     * Sets right servo bit to high
-     */
-    public void setServoToArduino()
-    {
-        dataToArduino[Protocol.COMMANDS.getValue()] = this.setBit(dataToArduino[Protocol.COMMANDS.getValue()], Protocol.commands.RIGHT_SERVO.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets right servo bit to low
-     */
-    public void resetServoToArduino()
-    {
-        dataToArduino[Protocol.COMMANDS.getValue()] = this.releaseBit(dataToArduino[Protocol.COMMANDS.getValue()], Protocol.commands.RIGHT_SERVO.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets the auto/manual mode bit to low, which means that the vehicle is now
-     * in manual mode
-     */
-    public void AUVmanualMode()
-    {
-        dataToArduino[Protocol.COMMANDS.getValue()] = this.releaseBit(dataToArduino[Protocol.COMMANDS.getValue()], Protocol.commands.AUTO_MANUAL.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets the auto/manual mode bit to high, which means that the vehicle is
-     * now in auto mode
-     */
-    public void AUVautoMode()
-    {
-        dataToArduino[Protocol.COMMANDS.getValue()] = this.setBit(dataToArduino[Protocol.COMMANDS.getValue()], Protocol.commands.AUTO_MANUAL.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Gets the auto/manual mode bit
-     *
-     * @return The auto/manual mode bit
-     */
-    public byte getAUVautoMode()
-    {
-        return this.getBit(dataFromGui[Protocol.COMMANDS.getValue()], Protocol.commands.AUTO_MANUAL.getValue());
-    }
-
-    /**
-     * Sets the start bit to high
-     */
-    public void enableAUV()
-    {
-        dataToArduino[Protocol.COMMANDS.getValue()] = this.setBit(dataToArduino[Protocol.COMMANDS.getValue()], Protocol.commands.START.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
-     * Sets the start bit to low
-     */
-    public void disableAUV()
-    {
-        dataToArduino[Protocol.COMMANDS.getValue()] = this.releaseBit(dataToArduino[Protocol.COMMANDS.getValue()], Protocol.commands.START.getValue());
-        this.fireStateChanged();
-    }
-
-    /**
      * Sets the value of sensitivity given from GUI (in percent)
      *
      * @param sensitivity Value between 0-100 percent
@@ -734,5 +486,40 @@ public class DataHandler
     public boolean checkSendDataAvailable()
     {
         return ShipSystem.enumStateEvent == SendEventState.TRUE;
+    }
+
+    public String getDataToArduino()
+    {
+        return "podposps:" + this.getFb_podPosPS()
+                + ":podpossb:" + this.getFb_podPosSB()
+                + ":speedps:" + this.getFb_speedPS()
+                + ":speedsb:" + this.getFb_speedSB();
+    }
+
+    public void handleDataFromArduino()
+    {
+        HashMap<String, String> data = new HashMap<>();
+        data = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
+
+        for (Entry e : data.entrySet())
+        {
+            String key = (String) e.getKey();
+            String value = (String) e.getValue();
+            switch (key)
+            {
+                case "prtDeg":
+                    this.fb_podPosPS = Integer.parseInt(value);
+                    break;
+                case "stbDeg":
+                    this.fb_podPosSB = Integer.parseInt(value);
+                    break;
+                case "prtRPM":
+                    this.fb_speedPS = Integer.parseInt(value);
+                    break;
+                case "stbRPM":
+                    this.fb_speedSB = Integer.parseInt(value);
+                    break;
+            }
+        }
     }
 }

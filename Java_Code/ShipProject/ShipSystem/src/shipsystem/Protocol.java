@@ -15,7 +15,9 @@ public enum Protocol
     SENSITIVITY(4),
     REQUEST_FEEDBACK(5),
     LEFT_THRUSTER_SPEED(6),
-    RIGHT_THRUSTER_SPEED(7);
+    RIGHT_THRUSTER_SPEED(7),
+    LEFT_THRUSTER_ANGLE(8),
+    RIGHT_THRUSTER_ANGLE(9);
 
     private int value;
 
@@ -37,7 +39,9 @@ public enum Protocol
         LEFT(3),
         RIGHT(4),
         LEFT_THRUSTER(6),
-        RIGHT_THRUSTER(7);
+        RIGHT_THRUSTER(7),
+        LEFT_ANGLE(8),
+        RIGHT_ANGLE(9);
 
         private int value;
 

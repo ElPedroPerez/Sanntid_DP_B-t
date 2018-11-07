@@ -1,7 +1,7 @@
 package shipsystem;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import SerialCom.SerialDataHandler;
+
 
 /**
  * Logic class
@@ -25,7 +25,7 @@ public class Logic
         GOREVANDRIGHT(19),
         DEFAULT(-99);
         
-        private int value;
+        private final int value;
         
         private STATES(int value)
         {
@@ -55,7 +55,7 @@ public class Logic
     void prossesButtonCommandsFromGui()
     {
         this.isServoOut = false;
-        this.switchCaseButtonStates();
+//        this.switchCaseButtonStates();
         this.switchCaseMotorSpeeds();
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -63,30 +63,30 @@ public class Logic
         
     }
     
-    /**
-     * Sets motor speed to run forward
-     * 
-     * @param leftSpeed
-     * @param rightSpeed
-     */
-    protected void runFWD(float leftSpeed, float rightSpeed)
-    {
-     this.setState(STATES.GOFWD);
-     this.setLeftSpeed(leftSpeed);
-     this.setRightSpeed(rightSpeed);
-    }
-    
-    /**
-     * Sets motor speed to run reverse
-     * @param leftSpeed
-     * @param rightSpeed 
-     */
-    protected void runRev(float leftSpeed, float rightSpeed)
-    {
-        this.setState(STATES.GOREV);
-        this.setLeftSpeed(leftSpeed);
-        this.setRightSpeed(rightSpeed);
-    }
+//    /**
+//     * Sets motor speed to run forward
+//     * 
+//     * @param leftSpeed
+//     * @param rightSpeed
+//     */
+//    protected void runFWD(float leftSpeed, float rightSpeed)
+//    {
+//     this.setState(STATES.GOFWD);
+//     this.setLeftSpeed(leftSpeed);
+//     this.setRightSpeed(rightSpeed);
+//    }
+//    
+//    /**
+//     * Sets motor speed to run reverse
+//     * @param leftSpeed
+//     * @param rightSpeed 
+//     */
+//    protected void runRev(float leftSpeed, float rightSpeed)
+//    {
+//        this.setState(STATES.GOREV);
+//        this.setLeftSpeed(leftSpeed);
+//        this.setRightSpeed(rightSpeed);
+//    }
     
     /**
      * Sets motor speed to run left
@@ -112,80 +112,80 @@ public class Logic
     {
         this.setState(STATES.STOP);
     }
-    
-    protected void handleButtonState()
-    {
-        int buttonState = 0;
-        
-        if (0 != dh.getFromGuiByte((byte) 0))
-        {
-            if(!(((1 == dh.getFwd()) && (1 == dh.getRev())) || 
-                    ((1 == dh.getLeft()) && (1 == dh.getRight()))))
-            {
-                if (1 == dh.getFwd())
-                {
-                    buttonState = STATES.GOFWD.getValue();
-                }
-                else if (1 == dh.getRev())
-                {
-                    buttonState = STATES.GOREV.getValue();
-                }
-                if (1 == dh.getLeft())
-                {
-                    buttonState = STATES.GOLEFT.getValue();
-                } else if (1 == dh.getRight())
-                {
-                    buttonState += STATES.GORIGHT.getValue();
-                }
-            }
-        }
-        this.setStateByValue(buttonState);
-    }
-    
-    
-    /**
-     * Selects the correct movement of the ship from state
-     */
-    protected void switchCaseButtonStates()
-    {
-        dh.resetToArduinoByte(0);
-        
-        switch (this.getState())
-        {
-            case STOP:
-                dh.stopAUV();
-                break;
-            case GOFWD:
-                dh.goFwd();
-                break;
-            case GOREV:
-                dh.goRev();
-                break;
-            case GOLEFT:
-                dh.goLeft();
-                break;
-            case GORIGHT:
-                dh.goRight();
-                break;
-            case GOFWDANDLEFT:
-                dh.goFwd();
-                break;
-            case GOFWDANDRIGHT:
-                dh.goFwd();
-                break;
-            case GOREVANDRIGHT:
-                dh.goRev();
-                break;
-            case GOREVANDLEFT:
-                dh.goRev();
-                break;
-                // unknown command
-            case DEFAULT:
-                break;
-            default:
-                break;
-        }
-    }
+//    
+//    protected void handleButtonState()
+//    {
+//        int buttonState = 0;
+//   
+//        if (0 != dh.getFromGuiByte((byte) 0))
+//        {
+//            if(!(((1 == dh.getFwd()) && (1 == dh.getRev())) || 
+//                    ((1 == dh.getLeft()) && (1 == dh.getRight()))))
+//            {
+//                if (1 == dh.getFwd())
+//                {
+//                    buttonState = STATES.GOFWD.getValue();
+//                }
+//                else if (1 == dh.getRev())
+//                {
+//                    buttonState = STATES.GOREV.getValue();
+//                }
+//                if (1 == dh.getLeft())
+//                {
+//                    buttonState = STATES.GOLEFT.getValue();
+//                } else if (1 == dh.getRight())
+//                {
+//                    buttonState += STATES.GORIGHT.getValue();
+//                }
+//            }
+//        }
+//        this.setStateByValue(buttonState);
+//    }
+//    
+//    
+//    /**
+//     * Selects the correct movement of the ship from state
+//     */
+//    protected void switchCaseButtonStates()
+//    {
+//        dh.resetToArduinoByte(0);
+//        
+//        switch (this.getState())
+//        {
+//            case STOP:
+//                dh.stopAUV();
+//                break;
+//            case GOFWD:
+//                dh.goFwd();
+//                break;
+//            case GOREV:
+//                dh.goRev();
+//                break;
+//            case GOLEFT:
+//                dh.goLeft();
+//                break;
+//            case GORIGHT:
+//                dh.goRight();
+//                break;
+//            case GOFWDANDLEFT:
+//                dh.goFwd();
+//                break;
+//            case GOFWDANDRIGHT:
+//                dh.goFwd();
+//                break;
+//            case GOREVANDRIGHT:
+//                dh.goRev();
+//                break;
+//            case GOREVANDLEFT:
+//                dh.goRev();
+//                break;
+//                // unknown command
+//            case DEFAULT:
+//                break;
+//            default:
+//                break;
+//        }
+//    }
     
     /**
      * sets the correct motorspeeds from state (manual mode)
@@ -197,41 +197,164 @@ public class Logic
         switch (this.getState())
         {
             case STOP:
-                dh.setLeftMotorSpeed(minSpeed);
-                dh.setRightMotorSpeed(minSpeed);
+                dh.setCmd_speedPS(minSpeed);
+                dh.setCmd_speedSB(minSpeed);
                 break;
             case GOFWD: 
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                if(dh.getFb_podPosPS() != 0)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);                   
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);             
+                }
+                
+                if(dh.getFb_podPosSB() != 0)
+                {
+                   dh.setCmd_speedPodRotSB(maxSpeed); 
+                }
+                else
+                {
+                   dh.setCmd_speedPodRotSB(minSpeed); 
+                }
+                
+                if (dh.getFb_podPosPS()== 0 && dh.getFb_podPosSB()== 0)
+                {
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOREV:
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                 if(dh.getFb_podPosPS()!= 0)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);                   
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);            
+                }
+                 
+                 if(dh.getFb_podPosSB() != 0)
+                 {
+                     dh.setCmd_speedPodRotSB(maxSpeed);
+                 }
+                 else
+                 {
+                    dh.setCmd_speedPodRotSB(minSpeed); 
+                 }
+                 
+                if (dh.getFb_podPosPS()== 0 && dh.getFb_podPosSB()== 0)
+                {
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOLEFT:
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                if (dh.getFb_podPosPS()!= 315)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);                   
+                }
+                else 
+                {
+                   dh.setCmd_speedPodRotPS(minSpeed);              
+                }
+                
+                if(dh.getFb_podPosSB()!= 315)
+                {
+                  dh.setCmd_speedPodRotSB(maxSpeed);  
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotSB(minSpeed);
+                }
+                
+                if (dh.getFb_podPosPS()== 315 && dh.getFb_podPosSB()== 315)
+                {
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GORIGHT:
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed);
+                if (dh.getFb_podPosPS()!= 45)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                }
+                else
+                {
+                   dh.setCmd_speedPodRotPS(minSpeed);                  
+                }
+                
+                if(dh.getFb_podPosSB() != 45)
+                {
+                  dh.setCmd_speedPodRotSB(maxSpeed);  
+                }
+                else
+                {
+                 dh.setCmd_speedPodRotSB(minSpeed);   
+                }
+                
+                if (dh.getFb_podPosPS()== 45 && dh.getFb_podPosSB()== 45)
+                {
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOFWDANDLEFT:
-                System.out.println("fwd and left");
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed/4);
+                if (dh.getFb_podPosPS() != 345)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);   
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);   
+                }
+                
+                if(dh.getFb_podPosSB() != 345)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                  dh.setCmd_speedPodRotSB(minSpeed);  
+                }
+                
+                if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
+                {
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOFWDANDRIGHT:
-                dh.setLeftMotorSpeed(maxSpeed/4);
-                dh.setRightMotorSpeed(maxSpeed);
+                if (dh.getFb_podPosPS() != 15)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);
+                }
+                if(dh.getFb_podPosSB() != 15)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotSB(minSpeed);
+                }
+                if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
+                {
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOREVANDRIGHT:
-                dh.setLeftMotorSpeed(maxSpeed/4);
-                dh.setRightMotorSpeed(maxSpeed);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
                 break;
             case GOREVANDLEFT:
-                dh.setLeftMotorSpeed(maxSpeed);
-                dh.setRightMotorSpeed(maxSpeed/4);
+                dh.setCmd_speedPS(maxSpeed);
+                dh.setCmd_speedSB(maxSpeed);
                 break;
                 // unknown command
             case DEFAULT:
@@ -243,42 +366,42 @@ public class Logic
     }
        
     /**
-     * Set right motorspeed
-     * @param rightSpeed 
+     * Set starboard motorspeed
+     * @param speedSB 
      */   
-    public void setRightSpeed(float rightSpeed)
+    public void setSBSpeed(int speedSB)
     {
-        dh.setRightMotorSpeed(rightSpeed);
+        dh.setCmd_speedSB(speedSB);
     }
     
     /**
-     * Set right thruster speed
-     * @param rightThruster 
+     * Set starboard pod motorspeed
+     * @param speedPodSB 
      */
-    public void setRightThrusterSpeed(float rightThruster)
+    public void setSBpodSpeed(int speedPodSB)
     {
-        dh.setRightThrusterSpeed(rightThruster);
+        dh.setCmd_speedPodRotSB(speedPodSB);
     }
     
     
     /**
-     * Set left motorspeed
-     * @param leftSpeed 
+     * Set portside motorspeed
+     * @param speedPS
      */
-    public void setLeftSpeed(float leftSpeed)
+    public void setPSSpeed(int speedPS)
     {
-        dh.setLeftMotorSpeed(leftSpeed);
+        dh.setCmd_speedPS(speedPS);
     }
     
     /**
-     * Set left thruster speed
-     * @param leftThruster 
+     * Set portside pod motorspeed
+     * @param speedPodPS 
      */
-    public void setLeftThrusterSpeed (float leftThruster)
+    public void setPSpodSpeed(int speedPodPS)
     {
-        dh.setLeftThrusterSpeed(leftThruster);
+        dh.setCmd_speedPodRotPS(speedPodPS);
     }
-    
+        
     /**
      * Get the state the ship is currently in
      * 

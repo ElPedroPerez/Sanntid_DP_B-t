@@ -151,23 +151,23 @@ public class UDPServer implements Runnable
 
             this.acquire();
 
-            int xAngle = (int) (100.0f * dh.getPixyXvalue());
-            int yAngle = (int) (100.0f * dh.getPixyYvalue());
-            byte distanceSensor = (byte) dh.getDistanceSensor();
-
-            this.release();
-
-            byte[] x = new byte[2];
-            x = intToByteArray(xAngle);
-            byte[] y = new byte[2];
-            y = intToByteArray(yAngle);
-            //System.out.println("x: " + Arrays.toString(x));
-            sendData[0] = x[0];
-            sendData[1] = x[1];
-            sendData[2] = y[0];
-            sendData[3] = y[1];
-            sendData[4] = distanceSensor;
-            sendData[5] = requestCode;
+//            int xAngle = (int) (100.0f * dh.getPixyXvalue());
+//            int yAngle = (int) (100.0f * dh.getPixyYvalue());
+//            byte distanceSensor = (byte) dh.getDistanceSensor();
+//
+//            this.release();
+//
+//            byte[] x = new byte[2];
+//            x = intToByteArray(xAngle);
+//            byte[] y = new byte[2];
+//            y = intToByteArray(yAngle);
+//            //System.out.println("x: " + Arrays.toString(x));
+//            sendData[0] = x[0];
+//            sendData[1] = x[1];
+//            sendData[2] = y[0];
+//            sendData[3] = y[1];
+//            sendData[4] = distanceSensor;
+//            sendData[5] = requestCode;
 
             this.udpSend(sendData);
 
