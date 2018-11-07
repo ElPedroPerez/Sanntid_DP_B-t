@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package alarmsystem;
+import alarmsystem.AlarmList;
+
 
 /**
  *
@@ -12,25 +14,30 @@ package alarmsystem;
 public class TimeBasedAlarm implements Runnable
 {
 
+    
     long currentTime = 0;
     long lastTime = 0;
 
-    int input;
-    int fb;
+    String input;
+    String fb;
     boolean alarm;
     int time;
     boolean ack;
     boolean inhibit;
+    AlarmList al;
+    
 
-    public TimeBasedAlarm(int input, int fb, boolean alarm,
+    public TimeBasedAlarm(AlarmList al, String input, String fb, boolean alarm,
             int time, boolean ack, boolean inhibit)
     {
+        this.al = al;
         this.input = input;
         this.fb = fb;
         this.alarm = alarm;
         this.time = time;
         this.ack = ack;
         this.inhibit = inhibit;
+        
         currentTime = System.nanoTime();
     }
 
@@ -41,11 +48,12 @@ public class TimeBasedAlarm implements Runnable
         {
             while (!inhibit)
             {
-                if (input > 0)
+                
+                if (al.alarmDataList.get(input) > 0)
                 {
                     lastTime = System.nanoTime();
                     double elapsedTime = 0;
-                    while (fb == 0 && !ack)
+                    while (al.alarmDataList.get(fb) == 0 && !ack)
                     {
                         elapsedTime = (System.nanoTime() - lastTime) / 1000000000;
                         if (elapsedTime >= time)

@@ -15,6 +15,7 @@ public class ShipSystem
 {
 
     protected static DataHandler dh;
+    private static Thread alarmList;
     private static Thread controller;
     private static Thread server;
     private static Semaphore semaphore;
@@ -27,14 +28,18 @@ public class ShipSystem
     public static void main(String[] args)
     {
         semaphore = new Semaphore(1, true);
+        
+        
 
         dh = new DataHandler();
         dh.setThreadStatus(true);
 
         controller = new Thread(new Controller(dh, semaphore));
-        server = new Thread(new UDPServer(semaphore, dh));
+        server = new Thread(new UDPServer(semaphore, dh));        
+        alarmList = new Thread(new alarmsystem.AlarmList(dh));
 
         controller.start();
         server.start();
+        alarmList.start();
     }
 }
