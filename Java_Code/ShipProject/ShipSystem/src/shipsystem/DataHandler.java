@@ -28,6 +28,7 @@ public class DataHandler
     private SerialDataHandler sdh = new SerialDataHandler();
     private String arduinoFeedbackComPort;
     private String arduinoCommandComPort;
+    private String arduinoFeedbackComPortIMU;
     private int arduinoBaudRate;
     private int imuBaudRate;
 
@@ -44,6 +45,9 @@ public class DataHandler
     private int fb_podPosSB;
     private int fb_podPosPS;
     private boolean fb_ballastSensor;
+    private double Yaw;
+    private double Pitch;
+    private double Roll;
 
     private int cmd_speedSB;
     private int cmd_speedPS;
@@ -75,9 +79,10 @@ public class DataHandler
         dataFromArduinoAvaliable = false;
         dataFromGuiAvailable = false;
 
-        arduinoFeedbackComPort = "Com1";
-        arduinoFeedbackComPort = "Com2";
-        arduinoBaudRate = 9600;
+        arduinoFeedbackComPort = "Com3";
+        arduinoFeedbackComPortIMU = "Com4";
+        arduinoCommandComPort = "Com2";
+        arduinoBaudRate = 57600;
         imuBaudRate = 57600;
 
         fb_speedSB = 0;
@@ -85,6 +90,10 @@ public class DataHandler
         fb_podPosSB = 0;
         fb_podPosPS = 0;
         fb_ballastSensor = false;
+        Yaw = 0.00;
+        Pitch = 0.00;
+        Roll = 0.00;
+
         speedSBavailable = false;
         speedPSavailable = false;
         podPosSBavailable = false;
@@ -168,7 +177,7 @@ public class DataHandler
     {
         return fb_speedPS;
     }
-    
+
     public void setFb_speedPS(int fb_speedPS)
     {
         this.fb_speedPS = fb_speedPS;
@@ -223,22 +232,22 @@ public class DataHandler
     {
         this.cmd_speedPS = cmd_speedPS;
     }
-    
+
     public int getCmd_speedPodRotSB()
     {
         return cmd_speedPodRotSB;
     }
-    
+
     public void setCmd_speedPodRotSB(int cmd_speedPodRotSB)
     {
         this.cmd_speedPodRotSB = cmd_speedPodRotSB;
     }
-    
+
     public int getCmd_speedPodRotPS()
     {
         return cmd_speedPodRotPS;
     }
-    
+
     public void setCmd_speedPodRotPS(int cmd_speedPodRotPS)
     {
         this.cmd_speedPodRotPS = cmd_speedPodRotPS;
@@ -272,6 +281,21 @@ public class DataHandler
     public void setCmd_ballastSensor(boolean cmd_ballastSensor)
     {
         this.cmd_ballastSensor = cmd_ballastSensor;
+    }
+
+    public double getYaw()
+    {
+        return Yaw;
+    }
+
+    public double getPitch()
+    {
+        return Pitch;
+    }
+
+    public double getRoll()
+    {
+        return Roll;
     }
 
     public boolean isSpeedSBavailable()
@@ -499,7 +523,14 @@ public class DataHandler
     public void handleDataFromArduino()
     {
         HashMap<String, String> data = new HashMap<>();
-        data = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
+        HashMap<String, String> dataFeedback = new HashMap<>();
+        HashMap<String, String> dataIMU = new HashMap<>();
+
+        dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
+        //dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+
+        dataFeedback.forEach(data::putIfAbsent);
+        //dataIMU.forEach(data::putIfAbsent);
 
         for (Entry e : data.entrySet())
         {
@@ -507,17 +538,26 @@ public class DataHandler
             String value = (String) e.getValue();
             switch (key)
             {
-                case "prtDeg":
+                case "fb_podPosPS":
                     this.fb_podPosPS = Integer.parseInt(value);
                     break;
-                case "stbDeg":
+                case "fb_podPosSB":
                     this.fb_podPosSB = Integer.parseInt(value);
                     break;
-                case "prtRPM":
+                case "fb_speedPS":
                     this.fb_speedPS = Integer.parseInt(value);
                     break;
-                case "stbRPM":
+                case "fb_speedSB":
                     this.fb_speedSB = Integer.parseInt(value);
+                    break;
+                case "Yaw":
+                    this.Yaw = Double.parseDouble(value);
+                    break;
+                case "Pitch":
+                    this.Pitch = Double.parseDouble(value);
+                    break;
+                case "Roll":
+                    this.Roll = Double.parseDouble(value);
                     break;
             }
         }
