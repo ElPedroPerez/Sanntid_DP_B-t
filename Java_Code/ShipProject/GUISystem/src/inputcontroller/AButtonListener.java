@@ -13,9 +13,26 @@ import com.exlumina.j360.ButtonListener;
  */
 class AButtonListener implements ButtonListener
 {
+
+    private InputController ic;
+
+    public AButtonListener(InputController ic)
+    {
+        this.ic = ic;
+    }
+
     @Override
     public void button(boolean pressed)
     {
-        System.out.println("A button was pressed.");
+        if (pressed)
+        {
+            System.out.println("A button was pressed.");
+            this.ic.setBtnA(true);
+        }
+        else
+        {
+            System.out.println("A button was released.");
+            this.ic.setBtnA(false);
+        }
     }
 }

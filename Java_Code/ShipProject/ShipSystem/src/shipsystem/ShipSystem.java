@@ -36,5 +36,6 @@ public class ShipSystem
 
         controller.start();
         server.start();
+        
     }
 }

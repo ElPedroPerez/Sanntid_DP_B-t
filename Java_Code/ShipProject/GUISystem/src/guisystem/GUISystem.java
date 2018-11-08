@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package guisystem;
+import InputController.InputController;
 
 /**
  *
@@ -17,7 +18,8 @@ public class GUISystem
      */
     public static void main(String[] args)
     {
-        // TODO code application logic here
+        Thread inputController = new Thread(new InputController());
+        inputController.start();
     }
     
 }

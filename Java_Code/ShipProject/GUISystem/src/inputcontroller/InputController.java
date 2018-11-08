@@ -8,6 +8,7 @@ package InputController;
 import com.exlumina.j360.ButtonListener;
 import com.exlumina.j360.Controller;
 import com.exlumina.j360.ValueListener;
+import com.exlumina.j360.XInputGamepad;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,26 +16,36 @@ import java.util.logging.Logger;
  *
  * @author Haakon
  */
-public class InputController
+public class InputController implements Runnable
 {
-    private static boolean finished = false;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
+    private static boolean finished = false;
+    private int btnLy = 0;
+    private int btnLx = 0;
+    private int btnRy = 0;
+    private int btnRx = 0;
+    private boolean btnL1 = false;
+    private boolean btnR1 = false;
+    private boolean btnX = false;
+    private boolean btnY = false;
+    private boolean btnA = false;
+    private boolean btnB = false;
+
+    @Override
+    public void run()
     {
         System.out.println("REMEMBER: XBOX button labels. (X is not X, X is SQUARE)");
-        ValueListener Ly = new LeftThumbYListener();
-        ValueListener Lx = new LeftThumbXListener();
-        ValueListener Ry = new RightThumbYListener();
-        ValueListener Rx = new RightThumbXListener();
-        ButtonListener L1 = new LeftShoulderListener();
-        ButtonListener R1 = new RightShoulderListener();
-        ButtonListener X = new XButtonListener();
-        ButtonListener Y = new YButtonListener();
-        ButtonListener A = new AButtonListener();
-        ButtonListener B = new BButtonListener();
+
+        ValueListener Ly = new LeftThumbYListener(this);
+        ValueListener Lx = new LeftThumbXListener(this);
+        ValueListener Ry = new RightThumbYListener(this);
+        ValueListener Rx = new RightThumbXListener(this);
+        ButtonListener L1 = new LeftShoulderListener(this);
+        ButtonListener R1 = new RightShoulderListener(this);
+        ButtonListener X = new XButtonListener(this);
+        ButtonListener Y = new YButtonListener(this);
+        ButtonListener A = new AButtonListener(this);
+        ButtonListener B = new BButtonListener(this);
         Controller c1 = Controller.C1;
 
         c1.leftThumbY.addValueChangedListener(Ly);
@@ -47,27 +58,123 @@ public class InputController
         c1.buttonY.addButtonPressedListener(Y);
         c1.buttonA.addButtonPressedListener(A);
         c1.buttonB.addButtonPressedListener(B);
+        c1.buttonLeftShoulder.addButtonReleasedListener(L1);
+        c1.buttonRightShoulder.addButtonReleasedListener(R1);
+        c1.buttonX.addButtonReleasedListener(X);
+        c1.buttonY.addButtonReleasedListener(Y);
+        c1.buttonA.addButtonReleasedListener(A);
+        c1.buttonB.addButtonReleasedListener(B);
 
-        while (!finished)
+        for (;;)
         {
             // run
         }
 
-//      try
-//        {
-//            Thread.sleep(10000);
-//        }
-//        catch (InterruptedException ex)
-//        {
-//            Logger.getLogger(InputController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        //System.out.println("Goodbye!");
-        //System.exit(0);
     }
 
     public void setFinished()
     {
         this.finished = true;
+    }
+
+    public int getBtnLy()
+    {
+        return btnLy;
+    }
+
+    public void setBtnLy(int btnLy)
+    {
+        this.btnLy = btnLy;
+    }
+
+    public int getBtnLx()
+    {
+        return btnLx;
+    }
+
+    public void setBtnLx(int btnLx)
+    {
+        this.btnLx = btnLx;
+    }
+
+    public int getBtnRy()
+    {
+        return btnRy;
+    }
+
+    public void setBtnRy(int btnRy)
+    {
+        this.btnRy = btnRy;
+    }
+
+    public int getBtnRx()
+    {
+        return btnRx;
+    }
+
+    public void setBtnRx(int btnRx)
+    {
+        this.btnRx = btnRx;
+    }
+
+    public boolean isBtnL1()
+    {
+        return btnL1;
+    }
+
+    public void setBtnL1(boolean btnL1)
+    {
+        this.btnL1 = btnL1;
+    }
+
+    public boolean isBtnR1()
+    {
+        return btnR1;
+    }
+
+    public void setBtnR1(boolean btnR1)
+    {
+        this.btnR1 = btnR1;
+    }
+
+    public boolean isBtnX()
+    {
+        return btnX;
+    }
+
+    public void setBtnX(boolean btnX)
+    {
+        this.btnX = btnX;
+    }
+
+    public boolean isBtnY()
+    {
+        return btnY;
+    }
+
+    public void setBtnY(boolean btnY)
+    {
+        this.btnY = btnY;
+    }
+
+    public boolean isBtnA()
+    {
+        return btnA;
+    }
+
+    public void setBtnA(boolean btnA)
+    {
+        this.btnA = btnA;
+    }
+
+    public boolean isBtnB()
+    {
+        return btnB;
+    }
+
+    public void setBtnB(boolean btnB)
+    {
+        this.btnB = btnB;
     }
 
 }
