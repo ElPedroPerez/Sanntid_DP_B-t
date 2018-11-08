@@ -15,6 +15,7 @@ public class ShipSystem
 {
 
     protected static DataHandler dh;
+    private static Thread alarmList;
     private static Thread controller;
     private static Thread server;
     private static Semaphore semaphore;
@@ -26,10 +27,27 @@ public class ShipSystem
      */
     public static void main(String[] args)
     {
+        
+        
         semaphore = new Semaphore(1, true);
+        
+        
 
         dh = new DataHandler();
         dh.setThreadStatus(true);
+        
+        while(true)
+        {
+            dh.handleDataFromArduino();
+            int fb_podPosPS = dh.getFb_podPosPS();
+            double yaw = dh.getYaw();
+            double pitch = dh.getPitch();
+            double roll = dh.getRoll();
+            System.out.println("fb_podPosPS is: " + fb_podPosPS);
+            System.out.println("Yaw is: " + yaw);
+            System.out.println("Pitch is: " + pitch);
+            System.out.println("Roll is: " + roll);
+        }
 
         controller = new Thread(new Controller(dh, semaphore));
         server = new Thread(new UDPServer(semaphore, dh));
@@ -37,5 +55,12 @@ public class ShipSystem
         controller.start();
         server.start();
         
+//        controller = new Thread(new Controller(dh, semaphore));
+//        server = new Thread(new UDPServer(semaphore, dh));        
+//        alarmList = new Thread(new alarmsystem.AlarmList(dh));
+//
+//        controller.start();
+//        server.start();
+//        alarmList.start();
     }
 }

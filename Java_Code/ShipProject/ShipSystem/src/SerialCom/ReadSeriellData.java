@@ -47,7 +47,7 @@ public class ReadSeriellData
         return portNames;
     }
 
-    public HashMap readData(String comPort, int baudRate) 
+    public HashMap readData(String comPort, int baudRate)
     {
 
         HashMap<String, String> SerialDataList;
@@ -66,30 +66,42 @@ public class ReadSeriellData
             serialPort.openPort();
         } catch (SerialPortException ex)
         {
-       
             System.out.println(ex);
         }
 
         while (receivedData == false)
         {
-            byte[] buffer = null;
+            //byte[] buffer = null;
+            String buffer = "";
+
             try
             {
                 //serialPort.setParams(9600, 8, 1, 0);
 
                 serialPort.setParams(baudRate, 8, 1, 0);
 
-                buffer = serialPort.readBytes();
+                buffer = serialPort.readString();
+                while (buffer == null && !buffer.contains("<") && !buffer.contains(">"))
+                {
+                    buffer = "";
+                    try
+                    {
+                        buffer = serialPort.readString();
+                    } catch (Exception e)
+                    {
+                        System.out.println("error");
+                    }
+                }
 
                 try
                 {
-                    Thread.sleep(250);
+                    Thread.sleep(1);
                 } catch (InterruptedException ex)
                 {
                     Thread.currentThread().interrupt();
                 }
-
-                String dataStream = new String(buffer);
+                String dataStream = buffer;
+//                String dataStream = new String(buffer);
 
                 dataStream = dataStream.substring(dataStream.indexOf(start_char) + 1);
                 dataStream = dataStream.substring(0, dataStream.indexOf(end_char));
@@ -99,14 +111,14 @@ public class ReadSeriellData
                 for (int i = 0; i < data.length; i = i + 2)
                 {
                     SerialDataList.put(data[i], data[i + 1]);
-                    System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);
-//                    receivedData = true;
+                    //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);
+                    receivedData = true;
 
                 }
 
             } catch (Exception ex)
             {
-                //System.out.println(ex);
+                System.out.println("1 " + ex);
             }
 
         }

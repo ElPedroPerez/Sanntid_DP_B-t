@@ -1,8 +1,9 @@
-package offlinevisonsystem;
+package opencv;
 
 import org.opencv.core.*;
 
 import java.awt.image.BufferedImage;
+import static java.lang.Math.sqrt;
 import java.util.ArrayList;
 import static java.util.Collections.list;
 import java.util.List;
@@ -49,6 +50,7 @@ public class Mat2Image
     double minVariance = 200;
     double maxVariance = 0;
     double totVariance = 0;
+    DistanceCalculator distanceCalculator = new DistanceCalculator();
 
     public Mat2Image()
     {
@@ -77,19 +79,24 @@ public class Mat2Image
         this.vVal = mat;
         this.bitWise = mat;
 
-        Scalar lower_color_bounds = new Scalar(150/2, (70*255)/100, (40*255)/100);
-        Scalar upper_color_bounds = new Scalar(180/2, (100*255)/100, (100*255)/100);
+        //InternalWebCam
+//        Scalar lower_color_bounds = new Scalar(145 / 2, (70 * 255) / 100, (40 * 255) / 100);
+//        Scalar upper_color_bounds = new Scalar(183 / 2, (100 * 255) / 100, (100 * 255) / 100);
+        
+        //ExtrenalWebCam
+        Scalar lower_color_bounds = new Scalar(68 / 2, (80 * 255) / 100, (50 * 255) / 100);
+        Scalar upper_color_bounds = new Scalar(120 / 2, (100 * 255) / 100, (100 * 255) / 100);
 
         // Use this site https://alloyui.com/examples/color-picker/hsv
         // for picking colors. Convertion is done in this software
         Scalar hmn = new Scalar(0);
         Scalar hmx = new Scalar(180);
 
-        Scalar smn = new Scalar((30*255)/100);
-        Scalar smx = new Scalar((40*255)/100);
+        Scalar smn = new Scalar((30 * 255) / 100);
+        Scalar smx = new Scalar((40 * 255) / 100);
 
-        Scalar vmn = new Scalar((50*255)/100);
-        Scalar vmx = new Scalar((65*255)/100);
+        Scalar vmn = new Scalar((50 * 255) / 100);
+        Scalar vmx = new Scalar((65 * 255) / 100);
 
         //mat.convertTo(mat, -1, 0.7, 0);
         Imgproc.cvtColor(mat, hsvPicture, Imgproc.COLOR_BGR2HSV);
@@ -107,14 +114,11 @@ public class Mat2Image
 //        Core.inRange((Mat) hsvList.get(0), hmn, hmx, hVal);
 //        Core.inRange((Mat) hsvList.get(1), smn, smx, sVal);
 //        Core.inRange((Mat) hsvList.get(2), vmn, vmx, vVal);
-
         // Takes the binary 3 images and laying them ontop of each other with a
 // bitwise AND operation.    
-
 //        Core.bitwise_and(hVal, sVal, bitWise);
 //        Core.bitwise_and(bitWise, vVal, bitWise);
 //sVal = bitWise ;
-
 // HoughCircles not in use
         // Imgproc.HoughCircles(bitWise, circles, Imgproc.CV_HOUGH_GRADIENT, 1, 1000, 200, 5000, 0, 1000);
         Mat cannyOutput = new Mat();
@@ -144,70 +148,86 @@ public class Mat2Image
         {
             contoursPolyList.add(new MatOfPoint(poly.toArray()));
         }
-        
+
         float myRadius = 0;
         int myRadiusIndex = 0;
-     //Finding biggest circle in array 
-     for (int i = 0; i < contours.size(); i++)
-     {         
-         if (radius[i][0] > myRadius)
-         {
-             myRadius = radius[i][0];
-             myRadiusIndex = i;
-         }
-     }
-        
+        //Finding biggest circle in array 
+        for (int i = 0; i < contours.size(); i++)
+        {
+            if (radius[i][0] > myRadius)
+            {
+                myRadius = radius[i][0];
+                myRadiusIndex = i;
+            }
+        }
+
 //        for (int i = 0; i < contours.size(); i++)
 //        {
-            try
-            {
-                Scalar color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
-                Imgproc.drawContours(onlyColorRange, contoursPolyList, myRadiusIndex, color);
-                //Imgproc.rectangle(onlyColorRange, boundRect[i].tl(), boundRect[i].br(), color, 2);
-                Imgproc.circle(onlyColorRange, centers[myRadiusIndex], (int) radius[myRadiusIndex][0], color, 2);
+        try
+        {
+            Scalar color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
+            Imgproc.drawContours(onlyColorRange, contoursPolyList, myRadiusIndex, color);
+            //Imgproc.rectangle(onlyColorRange, boundRect[i].tl(), boundRect[i].br(), color, 2);
+            Imgproc.circle(onlyColorRange, centers[myRadiusIndex], (int) radius[myRadiusIndex][0], color, 2);
 //                System.out.println("Radius is: " + radius[i][0]);
-                distance = ((FOCAL_LENGTH * RADIUS_OF_MARKER) / radius[myRadiusIndex][0]);
-                if (distance > 0 && distance <= 100)
-                {
-                    myDistanceList.add(distance);
-                }
-
-                if (myDistanceList.size() >= 15)
-                {
-                    for (int number = 0; number < myDistanceList.size(); number++)
-                    {
-                        distance = distance + (double) myDistanceList.get(number);
-
-                    }
-                    distance = (distance / myDistanceList.size());
-
-                    System.out.println("Distance is " + distance + " cm");
-                    
-                    if (distance > maxVariance)
-                    {
-                        maxVariance = distance;
-                    }
-                    
-                    if (distance < minVariance)
-                    {
-                        minVariance = distance;
-                    }
-                    
-                    System.out.println("Variance is: " + (maxVariance-minVariance) + " cm");
-                   
-                    myDistanceList.clear();
-                }
-                 distance = 0;
-//                Thread.sleep(100);
-
-            } catch (Exception e)
+            distance = ((FOCAL_LENGTH * RADIUS_OF_MARKER) / radius[myRadiusIndex][0]);
+            if (distance > 0 && distance <= 1000)
             {
-                //System.out.println("Something went wrong...");
+                myDistanceList.add(distance);
             }
 
-//        }
+            if (myDistanceList.size() >= 50)
+            {
+                for (int number = 0; number < myDistanceList.size(); number++)
+                {
+                    distance = distance + (double) myDistanceList.get(number);
+                }
+                distance = (distance / myDistanceList.size());
 
-       
+                System.out.println("Distance is " + distance + " cm");
+
+                if (distance > maxVariance)
+                {
+                    maxVariance = distance;
+                }
+
+                if (distance < minVariance)
+                {
+                    minVariance = distance;
+                }
+
+                System.out.println("Variance is: " + (maxVariance - minVariance) + " cm");
+
+                myDistanceList.clear();
+                double averageCenter = 0;
+
+                for (int i = 0; i < centers.length; i++)
+                {
+                    averageCenter = averageCenter + centers[i].x;
+                }
+                averageCenter = averageCenter / centers.length;
+                averageCenter = averageCenter - 325;
+                if (averageCenter < 0)
+                {
+                    averageCenter = averageCenter * -1;
+                }
+                System.out.println("Center is at X: " + averageCenter);
+                double Y = sqrt(averageCenter * averageCenter - distance * distance);
+                System.out.println("Y: " + Y);
+                
+                //distanceCalculator.distanceToShip(averageCenter, distance);
+
+            }
+
+            distance = 0;
+//                Thread.sleep(100);
+
+        } catch (Exception e)
+        {
+           //System.out.println("Something went wrong..." + e);
+        }
+
+//        }
         int w = mat.cols(), h = mat.rows();
 
         if (dat == null || dat.length != w * h * 3)
