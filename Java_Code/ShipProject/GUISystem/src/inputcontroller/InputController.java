@@ -30,6 +30,7 @@ public class InputController implements Runnable
     private boolean btnY = false;
     private boolean btnA = false;
     private boolean btnB = false;
+    private double angle = 0;
 
     @Override
     public void run()
@@ -68,6 +69,78 @@ public class InputController implements Runnable
         for (;;)
         {
             // run
+            angle = this.getAngle(btnRx, btnRy);
+            try
+            {
+                Thread.sleep(250);
+            }
+            catch (InterruptedException ex)
+            {
+                Logger.getLogger(InputController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println(angle);
+        }
+
+    }
+
+    public static double getAngle(double x, double y)
+    {
+        return Math.atan2(x, y);
+    }
+
+    public static double getAngle2(double x, double y)
+    {
+
+        // Checking if the joystick is at center (0,0) and returns a 'stand still'
+        // command by setting the return to 99999
+        if (x == 0 && y == 0)
+        {
+
+            return (99999);
+
+            // Returns a value based on the quadrant and does some math to deliver the angle
+            // of the coordinates
+        }
+        else if (x >= 0 && y > 0)
+        {
+            if (x == 0)
+            {
+                x = 1;
+            }
+            return (90 - (Math.atan(y / x) * 180 / Math.PI));
+
+        }
+        else if (x > 0 && y <= 0)
+        {
+            if (y == 0)
+            {
+                y = 1;
+            }
+
+            return (90 - (Math.atan(y / x) * 180 / Math.PI));
+
+        }
+        else if (x <= 0 && y < 0)
+        {
+            if (x == 0)
+            {
+                x = 1;
+            }
+            return (180 + (Math.atan(y / x) * 180 / Math.PI));
+
+        }
+        else if (x < 0 && y >= 0)
+        {
+            if (y == 0)
+            {
+                y = 1;
+            }
+            return (270 - (Math.atan(y / x) * 180 / Math.PI));
+
+        }
+        else
+        {
+            return (99999);
         }
 
     }
