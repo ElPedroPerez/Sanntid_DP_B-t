@@ -349,12 +349,52 @@ public class Logic
                 }
                 break;
             case GOREVANDRIGHT:
+                  if (dh.getFb_podPosPS() != 15)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);
+                }
+                if(dh.getFb_podPosSB() != 15)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotSB(minSpeed);
+                }
+                if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
+                {
                 dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
             case GOREVANDLEFT:
+                 if (dh.getFb_podPosPS() != 345)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);   
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);   
+                }
+                
+                if(dh.getFb_podPosSB() != 345)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                  dh.setCmd_speedPodRotSB(minSpeed);  
+                }
+                
+                if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
+                {
                 dh.setCmd_speedPS(maxSpeed);
                 dh.setCmd_speedSB(maxSpeed);
+                }
                 break;
                 // unknown command
             case DEFAULT:

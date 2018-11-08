@@ -9,15 +9,15 @@ public enum Protocol
 {
 
     CONTROLS(0),
-    LEFT_MOTOR_SPEED(1),
-    RIGHT_MOTOR_SPEED(2),
+    PS_SPEED(1),
+    SB_SPEED(2),
     COMMANDS(3),
     SENSITIVITY(4),
     REQUEST_FEEDBACK(5),
-    LEFT_THRUSTER_SPEED(6),
-    RIGHT_THRUSTER_SPEED(7),
-    LEFT_THRUSTER_ANGLE(8),
-    RIGHT_THRUSTER_ANGLE(9);
+    PS_POD_ROT_SPEED(6),
+    SB_POD_ROT_SPEED(7),
+    PS_POD_ANGLE(8),
+    SB_POD_ANGLE(9);
 
     private int value;
 
