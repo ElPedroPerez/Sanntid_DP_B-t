@@ -51,7 +51,6 @@ public class Logic
     public Logic(DataHandler dh)
     {
         this.dh = dh;
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     void prossesButtonCommandsFromGui()
@@ -60,7 +59,7 @@ public class Logic
 //        this.switchCaseButtonStates();
         this.switchCaseMotorSpeeds();
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
         
         
     }

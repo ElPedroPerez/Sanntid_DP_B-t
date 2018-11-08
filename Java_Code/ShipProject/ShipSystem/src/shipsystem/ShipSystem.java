@@ -36,12 +36,13 @@ public class ShipSystem
         dh = new DataHandler();
         dh.setThreadStatus(true);
         
-         controller = new Thread(new Controller(dh, semaphore));
-         server = new Thread(new UDPServer(semaphore, dh));
         
-         controller.start();
-         server.start();
+        controller = new Thread(new Controller(dh, semaphore));
+        server = new Thread(new UDPServer(semaphore, dh));
 
+        controller.start();
+        server.start();
+        
         while(true)
         {
             dh.handleDataFromArduino();
@@ -54,11 +55,7 @@ public class ShipSystem
             System.out.println("Pitch is: " + pitch);
             System.out.println("Roll is: " + roll);
         }
-        
-               
-        
 
-       
         
 //        controller = new Thread(new Controller(dh, semaphore));
 //        server = new Thread(new UDPServer(semaphore, dh));        
