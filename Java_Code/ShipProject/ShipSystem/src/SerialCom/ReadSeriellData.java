@@ -49,7 +49,7 @@ public class ReadSeriellData
 
     public HashMap readData(String comPort, int baudRate)
     {
-
+        long lastTime = System.nanoTime();
         HashMap<String, String> SerialDataList;
         SerialDataList = new HashMap<String, String>();
 
@@ -79,27 +79,80 @@ public class ReadSeriellData
                 //serialPort.setParams(9600, 8, 1, 0);
 
                 serialPort.setParams(baudRate, 8, 1, 0);
-
                 buffer = serialPort.readString();
-                while (buffer == null && !buffer.contains("<") && !buffer.contains(">"))
-                {
-                    buffer = "";
-                    try
-                    {
-                        buffer = serialPort.readString();
-                    } catch (Exception e)
-                    {
-                        System.out.println("error");
-                    }
-                }
-
+                buffer = "";
                 try
                 {
-                    Thread.sleep(1);
+                    Thread.sleep(50);
                 } catch (InterruptedException ex)
                 {
-                    Thread.currentThread().interrupt();
+                    System.out.println("Error insomnia");
+                    // Thread.currentThread().interrupt();
                 }
+
+                buffer = serialPort.readString();
+
+                boolean dataNotNull = false;
+                boolean dataHasFormat = false;
+
+                while (!dataHasFormat && !dataNotNull)
+                {
+
+                    while (buffer == null)
+                    {
+                        dataNotNull = false;
+                        buffer = "";
+                        try
+                        {
+                            buffer = serialPort.readString();
+                        } catch (Exception e)
+                        {
+                            System.out.println("error");
+                        }
+                    }
+
+                    dataNotNull = true;
+                    boolean endWhile = false;
+                    while (buffer != null && !endWhile)
+                    {
+                        if (!buffer.contains("<") || !buffer.contains(">"))
+                        {
+                            dataHasFormat = false;
+                            buffer = "";
+                            try
+                            {
+                                try
+                                {
+                                    Thread.sleep(10);
+                                } catch (Exception e)
+                                {
+                                    System.out.println("Exception: insomnia");
+                                }
+
+                                buffer = serialPort.readString();
+
+                            } catch (Exception e)
+                            {
+                                System.out.println("error");
+                            }
+                        }
+                        endWhile = true;
+                    }
+
+                    if (buffer != null)
+                    {
+                        dataHasFormat = true;
+                    } else
+                    {
+                        dataHasFormat = false;
+                        dataNotNull = false;
+                    }
+
+                }
+
+                dataNotNull = false;
+                dataHasFormat = false;
+
                 String dataStream = buffer;
 //                String dataStream = new String(buffer);
 
@@ -115,19 +168,20 @@ public class ReadSeriellData
                     receivedData = true;
 
                 }
-
             } catch (Exception ex)
             {
                 System.out.println("1 " + ex);
             }
 
         }
+
         try
         {
             serialPort.closePort();
         } catch (Exception e)
         {
             System.err.println(e);
+            System.out.println("Error");
         }
 
         return SerialDataList;
