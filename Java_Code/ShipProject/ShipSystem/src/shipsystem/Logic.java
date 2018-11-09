@@ -14,6 +14,8 @@ public class Logic
     
     protected enum STATES 
     {
+        DPCONTROLL(0),
+        MANUALCONTROLL(1),
         STOP(0),
         GOFWD(1),
         GOREV(-1),
@@ -111,6 +113,24 @@ public class Logic
     {
         this.setState(STATES.STOP);
     }
+    
+    /**
+     * Sets system to DP controll
+     */
+    protected void runInDPControll()
+    {
+        this.setState(STATES.DPCONTROLL);
+    }
+    
+    
+    /**
+     * Sets system to manual controll.
+     */
+    protected void runInManualCONTROL()
+    {
+        this.setState(STATES.MANUALCONTROLL);
+    }
+    
 //    
 //    protected void handleButtonState()
 //    {
@@ -186,6 +206,7 @@ public class Logic
 //        }
 //    }
     
+  
     /**
      * sets the correct motorspeeds from state (manual mode)
      */
@@ -444,8 +465,8 @@ public class Logic
     /**
      * Get the state the ship is currently in
      * 
-     * @return
-     */
+     * @return 
+     */    
     private STATES getState()
     {
         return state;
