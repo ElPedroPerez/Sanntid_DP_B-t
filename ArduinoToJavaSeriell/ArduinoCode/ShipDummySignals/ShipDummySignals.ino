@@ -1,7 +1,7 @@
 int value = 0;
 
-int fb_speedSB = 0;
-int fb_speedPS = 50;
+int fb_speedSB = -200;
+int fb_speedPS = -200;
 int cmd_speedSB = 80;
 int cmd_speedPS = 80;
 
@@ -24,7 +24,7 @@ void setup()
 
 //<key:value>
 
-void sendDataOverSeriell(String data[dataSize])
+void sendDataOverSeriell(String data[8])
 {
   String dataString = "";
   dataString = String("<");
@@ -32,7 +32,7 @@ void sendDataOverSeriell(String data[dataSize])
   //Serial.println(dataSize);
 
   // Serial.print("<");
-  for (byte i = 0; i < dataSize; i++)
+  for (byte i = 0; i < 8; i++)
   {
     dataString = String(dataString + data[i]);
     if (i < dataSize - 1)
@@ -50,7 +50,7 @@ void sendDataOverSeriell(String data[dataSize])
 
 void loop()
 {
-  String data[dataSize];
+  String data[8];
 
 
   fb_speedPS = fb_speedPS + 1;
@@ -60,13 +60,13 @@ void loop()
 
 
 
-  if (fb_speedPS >= 2000)
+  if (fb_speedPS >= 0)
   {
-    fb_speedPS = 0;
+    fb_speedPS = -200;
   }
   if (fb_speedSB >= 2000)
   {
-    fb_speedSB = 50;
+    fb_speedSB = -200;
   }
   if (fb_podPosSB >= 360)
   {

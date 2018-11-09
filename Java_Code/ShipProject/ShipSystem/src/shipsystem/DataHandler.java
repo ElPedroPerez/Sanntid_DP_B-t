@@ -30,7 +30,7 @@ public class DataHandler
     private String arduinoCommandComPort;
     private String arduinoFeedbackComPortIMU;
     private int arduinoBaudRate;
-    private int imuBaudRate;
+    
 
     private byte[] dataFromArduino;
     private byte[] dataToArduino;
@@ -45,9 +45,9 @@ public class DataHandler
     private int fb_podPosSB;
     private int fb_podPosPS;
     private boolean fb_ballastSensor;
-    private double Yaw;
-    private double Pitch;
-    private double Roll;
+    private int Yaw;
+    private int Pitch;
+    private int Roll;
 
     private int cmd_speedSB;
     private int cmd_speedPS;
@@ -83,16 +83,16 @@ public class DataHandler
         arduinoFeedbackComPortIMU = "Com4";
         arduinoCommandComPort = "Com2";
         arduinoBaudRate = 57600;
-        imuBaudRate = 57600;
+       
 
         fb_speedSB = 0;
         fb_speedPS = 0;
         fb_podPosSB = 0;
         fb_podPosPS = 0;
         fb_ballastSensor = false;
-        Yaw = 0.00;
-        Pitch = 0.00;
-        Roll = 0.00;
+        Yaw = 0;
+        Pitch = 0;
+        Roll = 0;
 
         speedSBavailable = false;
         speedPSavailable = false;
@@ -173,7 +173,7 @@ public class DataHandler
         this.fb_speedSB = fb_speedSB;
     }
 
-    public int getFb_speedPS()
+    public int  getFb_speedPS()
     {
         return fb_speedPS;
     }
@@ -283,17 +283,17 @@ public class DataHandler
         this.cmd_ballastSensor = cmd_ballastSensor;
     }
 
-    public double getYaw()
+    public int getYaw()
     {
         return Yaw;
     }
 
-    public double getPitch()
+    public int getPitch()
     {
         return Pitch;
     }
 
-    public double getRoll()
+    public int getRoll()
     {
         return Roll;
     }
@@ -526,11 +526,13 @@ public class DataHandler
         HashMap<String, String> dataFeedback = new HashMap<>();
         HashMap<String, String> dataIMU = new HashMap<>();
 
-        dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
-        //dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+       // dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
+        dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
 
-        dataFeedback.forEach(data::putIfAbsent);
-        //dataIMU.forEach(data::putIfAbsent);
+        //dataFeedback.forEach(data::putIfAbsent);
+        dataIMU.forEach(data::putIfAbsent);
+        
+        
 
         for (Entry e : data.entrySet())
         {
@@ -545,19 +547,19 @@ public class DataHandler
                     this.fb_podPosSB = Integer.parseInt(value);
                     break;
                 case "fb_speedPS":
-                    this.fb_speedPS = Integer.parseInt(value);
+                    this.fb_speedPS =  Integer.parseInt(value);
                     break;
                 case "fb_speedSB":
                     this.fb_speedSB = Integer.parseInt(value);
                     break;
                 case "Yaw":
-                    this.Yaw = Double.parseDouble(value);
+                    this.Yaw = Integer.parseInt(value);
                     break;
                 case "Pitch":
-                    this.Pitch = Double.parseDouble(value);
+                    this.Pitch = Integer.parseInt(value);
                     break;
                 case "Roll":
-                    this.Roll = Double.parseDouble(value);
+                    this.Roll = Integer.parseInt(value);
                     break;
             }
         }
