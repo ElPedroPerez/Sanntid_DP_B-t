@@ -26,12 +26,12 @@ class YButtonListener implements ButtonListener
     {
         if (pressed)
         {
-            System.out.println("Y button was pressed.");
+            //System.out.println("Y button was pressed.");
             this.ic.setBtnY(true);
         }
         else
         {
-            System.out.println("Y button was released.");
+            //System.out.println("Y button was released.");
             this.ic.setBtnY(false);
         }
     }

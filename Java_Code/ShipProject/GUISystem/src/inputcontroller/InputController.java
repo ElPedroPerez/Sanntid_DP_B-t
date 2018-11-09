@@ -30,7 +30,16 @@ public class InputController implements Runnable
     private boolean btnY = false;
     private boolean btnA = false;
     private boolean btnB = false;
-    private double angle = 0;
+    private int angle = 0;
+    private static int lastAngle = 0;
+    private static float lastVal = 0;
+
+    private boolean L1pressed = false;
+    private boolean R1pressed = false;
+    private boolean Xpressed = false;
+    private boolean Ypressed = false;
+    private boolean Apressed = false;
+    private boolean Bpressed = false;
 
     @Override
     public void run()
@@ -38,7 +47,7 @@ public class InputController implements Runnable
         System.out.println("REMEMBER: XBOX button labels. (X is not X, X is SQUARE)");
 
         ValueListener Ly = new LeftThumbYListener(this);
-        ValueListener Lx = new LeftThumbXListener(this);
+        //ValueListener Lx = new LeftThumbXListener(this);
         ValueListener Ry = new RightThumbYListener(this);
         ValueListener Rx = new RightThumbXListener(this);
         ButtonListener L1 = new LeftShoulderListener(this);
@@ -50,7 +59,7 @@ public class InputController implements Runnable
         Controller c1 = Controller.C1;
 
         c1.leftThumbY.addValueChangedListener(Ly);
-        c1.leftThumbX.addValueChangedListener(Lx);
+        //c1.leftThumbX.addValueChangedListener(Lx);
         c1.rightThumbY.addValueChangedListener(Ry);
         c1.rightThumbX.addValueChangedListener(Rx);
         c1.buttonLeftShoulder.addButtonPressedListener(L1);
@@ -69,80 +78,93 @@ public class InputController implements Runnable
         for (;;)
         {
             // run
-            angle = this.getAngle(btnRx, btnRy);
-            try
-            {
-                Thread.sleep(250);
-            }
-            catch (InterruptedException ex)
-            {
-                Logger.getLogger(InputController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            printDegree();
+            printButtons();
+        }
+    }
+
+    public void printButtons()
+    {
+        if (btnL1 && !L1pressed)
+        {
+            System.out.println("L1");
+            L1pressed = true;
+        }
+        else if (!btnL1)
+        {
+            L1pressed = false;
+        }
+        if (btnR1 && !R1pressed)
+        {
+            System.out.println("R1");
+            R1pressed = true;
+        }
+        else if (!btnR1)
+        {
+            R1pressed = false;
+        }
+        if (btnX && !Xpressed)
+        {
+            System.out.println("X");
+            Xpressed = true;
+        }
+        else if (!btnX)
+        {
+            Xpressed = false;
+        }
+        if (btnY && !Ypressed)
+        {
+            System.out.println("Y");
+            Ypressed = true;
+        }
+        else if (!btnY)
+        {
+            Ypressed = false;
+        }
+        if (btnA && !Apressed)
+        {
+            System.out.println("A");
+            Apressed = true;
+        }
+        else if (!btnA)
+        {
+            Apressed = false;
+        }
+        if (btnB && !Bpressed)
+        {
+            System.out.println("B");
+            Bpressed = true;
+        }
+        else if (!btnB)
+        {
+            Bpressed = false;
+        }
+    }
+
+    public void printDegree()
+    {
+        angle = this.FindDegree(btnRx, btnRy);
+        if (angle != lastAngle)
+        {
             System.out.println(angle);
+            this.lastAngle = angle;
         }
 
     }
 
-    public static double getAngle(double x, double y)
+    public static int FindDegree(int x, int y)
     {
-        return Math.atan2(x, y);
-    }
-
-    public static double getAngle2(double x, double y)
-    {
-
-        // Checking if the joystick is at center (0,0) and returns a 'stand still'
-        // command by setting the return to 99999
-        if (x == 0 && y == 0)
+        float value = (float) ((Math.atan2(x, y) / Math.PI) * 180f);
+        if ((x < 98 && x > -98) && (y < 98 && y > -98))
         {
-
-            return (99999);
-
-            // Returns a value based on the quadrant and does some math to deliver the angle
-            // of the coordinates
+            value = lastVal;
         }
-        else if (x >= 0 && y > 0)
+        else if (value < 0)
         {
-            if (x == 0)
-            {
-                x = 1;
-            }
-            return (90 - (Math.atan(y / x) * 180 / Math.PI));
-
+            value += 360f;
         }
-        else if (x > 0 && y <= 0)
-        {
-            if (y == 0)
-            {
-                y = 1;
-            }
-
-            return (90 - (Math.atan(y / x) * 180 / Math.PI));
-
-        }
-        else if (x <= 0 && y < 0)
-        {
-            if (x == 0)
-            {
-                x = 1;
-            }
-            return (180 + (Math.atan(y / x) * 180 / Math.PI));
-
-        }
-        else if (x < 0 && y >= 0)
-        {
-            if (y == 0)
-            {
-                y = 1;
-            }
-            return (270 - (Math.atan(y / x) * 180 / Math.PI));
-
-        }
-        else
-        {
-            return (99999);
-        }
-
+        lastVal = value;
+        return Math.round(value);
     }
 
     public void setFinished()

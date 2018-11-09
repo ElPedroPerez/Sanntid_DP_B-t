@@ -26,7 +26,7 @@ class LeftThumbXListener implements ValueListener
     {
         newValue = map(newValue, -32768, 32768, -100, 100);
         this.ic.setBtnLx(newValue);
-        System.out.printf("Lx: " + "%6d\n", newValue);
+        //System.out.printf("Lx: " + "%6d\n", newValue);
     }
 
     private int map(int x, int in_min, int in_max, int out_min, int out_max)

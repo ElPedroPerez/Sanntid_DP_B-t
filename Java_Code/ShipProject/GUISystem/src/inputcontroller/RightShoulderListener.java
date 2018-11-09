@@ -26,12 +26,12 @@ class RightShoulderListener implements ButtonListener
     {
         if (pressed)
         {
-            System.out.println("R1 button was pressed.");
+            //System.out.println("R1 button was pressed.");
             this.ic.setBtnR1(true);
         }
         else
         {
-            System.out.println("R1 button was released.");
+            //System.out.println("R1 button was released.");
             this.ic.setBtnR1(false);
         }
     }

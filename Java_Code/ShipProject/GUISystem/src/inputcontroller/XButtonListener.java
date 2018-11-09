@@ -26,12 +26,12 @@ class XButtonListener implements ButtonListener
     {
         if (pressed)
         {
-            System.out.println("X button was pressed.");
+            //System.out.println("X button was pressed.");
             this.ic.setBtnX(true);
         }
         else
         {
-            System.out.println("X button was released.");
+            //System.out.println("X button was released.");
             this.ic.setBtnX(false);
         }
     }

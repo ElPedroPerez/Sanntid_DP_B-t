@@ -26,12 +26,12 @@ class LeftShoulderListener implements ButtonListener
     {
         if (pressed)
         {
-            System.out.println("L1 button was pressed.");
+            //System.out.println("L1 button was pressed.");
             this.ic.setBtnL1(true);
         }
         else
         {
-            System.out.println("L1 button was released.");
+            //System.out.println("L1 button was released.");
             this.ic.setBtnL1(false);
         }
     }

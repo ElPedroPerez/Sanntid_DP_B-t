@@ -26,12 +26,12 @@ class BButtonListener implements ButtonListener
     {
         if (pressed)
         {
-            System.out.println("B button was pressed.");
+            //System.out.println("B button was pressed.");
             this.ic.setBtnB(true);
         }
         else
         {
-            System.out.println("B button was released.");
+            //System.out.println("B button was released.");
             this.ic.setBtnB(false);
         }
     }
