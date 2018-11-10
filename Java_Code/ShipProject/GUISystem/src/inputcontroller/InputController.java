@@ -40,10 +40,19 @@ public class InputController implements Runnable
     private boolean Ypressed = false;
     private boolean Apressed = false;
     private boolean Bpressed = false;
-
     private int angle = 0;
+
     private static int lastAngle = 0;
     private static float lastVal = 0;
+
+    private String ipAddress = "";
+    private int sendPort = 0;
+
+    public InputController(String ipAddress, int sendPort)
+    {
+        this.ipAddress = ipAddress;
+        this.sendPort = sendPort;
+    }
 
     @Override
     public void run()
@@ -82,10 +91,43 @@ public class InputController implements Runnable
 
         for (;;)
         {
-            // run
-            printDegree();
-            printButtons();
+            try
+            {
+                // run
+                //printDegree();
+                //printButtons();
+                udpsender.send(ipAddress, getDataString(), sendPort);
+                Thread.sleep(500);
+            }
+            catch (InterruptedException ex)
+            {
+                Logger.getLogger(InputController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+    }
+
+    public String getDataString()
+    {
+        int L1 = btnL1 ? 1 : 0;
+        int R1 = btnR1 ? 1 : 0;
+        int X = btnX ? 1 : 0;
+        int Y = btnY ? 1 : 0;
+        int A = btnA ? 1 : 0;
+        int B = btnB ? 1 : 0;
+        this.getDegree();
+
+        String dataString = "<"
+                + "L1:" + L1
+                + ":R1:" + R1
+                + ":X:" + X
+                + ":Y:" + Y
+                + ":A:" + A
+                + ":B:" + B
+                + ":speed:" + this.btnLy
+                + ":angle:" + this.angle
+                + ">";
+        System.out.println(dataString);
+        return dataString;
     }
 
     public void printButtons()
@@ -146,15 +188,14 @@ public class InputController implements Runnable
         }
     }
 
-    public void printDegree()
+    public void getDegree()
     {
         angle = this.FindDegree(btnRx, btnRy);
         if (angle != lastAngle)
         {
-            System.out.println(angle);
+            //System.out.println(angle);
             this.lastAngle = angle;
         }
-
     }
 
     public static int FindDegree(int x, int y)
@@ -170,11 +211,6 @@ public class InputController implements Runnable
         }
         lastVal = value;
         return Math.round(value);
-    }
-
-    public void setFinished()
-    {
-        this.finished = true;
     }
 
     public int getBtnLy()

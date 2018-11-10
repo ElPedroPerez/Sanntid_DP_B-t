@@ -17,14 +17,13 @@ public class GUISystem
     static final String IPADDRESS = "192.168.0.101"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
     static final int RECEIVEPORT = 9877;
     static final int SENDPORT = 9876; //9876
-    static final int VIDEOPORT = 8765;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args)
     {
-        Thread inputController = new Thread(new InputController());
+        Thread inputController = new Thread(new InputController(IPADDRESS, SENDPORT));
         inputController.start();
     }
 
