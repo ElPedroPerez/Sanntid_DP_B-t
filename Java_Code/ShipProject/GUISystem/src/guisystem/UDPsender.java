@@ -48,7 +48,7 @@ public class UDPsender
      * given port.
      *
      * @param ipAddress String IP address to send to
-     * @param data Data to be sent, byte array.
+     * @param data Data to be sent, string.
      * @param port Integer Port number
      */
     public void send(String ipAddress, String sendData, int port)
@@ -61,6 +61,7 @@ public class UDPsender
                     data.length,
                     InetAddress.getByName(ipAddress),
                     port);
+            System.out.println("Data sent: " + new String(packet.getData()));
             clientSocket.send(packet);
             //System.out.println(Arrays.toString(data));
             //System.out.println("UDP send");

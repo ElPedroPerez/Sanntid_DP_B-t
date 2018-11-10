@@ -14,7 +14,7 @@ import InputController.InputController;
 public class GUISystem
 {
 
-    static final String IPADDRESS = "localhost"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
+    static final String IPADDRESS = "158.38.199.20"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
     static final int RECEIVEPORT = 9877;
     static final int SENDPORT = 5056; //9876
 
