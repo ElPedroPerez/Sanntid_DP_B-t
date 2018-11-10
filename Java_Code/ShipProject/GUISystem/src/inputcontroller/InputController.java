@@ -97,6 +97,7 @@ public class InputController implements Runnable
                 //printDegree();
                 //printButtons();
                 udpsender.send(ipAddress, getDataString(), sendPort);
+                System.out.println("Sent data: " + getDataString());
                 Thread.sleep(500);
             }
             catch (InterruptedException ex)
@@ -126,7 +127,7 @@ public class InputController implements Runnable
                 + ":speed:" + this.btnLy
                 + ":angle:" + this.angle
                 + ">";
-        System.out.println(dataString);
+        //System.out.println(dataString);
         return dataString;
     }
 

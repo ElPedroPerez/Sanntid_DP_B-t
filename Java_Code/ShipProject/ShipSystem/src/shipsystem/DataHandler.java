@@ -36,7 +36,7 @@ public class DataHandler
     private byte[] dataFromGui;
     private boolean dataFromArduinoAvaliable = false;
     private boolean dataFromGuiAvailable = false;
-    private boolean threadStatus;
+    private boolean threadStatus = true;
     private byte requestCodeFromArduino;
 
     private int fb_speedSB;
@@ -525,7 +525,7 @@ public class DataHandler
         HashMap<String, String> dataIMU = new HashMap<>();
 
         dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
-         dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+        dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
 
         dataFeedback.forEach(data::putIfAbsent);
         dataIMU.forEach(data::putIfAbsent);
