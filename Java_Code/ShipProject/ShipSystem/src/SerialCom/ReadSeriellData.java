@@ -17,8 +17,30 @@ import jssc.SerialPortList;
  *
  * @author rocio
  */
-public class ReadSeriellData
+public class ReadSeriellData implements Runnable
 {
+
+    String comPort = "";
+    int baudRate = 0;
+    SerialDataHandler sdh = null;
+
+    public ReadSeriellData(SerialDataHandler sdh, String comPort, int baudRate)
+    {
+        this.comPort = comPort;
+        this.baudRate = baudRate;
+        this.sdh = sdh;
+    }
+
+    @Override
+    public void run()
+    {
+        while (true)
+        {
+            readData(comPort, baudRate);
+            
+        }
+
+    }
 
     public String[] getAvailableComPorts()
     {
@@ -71,6 +93,7 @@ public class ReadSeriellData
 
         while (receivedData == false)
         {
+            sdh.comPorts.put(comPort, true);
             //byte[] buffer = null;
             String buffer = "";
 
@@ -83,7 +106,7 @@ public class ReadSeriellData
                 buffer = "";
                 try
                 {
-                    Thread.sleep(50);
+                    Thread.sleep(250);
                 } catch (InterruptedException ex)
                 {
                     System.out.println("Error insomnia");
@@ -164,10 +187,10 @@ public class ReadSeriellData
                 for (int i = 0; i < data.length; i = i + 2)
                 {
                     SerialDataList.put(data[i], data[i + 1]);
-                    //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);
-                    receivedData = true;
-
+                    //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);                   
                 }
+                receivedData = true;
+                sdh.comPorts.put(comPort, true);
             } catch (Exception ex)
             {
                 System.out.println("1 " + ex);

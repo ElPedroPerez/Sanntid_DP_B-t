@@ -27,7 +27,6 @@ public class ShipSystem
      */
     public static void main(String[] args)
     {
-
         semaphore = new Semaphore(1, true);
 
         dh = new DataHandler();
@@ -56,13 +55,12 @@ public class ShipSystem
             yaw = dh.getYaw();
             pitch = dh.getPitch();
             roll = dh.getRoll();
-            
+
             fb_podPosPS = dh.getFb_podPosPS();
             fb_podPosSB = dh.getFb_podPosSB();
             fb_speedPS = dh.getFb_speedPS();
             fb_speedSB = dh.getFb_podPosSB();
-            
-            
+
             System.out.println("fb_podPosPS is: " + fb_podPosPS);
             System.out.println("fb_podPosSB is: " + fb_podPosSB);
             System.out.println("fb_speedPS is: " + fb_speedPS);
@@ -72,7 +70,18 @@ public class ShipSystem
             System.out.println("Pitch is: " + pitch);
             System.out.println("Roll is: " + roll);
             long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
-            System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis");
+            if (elapsedTimer != 0)
+            {
+              System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
+                        + " or with: " + 1000 / elapsedTimer + " Hz");  
+            }
+            else
+            {
+                System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
+                        + " or with: unlimited Hz!");
+            }
+           
+
         }
 
 //        controller = new Thread(new Controller(dh, semaphore));

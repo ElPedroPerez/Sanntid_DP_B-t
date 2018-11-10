@@ -16,8 +16,11 @@ import jssc.SerialPort;
 public class SerialDataHandler
 {
 
+    private static Thread readSerialData;
+
     HashMap<String, Boolean> comPorts = new HashMap<>();
-    ReadSeriellData reader = new ReadSeriellData();
+
+    //ReadSeriellData reader = new ReadSeriellData();
     WriteSerialData writer = new WriteSerialData();
 
     //Populate hashmap
@@ -40,16 +43,17 @@ public class SerialDataHandler
         {
             if (!comPorts.get(comPort))
             {
+                readSerialData = new Thread(new ReadSeriellData(this, comPort, baudRate));
+                readSerialData.start();
 
-                comPorts.put(comPort, true);
-                serialData = reader.readData(comPort, baudRate);
-                comPorts.put(comPort, false);
             } else
             {
+                System.out.println(comPort + " busy");
                 // Error message, com port busy
             }
         } else
         {
+            System.out.println(comPort + " doeas not exist!");
             // Error message, illegal com port
         }
         return serialData;
@@ -57,7 +61,7 @@ public class SerialDataHandler
 
     public void writeData(String comPort, int baudRate, String data)
     {
-      
+
         if (comPorts.containsKey(comPort))
         {
             if (!comPorts.get(comPort))

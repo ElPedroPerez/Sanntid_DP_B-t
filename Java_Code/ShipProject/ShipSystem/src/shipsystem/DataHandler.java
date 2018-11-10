@@ -30,7 +30,6 @@ public class DataHandler
     private String arduinoCommandComPort;
     private String arduinoFeedbackComPortIMU;
     private int arduinoBaudRate;
-    
 
     private byte[] dataFromArduino;
     private byte[] dataToArduino;
@@ -82,8 +81,7 @@ public class DataHandler
         arduinoFeedbackComPort = "Com3";
         arduinoFeedbackComPortIMU = "Com4";
         arduinoCommandComPort = "Com2";
-        arduinoBaudRate = 57600;
-       
+        arduinoBaudRate = 115200;
 
         fb_speedSB = 0;
         fb_speedPS = 0;
@@ -173,7 +171,7 @@ public class DataHandler
         this.fb_speedSB = fb_speedSB;
     }
 
-    public int  getFb_speedPS()
+    public int getFb_speedPS()
     {
         return fb_speedPS;
     }
@@ -526,13 +524,11 @@ public class DataHandler
         HashMap<String, String> dataFeedback = new HashMap<>();
         HashMap<String, String> dataIMU = new HashMap<>();
 
-       // dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
-        dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+        dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
+         dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
 
-        //dataFeedback.forEach(data::putIfAbsent);
+        dataFeedback.forEach(data::putIfAbsent);
         dataIMU.forEach(data::putIfAbsent);
-        
-        
 
         for (Entry e : data.entrySet())
         {
@@ -547,7 +543,7 @@ public class DataHandler
                     this.fb_podPosSB = Integer.parseInt(value);
                     break;
                 case "fb_speedPS":
-                    this.fb_speedPS =  Integer.parseInt(value);
+                    this.fb_speedPS = Integer.parseInt(value);
                     break;
                 case "fb_speedSB":
                     this.fb_speedSB = Integer.parseInt(value);

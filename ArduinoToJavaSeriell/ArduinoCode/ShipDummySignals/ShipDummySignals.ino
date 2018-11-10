@@ -12,12 +12,12 @@ int cmd_podPosSB = 180;
 int cmd_podPosPS = 200;
 
 
-int const updateFrequenzy = 100; //Hz
+int const updateFrequenzy = 10; //Hz
 int const dataSize = 8;
 
 void setup()
 {
-  Serial.begin(57600);
+  Serial.begin(115200);
   delay(2000);
   //Serial.println("Starting up");
 }
