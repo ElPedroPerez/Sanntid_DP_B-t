@@ -195,6 +195,7 @@ public class ReadSeriellData implements Runnable
 
                 for (int i = 0; i < data.length; i = i + 2)
                 {
+
                     dh.data.put(data[i], data[i + 1]);
                     //SerialDataList.put(data[i], data[i + 1]);
                     //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);                   

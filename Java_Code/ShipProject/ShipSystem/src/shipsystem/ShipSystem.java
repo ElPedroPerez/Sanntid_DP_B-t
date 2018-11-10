@@ -20,7 +20,7 @@ public class ShipSystem
     private static Thread server;
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
-    protected static String ipAdress;
+
     protected static String ipAdress = "localhost";
 
     /**
@@ -82,7 +82,7 @@ public class ShipSystem
 //                        + " or with: unlimited Hz!");
 //            }
 //            //End of Robins test area
-        }
+    }
 
 //        controller = new Thread(new Controller(dh, semaphore));
 //        server = new Thread(new UDPServer(semaphore, dh));        
@@ -91,5 +91,4 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
-    }
 }
