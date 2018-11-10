@@ -25,7 +25,7 @@ public class JavaJSSCSeriell
         while (true)
         {
             long lastTime = System.nanoTime();                    
-            HashMap serialData = new ReadSeriellData().readData("com3", 57600);
+            //HashMap serialData = new ReadSeriellData().readData("com3", 57600);
             long elapsedTimer = (System.nanoTime() - lastTime)/1000000;
             System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis");
             // serialDataHandler.writeData("Com3", 9600, "This is my data");
