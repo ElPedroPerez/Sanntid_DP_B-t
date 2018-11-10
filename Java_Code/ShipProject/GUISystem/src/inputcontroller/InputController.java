@@ -11,6 +11,8 @@ import com.exlumina.j360.ValueListener;
 import com.exlumina.j360.XInputGamepad;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import guisystem.UDPsender;
+import java.net.DatagramSocket;
 
 /**
  *
@@ -19,7 +21,8 @@ import java.util.logging.Logger;
 public class InputController implements Runnable
 {
 
-    private static boolean finished = false;
+    private UDPsender udpsender;
+
     private int btnLy = 0;
     private int btnLx = 0;
     private int btnRy = 0;
@@ -30,9 +33,6 @@ public class InputController implements Runnable
     private boolean btnY = false;
     private boolean btnA = false;
     private boolean btnB = false;
-    private int angle = 0;
-    private static int lastAngle = 0;
-    private static float lastVal = 0;
 
     private boolean L1pressed = false;
     private boolean R1pressed = false;
@@ -41,10 +41,15 @@ public class InputController implements Runnable
     private boolean Apressed = false;
     private boolean Bpressed = false;
 
+    private int angle = 0;
+    private static int lastAngle = 0;
+    private static float lastVal = 0;
+
     @Override
     public void run()
     {
-        System.out.println("REMEMBER: XBOX button labels. (X is not X, X is SQUARE)");
+        //System.out.println("REMEMBER: XBOX button labels. (X is not X, X is SQUARE)");
+        this.udpsender = new UDPsender();
 
         ValueListener Ly = new LeftThumbYListener(this);
         //ValueListener Lx = new LeftThumbXListener(this);
