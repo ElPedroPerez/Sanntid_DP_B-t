@@ -51,8 +51,9 @@ public class UDPreceiver implements Runnable
         {
             try
             {
+                byte[] receiveData = new byte[1024];
                 receiveSocket = new DatagramSocket(port);
-                DatagramPacket receivePacket = new DatagramPacket(new byte[6], 6);
+                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
                 while (observer.shouldChildOfThisRun())
                 {

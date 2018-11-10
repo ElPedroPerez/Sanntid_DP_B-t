@@ -20,7 +20,7 @@ public class ShipSystem
     private static Thread server;
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
-    protected static String ipAdress;
+    protected static String ipAdress = "localhost";
 
     /**
      * @param args the command line arguments
@@ -49,38 +49,37 @@ public class ShipSystem
 
         while (true)
         {
-            long lastTime = System.nanoTime();
-            dh.handleDataFromArduino();
-
-            yaw = dh.getYaw();
-            pitch = dh.getPitch();
-            roll = dh.getRoll();
-
-            fb_podPosPS = dh.getFb_podPosPS();
-            fb_podPosSB = dh.getFb_podPosSB();
-            fb_speedPS = dh.getFb_speedPS();
-            fb_speedSB = dh.getFb_podPosSB();
-
-            System.out.println("fb_podPosPS is: " + fb_podPosPS);
-            System.out.println("fb_podPosSB is: " + fb_podPosSB);
-            System.out.println("fb_speedPS is: " + fb_speedPS);
-            System.out.println("fb_speedSB is: " + fb_speedSB);
-
-            System.out.println("Yaw is: " + yaw);
-            System.out.println("Pitch is: " + pitch);
-            System.out.println("Roll is: " + roll);
-            long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
-            if (elapsedTimer != 0)
-            {
-              System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
-                        + " or with: " + 1000 / elapsedTimer + " Hz");  
-            }
-            else
-            {
-                System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
-                        + " or with: unlimited Hz!");
-            }
-           
+//            long lastTime = System.nanoTime();
+//            dh.handleDataFromArduino();
+//
+//            yaw = dh.getYaw();
+//            pitch = dh.getPitch();
+//            roll = dh.getRoll();
+//
+//            fb_podPosPS = dh.getFb_podPosPS();
+//            fb_podPosSB = dh.getFb_podPosSB();
+//            fb_speedPS = dh.getFb_speedPS();
+//            fb_speedSB = dh.getFb_podPosSB();
+//
+//            System.out.println("fb_podPosPS is: " + fb_podPosPS);
+//            System.out.println("fb_podPosSB is: " + fb_podPosSB);
+//            System.out.println("fb_speedPS is: " + fb_speedPS);
+//            System.out.println("fb_speedSB is: " + fb_speedSB);
+//
+//            System.out.println("Yaw is: " + yaw);
+//            System.out.println("Pitch is: " + pitch);
+//            System.out.println("Roll is: " + roll);
+//            long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
+//            if (elapsedTimer != 0)
+//            {
+//              System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
+//                        + " or with: " + 1000 / elapsedTimer + " Hz");  
+//            }
+//            else
+//            {
+//                System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
+//                        + " or with: unlimited Hz!");
+//            }
 
         }
 
