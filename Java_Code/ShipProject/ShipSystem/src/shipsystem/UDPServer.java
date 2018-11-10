@@ -62,7 +62,8 @@ public class UDPServer implements Runnable
                 //this.setDataToDatahandler(receiveData);
                 hasReceivedSomething = true;
 
-                //this.checkForSendingToGUI();
+                //this.checkForSendingToGUI();                
+                dataReceived = "";
             }
         }
         catch (SocketException ex)

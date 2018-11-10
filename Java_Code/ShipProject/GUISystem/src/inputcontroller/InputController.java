@@ -97,7 +97,7 @@ public class InputController implements Runnable
                 //printDegree();
                 //printButtons();
                 udpsender.send(ipAddress, getDataString(), sendPort);
-                System.out.println("Sent data: " + getDataString());
+                //System.out.println("Sent data: " + getDataString());
                 Thread.sleep(500);
             }
             catch (InterruptedException ex)
