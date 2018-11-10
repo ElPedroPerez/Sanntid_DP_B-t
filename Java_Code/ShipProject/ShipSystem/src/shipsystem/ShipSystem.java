@@ -20,6 +20,7 @@ public class ShipSystem
     private static Thread server;
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
+
     protected static String ipAdress = "localhost";
 
     /**
@@ -47,10 +48,11 @@ public class ShipSystem
         int pitch = 0;
         int roll = 0;
 
-        while (true)
-        {
+//        //Robins test area
+//        dh.handleDataFromArduino();
+//        while (true)
+//        {
 //            long lastTime = System.nanoTime();
-//            dh.handleDataFromArduino();
 //
 //            yaw = dh.getYaw();
 //            pitch = dh.getPitch();
@@ -72,16 +74,15 @@ public class ShipSystem
 //            long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
 //            if (elapsedTimer != 0)
 //            {
-//              System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
-//                        + " or with: " + 1000 / elapsedTimer + " Hz");  
-//            }
-//            else
+//                System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
+//                        + " or with: " + 1000 / elapsedTimer + " Hz");
+//            } else
 //            {
 //                System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
 //                        + " or with: unlimited Hz!");
 //            }
-
-        }
+//            //End of Robins test area
+    }
 
 //        controller = new Thread(new Controller(dh, semaphore));
 //        server = new Thread(new UDPServer(semaphore, dh));        
@@ -90,5 +91,4 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
-    }
 }

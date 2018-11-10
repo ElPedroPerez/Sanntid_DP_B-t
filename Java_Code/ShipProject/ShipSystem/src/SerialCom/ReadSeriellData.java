@@ -7,11 +7,13 @@ package SerialCom;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
+import shipsystem.DataHandler;
 
 /**
  *
@@ -20,14 +22,17 @@ import jssc.SerialPortList;
 public class ReadSeriellData implements Runnable
 {
 
+    boolean portIsOpen = false;
     String comPort = "";
     int baudRate = 0;
     SerialDataHandler sdh = null;
+    DataHandler dh = null;
 
-    public ReadSeriellData(SerialDataHandler sdh, String comPort, int baudRate)
+    public ReadSeriellData(DataHandler dh, SerialDataHandler sdh, String comPort, int baudRate)
     {
         this.comPort = comPort;
         this.baudRate = baudRate;
+        this.dh = dh;
         this.sdh = sdh;
     }
 
@@ -37,7 +42,6 @@ public class ReadSeriellData implements Runnable
         while (true)
         {
             readData(comPort, baudRate);
-            
         }
 
     }
@@ -69,11 +73,11 @@ public class ReadSeriellData implements Runnable
         return portNames;
     }
 
-    public HashMap readData(String comPort, int baudRate)
+    public ConcurrentHashMap readData(String comPort, int baudRate)
     {
         long lastTime = System.nanoTime();
-        HashMap<String, String> SerialDataList;
-        SerialDataList = new HashMap<String, String>();
+        ConcurrentHashMap<String, String> SerialDataList;
+        SerialDataList = new ConcurrentHashMap<String, String>();
 
         boolean receivedData = false;
         //Declare Special Symbol Used in Serial Data Stream from Arduino
@@ -83,17 +87,22 @@ public class ReadSeriellData implements Runnable
         //Define Serial Port # -- can be found in Device Manager or Arduino IDE
         SerialPort serialPort = new SerialPort(comPort);
 
-        try
+        if (!portIsOpen)
         {
-            serialPort.openPort();
-        } catch (SerialPortException ex)
-        {
-            System.out.println(ex);
+            try
+            {
+                serialPort.openPort();
+                portIsOpen = true;
+                System.out.println(" is open");
+            } catch (SerialPortException ex)
+            {
+                System.out.println(ex);
+            }
         }
 
         while (receivedData == false)
         {
-            sdh.comPorts.put(comPort, true);
+            // sdh.comPorts.put(comPort, true);
             //byte[] buffer = null;
             String buffer = "";
 
@@ -186,11 +195,13 @@ public class ReadSeriellData implements Runnable
 
                 for (int i = 0; i < data.length; i = i + 2)
                 {
-                    SerialDataList.put(data[i], data[i + 1]);
+
+                    dh.data.put(data[i], data[i + 1]);
+                    //SerialDataList.put(data[i], data[i + 1]);
                     //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);                   
                 }
                 receivedData = true;
-                sdh.comPorts.put(comPort, true);
+                //sdh.comPorts.put(comPort, true);
             } catch (Exception ex)
             {
                 System.out.println("1 " + ex);
@@ -198,15 +209,14 @@ public class ReadSeriellData implements Runnable
 
         }
 
-        try
-        {
-            serialPort.closePort();
-        } catch (Exception e)
-        {
-            System.err.println(e);
-            System.out.println("Error");
-        }
-
+//        try
+//        {
+//            serialPort.closePort();
+//        } catch (Exception e)
+//        {
+//            System.err.println(e);
+//            System.out.println("Error");
+//        }
         return SerialDataList;
     }
 }

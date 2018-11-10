@@ -7,7 +7,9 @@ package SerialCom;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import jssc.SerialPort;
+import shipsystem.DataHandler;
 
 /**
  *
@@ -36,14 +38,15 @@ public class SerialDataHandler
         comPorts.put("Com7", false);
     }
 
-    public HashMap readData(String comPort, int baudRate)
+    public ConcurrentHashMap readData(DataHandler dh, String comPort, int baudRate)
     {
-        HashMap serialData = new HashMap();
+        ConcurrentHashMap serialData = new ConcurrentHashMap();
+
         if (comPorts.containsKey(comPort))
         {
             if (!comPorts.get(comPort))
             {
-                readSerialData = new Thread(new ReadSeriellData(this, comPort, baudRate));
+                readSerialData = new Thread(new ReadSeriellData(dh, this, comPort, baudRate));
                 readSerialData.start();
 
             } else

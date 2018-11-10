@@ -9,6 +9,7 @@ import SerialCom.SerialDataHandler;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Overview protocol: To Arduino: Byte 0: bit 0 - stopp bit 1 - fwd bit 2 - rev
@@ -69,6 +70,7 @@ public class DataHandler
     private double F; // feed fwd gain
     private double RR; // output ramp rate (max delta output)
     private boolean PIDparamChanged;
+    public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
 
     public DataHandler()
     {
@@ -520,15 +522,16 @@ public class DataHandler
 
     public void handleDataFromArduino()
     {
-        HashMap<String, String> data = new HashMap<>();
-        HashMap<String, String> dataFeedback = new HashMap<>();
-        HashMap<String, String> dataIMU = new HashMap<>();
 
-        dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
-        dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+//        ConcurrentHashMap<String, String> dataFeedback = new ConcurrentHashMap<>();
+//        ConcurrentHashMap<String, String> dataIMU = new ConcurrentHashMap<>();
 
-        dataFeedback.forEach(data::putIfAbsent);
-        dataIMU.forEach(data::putIfAbsent);
+//        dataFeedback = 
+        sdh.readData(this, arduinoFeedbackComPort, arduinoBaudRate);
+        //dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+
+//        dataFeedback.forEach(data::putIfAbsent);
+        //dataIMU.forEach(data::putIfAbsent);
 
         for (Entry e : data.entrySet())
         {
