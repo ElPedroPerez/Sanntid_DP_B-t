@@ -225,7 +225,7 @@ public class Datahandler {
      * Creates and sends the data byte array over UDP.
      */
     public void sendData() {
-        new UDPsender().send(Main.IPADDRESS, dataFromGui, Main.SENDPORT);
+        new UDPsender().send(GUISystem.IPADDRESS, dataFromGui, GUISystem.SENDPORT);
     }
 
     void setPidParams(int[] pidParams) {
