@@ -49,7 +49,8 @@ public class UDPreceiver implements Runnable {
                 
                 while(observer.shouldChildOfThisRun()){
                     receiveSocket.receive(receivePacket);
-                    observer.setData(receivePacket.getData());
+                    String dataReceived = new String(receivePacket.getData());
+                    observer.setData(dataReceived);
                 }
             } catch (IOException e) {
                 System.out.println(e);
