@@ -22,7 +22,7 @@ public class UDPServer implements Runnable
 
     private DatagramSocket serverSocket;
 
-    private final int serverPort = 9876;
+    private final int serverPort = 5056;
 
     private boolean hasReceivedSomething = false;
     private byte lastRequestCodeFromGui;
@@ -47,7 +47,7 @@ public class UDPServer implements Runnable
         {
             serverSocket = new DatagramSocket(serverPort);
 
-            byte[] receiveData = new byte[11];
+            byte[] receiveData = new byte[1024];
 
             while (dh.shouldThreadRun())
             {
@@ -55,21 +55,22 @@ public class UDPServer implements Runnable
                 serverSocket.receive(receivePacket);
                 //guiIp = receivePacket.getAddress();
                 ShipSystem.ipAdress = receivePacket.getAddress().getHostAddress();
+                String dataReceived = new String(receivePacket.getData());
+                System.out.println("Data received: " + dataReceived);
 
                 //System.out.println(Arrays.toString(receiveData) + " FROM GUI, with ip: " + Main.ipAdress);
-                this.setDataToDatahandler(receiveData);
+                //this.setDataToDatahandler(receiveData);
                 hasReceivedSomething = true;
 
-                this.checkForSendingToGUI();
+                //this.checkForSendingToGUI();                
+                dataReceived = "";
             }
-        }
-        catch (SocketException ex)
+        } catch (SocketException ex)
         {
             System.out.println("Exception-.-.-.-.-.-.-.-.-.-.-.-");
             Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             System.out.println("Exception-.-.-.-.-.-.-.-.-.-.-.-");
             Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,13 +99,11 @@ public class UDPServer implements Runnable
                     {
                         serverSocket.send(sendpacket);
                         //System.out.println(Arrays.toString(data) + " TO GUI, with ip: " + Main.ipAdress);
-                    }
-                    catch (IOException ex)
+                    } catch (IOException ex)
                     {
                         Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                catch (UnknownHostException ex)
+                } catch (UnknownHostException ex)
                 {
                     Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -168,7 +167,6 @@ public class UDPServer implements Runnable
 //            sendData[3] = y[1];
 //            sendData[4] = distanceSensor;
 //            sendData[5] = requestCode;
-
             this.udpSend(sendData);
 
             this.lastRequestCodeFromGui = requestCode;
@@ -201,8 +199,7 @@ public class UDPServer implements Runnable
         {
             semaphore.acquire();
 
-        }
-        catch (InterruptedException ex)
+        } catch (InterruptedException ex)
         {
             Logger.getLogger(Controller.class
                     .getName()).log(Level.SEVERE, null, ex);

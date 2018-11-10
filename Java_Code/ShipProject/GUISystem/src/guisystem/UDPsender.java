@@ -13,56 +13,67 @@ import java.net.SocketException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author mgrib
  */
-public class UDPsender {
+public class UDPsender
+{
+
     private DatagramSocket clientSocket;
-    
-    
-    public UDPsender() {
+
+    public UDPsender()
+    {
     }
-    
+
     /**
      * Initilizes the UDP sender. Creates a Datagram socket.
      */
-    private void init(){
-        try {
+    private void init()
+    {
+        try
+        {
             clientSocket = new DatagramSocket();
-        }  catch (SocketException ex) {
+        }
+        catch (SocketException ex)
+        {
             Logger.getLogger(UDPsender.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
+
     /**
-     * Sends a datagram packet with the given data to the given ip adress at 
-     * the given port.
-     * 
+     * Sends a datagram packet with the given data to the given ip adress at the
+     * given port.
+     *
      * @param ipAddress String IP address to send to
-     * @param data Data to be sent, byte array.
+     * @param data Data to be sent, string.
      * @param port Integer Port number
      */
-    public void send(String ipAddress, byte[] data, int port){
+    public void send(String ipAddress, String sendData, int port)
+    {
         this.init();
-         try {
-            
-            DatagramPacket packet = new DatagramPacket(data, 
-                                        data.length, 
-                                        InetAddress.getByName(ipAddress),
-                                        port);
+        try
+        {
+            byte[] data = sendData.getBytes();
+            DatagramPacket packet = new DatagramPacket(data,
+                    data.length,
+                    InetAddress.getByName(ipAddress),
+                    port);
+            System.out.println("Data sent: " + new String(packet.getData()));
             clientSocket.send(packet);
             //System.out.println(Arrays.toString(data));
             //System.out.println("UDP send");
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             Logger.getLogger(UDPsender.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-        clientSocket.close();
+        }
+        finally
+        {
+            clientSocket.close();
         }
     }
-    
-    
-    
-    
+
 }

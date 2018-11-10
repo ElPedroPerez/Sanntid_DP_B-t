@@ -37,7 +37,7 @@ public class DataHandler
     private byte[] dataFromGui;
     private boolean dataFromArduinoAvaliable = false;
     private boolean dataFromGuiAvailable = false;
-    private boolean threadStatus;
+    private boolean threadStatus = true;
     private byte requestCodeFromArduino;
 
     private int fb_speedSB;

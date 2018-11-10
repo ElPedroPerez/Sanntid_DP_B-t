@@ -21,6 +21,7 @@ public class ShipSystem
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
     protected static String ipAdress;
+    protected static String ipAdress = "localhost";
 
     /**
      * @param args the command line arguments
