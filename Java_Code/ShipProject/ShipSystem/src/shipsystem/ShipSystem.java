@@ -5,6 +5,7 @@
  */
 package shipsystem;
 
+import SerialCom.SerialDataHandler;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -18,6 +19,7 @@ public class ShipSystem
     private static Thread alarmList;
     private static Thread controller;
     private static Thread server;
+    private static Thread serialDataHandler;
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
@@ -33,16 +35,19 @@ public class ShipSystem
         dh = new DataHandler();
         dh.setThreadStatus(true);
 
+        serialDataHandler = new Thread(new SerialDataHandler(dh));
+
         controller = new Thread(new Controller(dh, semaphore));
         server = new Thread(new UDPServer(semaphore, dh));
 
         controller.start();
         server.start();
+        serialDataHandler.start();
 
-        double fb_podPosPS = 0;
-        double fb_podPosSB = 0;
-        double fb_speedPS = 0;
-        double fb_speedSB = 0;
+        int fb_podPosPS = 0;
+        int fb_podPosSB = 0;
+        int fb_speedPS = 0;
+        int fb_speedSB = 0;
 
         int yaw = 0;
         int pitch = 0;
@@ -52,7 +57,7 @@ public class ShipSystem
 //        dh.handleDataFromArduino();
 //        while (true)
 //        {
-//            long lastTime = System.nanoTime();
+//          
 //
 //            yaw = dh.getYaw();
 //            pitch = dh.getPitch();
@@ -71,19 +76,10 @@ public class ShipSystem
 //            System.out.println("Yaw is: " + yaw);
 //            System.out.println("Pitch is: " + pitch);
 //            System.out.println("Roll is: " + roll);
-//            long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
-//            if (elapsedTimer != 0)
-//            {
-//                System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
-//                        + " or with: " + 1000 / elapsedTimer + " Hz");
-//            } else
-//            {
-//                System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
-//                        + " or with: unlimited Hz!");
-//            }
-//            //End of Robins test area
-    }
-
+//            
+//            System.out.println("Com response time: " + dh.getComResponseTime());
+//                }
+//End of Robins test area
 //        controller = new Thread(new Controller(dh, semaphore));
 //        server = new Thread(new UDPServer(semaphore, dh));        
 //        alarmList = new Thread(new alarmsystem.AlarmList(dh));
@@ -91,4 +87,5 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
+    }
 }

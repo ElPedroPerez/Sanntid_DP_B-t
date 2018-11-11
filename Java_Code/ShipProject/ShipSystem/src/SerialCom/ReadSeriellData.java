@@ -73,7 +73,8 @@ public class ReadSeriellData implements Runnable
         return portNames;
     }
 
-    public ConcurrentHashMap readData(String comPort, int baudRate)
+    public void readData(String comPort, int baudRate)
+    //ConcurrentHashMap
     {
         long lastTime = System.nanoTime();
         ConcurrentHashMap<String, String> SerialDataList;
@@ -93,7 +94,7 @@ public class ReadSeriellData implements Runnable
             {
                 serialPort.openPort();
                 portIsOpen = true;
-                System.out.println(" is open");
+                System.out.println(comPort + " is open");
             } catch (SerialPortException ex)
             {
                 System.out.println(ex);
@@ -201,10 +202,23 @@ public class ReadSeriellData implements Runnable
                     //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);                   
                 }
                 receivedData = true;
+                dh.handleDataFromArduino();
+
+                long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
+                if (elapsedTimer != 0)
+                {
+                    dh.setComResponseTime(elapsedTimer);
+                    System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
+                            + " or with: " + 1000 / elapsedTimer + " Hz");
+                } else
+                {
+                    System.out.println("Data is gøtt'n in: " + elapsedTimer + " millis"
+                            + " or with: unlimited Hz!");
+                }
                 //sdh.comPorts.put(comPort, true);
             } catch (Exception ex)
             {
-                System.out.println("1 " + ex);
+                // System.out.println("1 " + ex);
             }
 
         }
@@ -217,6 +231,6 @@ public class ReadSeriellData implements Runnable
 //            System.err.println(e);
 //            System.out.println("Error");
 //        }
-        return SerialDataList;
+        // return SerialDataList;
     }
 }
