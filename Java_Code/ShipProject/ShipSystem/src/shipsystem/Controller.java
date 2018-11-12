@@ -59,13 +59,24 @@ public class Controller implements Runnable
     @Override
     public void run()
     {
-
-        //this.startRequestFeedbacks();
-        while (dh.shouldThreadRun())
+        while (true)
         {
-            acquire();
+            try
+            {
+                this.logic.calculateAngle();
+                Thread.sleep(250);
+            } catch (InterruptedException ex)
+            {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
-            boolean guiCommandUpdated = dh.getDataFromGuiAvailable();
+//        //this.startRequestFeedbacks();
+//        while (dh.shouldThreadRun())
+//        {
+//            acquire();
+//
+//            boolean guiCommandUpdated = dh.getDataFromGuiAvailable();
 //            if (guiCommandUpdated)
 //            {
 //                byte controlByte = dh.getFromGuiByte((byte) Protocol.COMMANDS.getValue());
@@ -94,33 +105,33 @@ public class Controller implements Runnable
 //            }
 //
 //            AUVstate = dh.getAUVautoMode();
-            release();
-
-            if (AUVstate == 1 && lastAUVstate == 0 && !this.autoRunning)
-            {
-                //this.startPID();
-
-            }
-            else if (AUVstate == 0)
-            {
-                if (lastAUVstate == 1)
-                {
-                    // skifter til manuell modus, stopp timer task på pid
-                    if (this.autoRunning)
-                    {
-                        this.cancelPID();
-
-                    }
-                }
-                if (guiCommandUpdated)
-                {
-                    this.runManual();
-                }
-            }
-
-            lastAUVstate = AUVstate;
-        }
-        this.cancelPID();
+//            release();
+//
+//            if (AUVstate == 1 && lastAUVstate == 0 && !this.autoRunning)
+//            {
+//                //this.startPID();
+//
+//            }
+//            else if (AUVstate == 0)
+//            {
+//                if (lastAUVstate == 1)
+//                {
+//                    // skifter til manuell modus, stopp timer task på pid
+//                    if (this.autoRunning)
+//                    {
+//                        this.cancelPID();
+//
+//                    }
+//                }
+//                if (guiCommandUpdated)
+//                {
+//                    this.runManual();
+//                }
+//            }
+//
+//            lastAUVstate = AUVstate;
+//        }
+//        this.cancelPID();
     }
 
 //    /**
@@ -149,8 +160,7 @@ public class Controller implements Runnable
             timer.cancel();
             //timer.purge();
             this.autoRunning = false;
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -188,8 +198,7 @@ public class Controller implements Runnable
                     release();
                     Thread.sleep(1000);
                 }
-            }
-            catch (InterruptedException ex)
+            } catch (InterruptedException ex)
             {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -206,8 +215,7 @@ public class Controller implements Runnable
         {
             semaphore.acquire();
 
-        }
-        catch (InterruptedException ex)
+        } catch (InterruptedException ex)
         {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }

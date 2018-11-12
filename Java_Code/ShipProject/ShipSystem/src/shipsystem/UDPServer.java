@@ -57,7 +57,7 @@ public class UDPServer implements Runnable
                 ShipSystem.ipAdress = receivePacket.getAddress().getHostAddress();
                 String dataReceived = new String(receivePacket.getData());
                 System.out.println("Data received: " + dataReceived);
-
+                handleDataReceived(dataReceived);
                 //System.out.println(Arrays.toString(receiveData) + " FROM GUI, with ip: " + Main.ipAdress);
                 //this.setDataToDatahandler(receiveData);
                 hasReceivedSomething = true;
@@ -75,6 +75,28 @@ public class UDPServer implements Runnable
             System.out.println("Exception-.-.-.-.-.-.-.-.-.-.-.-");
             Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void handleDataReceived(String dataReceived)
+    {
+        String start_char = "<";
+        String end_char = ">";
+        String sep_char = ":";
+
+        dataReceived = dataReceived.substring(dataReceived.indexOf(start_char) + 1);
+        dataReceived = dataReceived.substring(0, dataReceived.indexOf(end_char));
+        dataReceived = dataReceived.replace("?", "");
+        String[] data = dataReceived.split(sep_char);
+
+        for (int i = 0; i < data.length; i = i + 2)
+        {
+
+            dh.data.put(data[i], data[i + 1]);
+            //SerialDataList.put(data[i], data[i + 1]);
+            //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);                   
+        }
+        //receivedData = true;
+        dh.handleDataFromArduino();
     }
 
     /**
