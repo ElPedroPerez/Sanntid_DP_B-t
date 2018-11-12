@@ -75,6 +75,9 @@ public class DataHandler
     private int temp_Angle;
 
 >>>>>>> 4eec65e99fd5c7cc634b17e20e3a5eff8ef2f69a
+    private int ic_angle;
+    private int temp_Angle;
+
     // pid parameters
     private double P; // prop gain
     private double I; // integral gain
@@ -122,6 +125,9 @@ public class DataHandler
         ic_angle = 0;
         temp_Angle = 0;
 >>>>>>> 4eec65e99fd5c7cc634b17e20e3a5eff8ef2f69a
+
+        ic_angle = 0;
+        temp_Angle = 0;
     }
 
     //*****************************************************************
