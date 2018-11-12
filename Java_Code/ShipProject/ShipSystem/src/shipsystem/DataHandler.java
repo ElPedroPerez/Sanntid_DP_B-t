@@ -9,6 +9,7 @@ import SerialCom.SerialDataHandler;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Overview protocol: To Arduino: Byte 0: bit 0 - stopp bit 1 - fwd bit 2 - rev
@@ -25,7 +26,7 @@ import java.util.Set;
 public class DataHandler
 {
 
-    private SerialDataHandler sdh = new SerialDataHandler();
+    //private SerialDataHandler sdh = new SerialDataHandler();
     private String arduinoFeedbackComPort;
     private String arduinoCommandComPort;
     private String arduinoFeedbackComPortIMU;
@@ -47,6 +48,7 @@ public class DataHandler
     private int Yaw;
     private int Pitch;
     private int Roll;
+    private long comResponseTime;
 
     private int cmd_speedSB;
     private int cmd_speedPS;
@@ -69,6 +71,7 @@ public class DataHandler
     private double F; // feed fwd gain
     private double RR; // output ramp rate (max delta output)
     private boolean PIDparamChanged;
+    public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
 
     public DataHandler()
     {
@@ -91,6 +94,7 @@ public class DataHandler
         Yaw = 0;
         Pitch = 0;
         Roll = 0;
+        comResponseTime = 0;
 
         speedSBavailable = false;
         speedPSavailable = false;
@@ -294,6 +298,16 @@ public class DataHandler
     public int getRoll()
     {
         return Roll;
+    }
+    
+    public long getComResponseTime()
+    {
+        return comResponseTime;
+    }
+    
+    public void setComResponseTime(long comResponseTime)
+    {
+        this.comResponseTime = comResponseTime;
     }
 
     public boolean isSpeedSBavailable()
@@ -518,17 +532,21 @@ public class DataHandler
                 + ":speedsb:" + this.getFb_speedSB();
     }
 
-    public void handleDataFromArduino()
+    public synchronized void handleDataFromArduino()
     {
-        HashMap<String, String> data = new HashMap<>();
-        HashMap<String, String> dataFeedback = new HashMap<>();
-        HashMap<String, String> dataIMU = new HashMap<>();
 
-        dataFeedback = sdh.readData(arduinoFeedbackComPort, arduinoBaudRate);
-        dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+//        ConcurrentHashMap<String, String> dataFeedback = new ConcurrentHashMap<>();
+//        ConcurrentHashMap<String, String> dataIMU = new ConcurrentHashMap<>();
 
-        dataFeedback.forEach(data::putIfAbsent);
-        dataIMU.forEach(data::putIfAbsent);
+//        dataFeedback = 
+        //SerialDataHandler
+        //sdh.readData(this, arduinoFeedbackComPort, arduinoBaudRate);
+        
+        
+        //dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
+
+//        dataFeedback.forEach(data::putIfAbsent);
+        //dataIMU.forEach(data::putIfAbsent);
 
         for (Entry e : data.entrySet())
         {

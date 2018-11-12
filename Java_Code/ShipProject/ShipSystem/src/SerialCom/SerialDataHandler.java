@@ -7,25 +7,37 @@ package SerialCom;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import jssc.SerialPort;
+import shipsystem.DataHandler;
 
 /**
  *
  * @author rocio
  */
-public class SerialDataHandler
+public class SerialDataHandler implements Runnable
 {
 
-    private static Thread readSerialData;
+    private static Thread readSerialDataCom3;
+    private static Thread readSerialDataCom4;
 
     HashMap<String, Boolean> comPorts = new HashMap<>();
+    long comResponseTimer = 0;
+    
 
     //ReadSeriellData reader = new ReadSeriellData();
     WriteSerialData writer = new WriteSerialData();
 
     //Populate hashmap
-    public SerialDataHandler()
+    public SerialDataHandler(DataHandler dh)
     {
+
+        readSerialDataCom3 = new Thread(new ReadSeriellData(dh, this, "Com3", 115200));
+        readSerialDataCom4 = new Thread(new ReadSeriellData(dh, this, "Com4", 115200));
+
+        //readSerialDataCom3.start();
+        readSerialDataCom4.start();
+
         //True equals port busy
         comPorts.put("Com1", false);
         comPorts.put("Com2", false);
@@ -36,46 +48,57 @@ public class SerialDataHandler
         comPorts.put("Com7", false);
     }
 
-    public HashMap readData(String comPort, int baudRate)
+    @Override
+    public void run()
     {
-        HashMap serialData = new HashMap();
-        if (comPorts.containsKey(comPort))
+        while (true)
         {
-            if (!comPorts.get(comPort))
-            {
-                readSerialData = new Thread(new ReadSeriellData(this, comPort, baudRate));
-                readSerialData.start();
-
-            } else
-            {
-                System.out.println(comPort + " busy");
-                // Error message, com port busy
-            }
-        } else
-        {
-            System.out.println(comPort + " doeas not exist!");
-            // Error message, illegal com port
-        }
-        return serialData;
-    }
-
-    public void writeData(String comPort, int baudRate, String data)
-    {
-
-        if (comPorts.containsKey(comPort))
-        {
-            if (!comPorts.get(comPort))
-            {
-                writer.writeData(comPort, baudRate, data);
-//                HashMap serialData = new ReadSeriellData().readData(comPort, baudRate);
-
-            } else
-            {
-                //Error message, com port busy
-            }
-        } else
-        {
-            // Error message, illegal com port
+            // Wait
         }
     }
+
+//    public void readData(DataHandler dh, String comPort, int baudRate)
+//    //ConcurrentHashMap
+//    {
+//        ConcurrentHashMap serialData = new ConcurrentHashMap();
+//
+//        if (comPorts.containsKey(comPort))
+//        {
+//            if (!comPorts.get(comPort))
+//            {
+//                readSerialData = new Thread(new ReadSeriellData(dh, this, comPort, baudRate));
+//                readSerialData.start();
+//
+//            } else
+//            {
+//                System.out.println(comPort + " busy");
+//                // Error message, com port busy
+//            }
+//        } else
+//        {
+//            System.out.println(comPort + " doeas not exist!");
+//            // Error message, illegal com port
+//        }
+//        //return serialData;
+//    }
+//
+//    public void writeData(String comPort, int baudRate, String data)
+//    {
+//
+//        if (comPorts.containsKey(comPort))
+//        {
+//            if (!comPorts.get(comPort))
+//            {
+//                writer.writeData(comPort, baudRate, data);
+////                HashMap serialData = new ReadSeriellData().readData(comPort, baudRate);
+//
+//            } else
+//            {
+//                //Error message, com port busy
+//            }
+//        } else
+//        {
+//            // Error message, illegal com port
+//        }
+//    }
 }

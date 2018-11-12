@@ -2,17 +2,16 @@ package shipsystem;
 
 import SerialCom.SerialDataHandler;
 
-
 /**
- * Logic class
- * handles the logic that controls the ship and commands
+ * Logic class handles the logic that controls the ship and commands
+ *
  * @author Haakon, Bjørnar, Robin
  * @version v1.0 30.10.2018
  */
 public class Logic
 {
-    
-    protected enum STATES 
+
+    protected enum STATES
     {
         DPCONTROLL(0),
         MANUALCONTROLL(1),
@@ -26,26 +25,28 @@ public class Logic
         GOREVANDLEFT(9),
         GOREVANDRIGHT(19),
         DEFAULT(-99);
-        
+
         private final int value;
-        
+
         private STATES(int value)
         {
             this.value = value;
         }
-        
+
         protected int getValue()
         {
             return this.value;
         }
     }
-    
+
     private final DataHandler dh;
     private final int maxSpeed = 255;
     private final int minSpeed = 0;
-    
+    private int calculatedAngle;
+    private int inputAngle;
+
     private boolean isServoOut = false;
-    
+
     private STATES state;
 
     public Logic(DataHandler dh)
@@ -58,12 +59,8 @@ public class Logic
         this.isServoOut = false;
 //        this.switchCaseButtonStates();
         this.switchCaseMotorSpeeds();
-        
-        
-        
-        
     }
-    
+
 //    /**
 //     * Sets motor speed to run forward
 //     * 
@@ -88,6 +85,39 @@ public class Logic
 //        this.setLeftSpeed(leftSpeed);
 //        this.setRightSpeed(rightSpeed);
 //    }
+    protected void calculateAngle()
+    {
+        this.calculatedAngle = 180 - this.inputAngle;
+
+        if (this.calculatedAngle < 0)
+        {
+            this.calculatedAngle = this.calculatedAngle + 360;
+        }
+    }
+
+    protected void runPidRotPS()
+    {
+        if(this.calculatedAngle != dh.getFb_podPosPS())
+        {
+            dh.setCmd_speedPodRotPS(maxSpeed);
+        }
+        else
+        {
+            dh.setCmd_speedPodRotPS(minSpeed);
+        }
+    }
+    
+    protected void runPidRotSB()
+    {
+        if(this.calculatedAngle != dh.getFb_podPosSB())
+        {
+            dh.setCmd_speedPodRotSB(maxSpeed);
+        }
+        else
+        {
+            dh.setCmd_speedPodRotSB(minSpeed);
+        }
+    }
     
     /**
      * Sets motor speed to run left
@@ -95,9 +125,9 @@ public class Logic
     protected void runLeft()
     {
         this.setState(STATES.GOLEFT);
-        
+
     }
-    
+
     /**
      * Sets motor speed to run right
      */
@@ -105,15 +135,15 @@ public class Logic
     {
         this.setState(STATES.GORIGHT);
     }
-    
+
     /**
      * Sets motor speed zero/stop
-     */ 
+     */
     protected void stop()
     {
         this.setState(STATES.STOP);
     }
-    
+
     /**
      * Sets system to DP controll
      */
@@ -121,8 +151,7 @@ public class Logic
     {
         this.setState(STATES.DPCONTROLL);
     }
-    
-    
+
     /**
      * Sets system to manual controll.
      */
@@ -130,7 +159,7 @@ public class Logic
     {
         this.setState(STATES.MANUALCONTROLL);
     }
-    
+
 //    
 //    protected void handleButtonState()
 //    {
@@ -205,144 +234,141 @@ public class Logic
 //                break;
 //        }
 //    }
-    
-  
     /**
      * sets the correct motorspeeds from state (manual mode)
      */
-    
     protected void switchCaseMotorSpeeds()
     {
-        
+
         switch (this.getState())
         {
             case STOP:
                 dh.setCmd_speedPS(minSpeed);
                 dh.setCmd_speedSB(minSpeed);
                 break;
-            case GOFWD: 
-                if(dh.getFb_podPosPS() != 0)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);                   
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);             
-                }
-                
-                if(dh.getFb_podPosSB() != 0)
-                {
-                   dh.setCmd_speedPodRotSB(maxSpeed); 
-                }
-                else
-                {
-                   dh.setCmd_speedPodRotSB(minSpeed); 
-                }
-                
-                if (dh.getFb_podPosPS()== 0 && dh.getFb_podPosSB()== 0)
-                {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOREV:
-                 if(dh.getFb_podPosPS()!= 0)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);                   
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);            
-                }
-                 
-                 if(dh.getFb_podPosSB() != 0)
-                 {
-                     dh.setCmd_speedPodRotSB(maxSpeed);
-                 }
-                 else
-                 {
-                    dh.setCmd_speedPodRotSB(minSpeed); 
-                 }
-                 
-                if (dh.getFb_podPosPS()== 0 && dh.getFb_podPosSB()== 0)
-                {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOLEFT:
-                if (dh.getFb_podPosPS()!= 315)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);                   
-                }
-                else 
-                {
-                   dh.setCmd_speedPodRotPS(minSpeed);              
-                }
-                
-                if(dh.getFb_podPosSB()!= 315)
-                {
-                  dh.setCmd_speedPodRotSB(maxSpeed);  
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-                
-                if (dh.getFb_podPosPS()== 315 && dh.getFb_podPosSB()== 315)
-                {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GORIGHT:
-                if (dh.getFb_podPosPS()!= 45)
+            case GOFWD:
+                if (dh.getFb_podPosPS() != 0)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
                 }
                 else
                 {
-                   dh.setCmd_speedPodRotPS(minSpeed);                  
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
-                
-                if(dh.getFb_podPosSB() != 45)
-                {
-                  dh.setCmd_speedPodRotSB(maxSpeed);  
-                }
-                else
-                {
-                 dh.setCmd_speedPodRotSB(minSpeed);   
-                }
-                
-                if (dh.getFb_podPosPS()== 45 && dh.getFb_podPosSB()== 45)
-                {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOFWDANDLEFT:
-                if (dh.getFb_podPosPS() != 345)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);   
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);   
-                }
-                
-                if(dh.getFb_podPosSB() != 345)
+
+                if (dh.getFb_podPosSB() != 0)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
                 }
                 else
                 {
-                  dh.setCmd_speedPodRotSB(minSpeed);  
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
-                
+
+                if (dh.getFb_podPosPS() == 0 && dh.getFb_podPosSB() == 0)
+                {
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
+                }
+                break;
+            case GOREV:
+                if (dh.getFb_podPosPS() != 0)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);
+                }
+
+                if (dh.getFb_podPosSB() != 0)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotSB(minSpeed);
+                }
+
+                if (dh.getFb_podPosPS() == 0 && dh.getFb_podPosSB() == 0)
+                {
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
+                }
+                break;
+            case GOLEFT:
+                if (dh.getFb_podPosPS() != 315)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);
+                }
+
+                if (dh.getFb_podPosSB() != 315)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotSB(minSpeed);
+                }
+
+                if (dh.getFb_podPosPS() == 315 && dh.getFb_podPosSB() == 315)
+                {
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
+                }
+                break;
+            case GORIGHT:
+                if (dh.getFb_podPosPS() != 45)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);
+                }
+
+                if (dh.getFb_podPosSB() != 45)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotSB(minSpeed);
+                }
+
+                if (dh.getFb_podPosPS() == 45 && dh.getFb_podPosSB() == 45)
+                {
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
+                }
+                break;
+            case GOFWDANDLEFT:
+                if (dh.getFb_podPosPS() != 345)
+                {
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotPS(minSpeed);
+                }
+
+                if (dh.getFb_podPosSB() != 345)
+                {
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                }
+                else
+                {
+                    dh.setCmd_speedPodRotSB(minSpeed);
+                }
+
                 if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
                 {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOFWDANDRIGHT:
@@ -354,7 +380,7 @@ public class Logic
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
-                if(dh.getFb_podPosSB() != 15)
+                if (dh.getFb_podPosSB() != 15)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
                 }
@@ -364,12 +390,12 @@ public class Logic
                 }
                 if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
                 {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOREVANDRIGHT:
-                  if (dh.getFb_podPosPS() != 15)
+                if (dh.getFb_podPosPS() != 15)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
                 }
@@ -377,7 +403,7 @@ public class Logic
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
-                if(dh.getFb_podPosSB() != 15)
+                if (dh.getFb_podPosSB() != 15)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
                 }
@@ -387,116 +413,119 @@ public class Logic
                 }
                 if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
                 {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOREVANDLEFT:
-                 if (dh.getFb_podPosPS() != 345)
+                if (dh.getFb_podPosPS() != 345)
                 {
-                    dh.setCmd_speedPodRotPS(maxSpeed);   
+                    dh.setCmd_speedPodRotPS(maxSpeed);
                 }
                 else
                 {
-                    dh.setCmd_speedPodRotPS(minSpeed);   
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
-                
-                if(dh.getFb_podPosSB() != 345)
+
+                if (dh.getFb_podPosSB() != 345)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
                 }
                 else
                 {
-                  dh.setCmd_speedPodRotSB(minSpeed);  
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
-                
+
                 if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
                 {
-                dh.setCmd_speedPS(maxSpeed);
-                dh.setCmd_speedSB(maxSpeed);
+                    dh.setCmd_speedPS(maxSpeed);
+                    dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
-                // unknown command
+            // unknown command
             case DEFAULT:
                 break;
-                
-                default:
-                    break;
+
+            default:
+                break;
         }
     }
-       
+
     /**
      * Set starboard motorspeed
-     * @param speedSB 
-     */   
+     *
+     * @param speedSB
+     */
     public void setSBSpeed(int speedSB)
     {
         dh.setCmd_speedSB(speedSB);
     }
-    
+
     /**
      * Set starboard pod motorspeed
-     * @param speedPodSB 
+     *
+     * @param speedPodSB
      */
     public void setSBpodSpeed(int speedPodSB)
     {
         dh.setCmd_speedPodRotSB(speedPodSB);
     }
-    
-    
+
     /**
      * Set portside motorspeed
+     *
      * @param speedPS
      */
     public void setPSSpeed(int speedPS)
     {
         dh.setCmd_speedPS(speedPS);
     }
-    
+
     /**
      * Set portside pod motorspeed
-     * @param speedPodPS 
+     *
+     * @param speedPodPS
      */
     public void setPSpodSpeed(int speedPodPS)
     {
         dh.setCmd_speedPodRotPS(speedPodPS);
     }
-        
+
     /**
      * Get the state the ship is currently in
-     * 
-     * @return 
-     */    
+     *
+     * @return
+     */
     private STATES getState()
     {
         return state;
     }
-    
+
     /**
      * set the state of movement to the vehicle
-     * 
+     *
      * @param state the new state of the vehicle
      */
     private void setState(STATES state)
     {
         this.state = state;
     }
-    
+
     /**
      * Set state by value of the wanted state
-     * 
-     * @param value integer value of the state 
+     *
+     * @param value integer value of the state
      */
     private void setStateByValue(int value)
     {
         this.state = this.findState(value);
     }
-    
+
     /**
      * find a state by state value
-     * 
+     *
      * @param value the integer representation of the state
-     * @return 
+     * @return
      */
     private STATES findState(int value)
     {
@@ -510,6 +539,5 @@ public class Logic
         }
         return STATES.DEFAULT;
     }
-    
-    
+
 }

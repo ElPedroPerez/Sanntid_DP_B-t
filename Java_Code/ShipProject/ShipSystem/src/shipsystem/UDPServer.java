@@ -65,14 +65,12 @@ public class UDPServer implements Runnable
                 //this.checkForSendingToGUI();                
                 dataReceived = "";
             }
-        }
-        catch (SocketException ex)
+        } catch (SocketException ex)
         {
             System.out.println("Exception-.-.-.-.-.-.-.-.-.-.-.-");
             Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
 
-        }
-        catch (IOException ex)
+        } catch (IOException ex)
         {
             System.out.println("Exception-.-.-.-.-.-.-.-.-.-.-.-");
             Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -101,13 +99,11 @@ public class UDPServer implements Runnable
                     {
                         serverSocket.send(sendpacket);
                         //System.out.println(Arrays.toString(data) + " TO GUI, with ip: " + Main.ipAdress);
-                    }
-                    catch (IOException ex)
+                    } catch (IOException ex)
                     {
                         Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
-                catch (UnknownHostException ex)
+                } catch (UnknownHostException ex)
                 {
                     Logger.getLogger(UDPServer.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -203,8 +199,7 @@ public class UDPServer implements Runnable
         {
             semaphore.acquire();
 
-        }
-        catch (InterruptedException ex)
+        } catch (InterruptedException ex)
         {
             Logger.getLogger(Controller.class
                     .getName()).log(Level.SEVERE, null, ex);
