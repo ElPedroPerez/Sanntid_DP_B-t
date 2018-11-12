@@ -64,6 +64,10 @@ public class DataHandler
     private boolean podPosPSavailable;
     private boolean ballastSensorAvailable;
 
+    private double xShipPos;
+    private double yShipPos;
+    private double posAccuracy;
+
     private int ic_angle;
     private int temp_Angle;
 
@@ -105,12 +109,16 @@ public class DataHandler
         podPosPSavailable = false;
         ballastSensorAvailable = false;
 
+        xShipPos = 0;
+        yShipPos = 0;
+        posAccuracy = 0;
+
         ic_angle = 0;
         temp_Angle = 0;
     }
-
     //*****************************************************************
     //********************** THREAD STATUS METHODS*********************
+
     /**
      * Returns the threads status
      *
@@ -179,8 +187,8 @@ public class DataHandler
     public void setTemp_Angle(int temp_Angle)
     {
         this.temp_Angle = temp_Angle;
-    }    
-    
+    }
+
     public int getIc_angle()
     {
         return ic_angle;
@@ -548,6 +556,36 @@ public class DataHandler
     public boolean checkSendDataAvailable()
     {
         return ShipSystem.enumStateEvent == SendEventState.TRUE;
+    }
+
+    public void setXShipPos(double xShipPos)
+    {
+        this.xShipPos = xShipPos;
+    }
+
+    public double getXShipPos()
+    {
+        return xShipPos;
+    }
+
+    public void setYShipPos(double yShipPos)
+    {
+        this.yShipPos = xShipPos;
+    }
+
+    public double getYShipPos()
+    {
+        return yShipPos;
+    }
+
+    public void getPosaccuracy(double posAccuracy)
+    {
+        this.posAccuracy = posAccuracy;
+    }
+
+    public double setPosAccuracy()
+    {
+        return posAccuracy;
     }
 
     public String getDataToArduino()
