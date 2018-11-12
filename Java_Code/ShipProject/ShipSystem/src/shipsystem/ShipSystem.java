@@ -55,17 +55,6 @@ public class ShipSystem
         int pitch = 0;
         int roll = 0;
 
-        // bRYNJARS testområde
-        while (true)
-        {
-            try
-            {
-                System.out.println("Angle from IC: " + dh.getTemp_Angle());
-                Thread.sleep(250);
-            } catch (InterruptedException ex)
-            {
-                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
-            }
 //        // bRYNJARS testområde
 //        while (true)
 //        {
@@ -77,7 +66,7 @@ public class ShipSystem
 //            {
 //                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
 //            }
-
+        // }
 //        //Robins test area
 //        dh.handleDataFromArduino();
 //        while (true)
@@ -112,10 +101,8 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
-
-        }
+    }
 //
 //        }
 
-    }
 }
