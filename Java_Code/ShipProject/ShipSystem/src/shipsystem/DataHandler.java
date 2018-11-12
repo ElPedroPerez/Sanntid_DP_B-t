@@ -64,6 +64,9 @@ public class DataHandler
     private boolean podPosPSavailable;
     private boolean ballastSensorAvailable;
 
+    private int ic_angle;
+    private int temp_Angle;
+
     // pid parameters
     private double P; // prop gain
     private double I; // integral gain
@@ -101,6 +104,9 @@ public class DataHandler
         podPosSBavailable = false;
         podPosPSavailable = false;
         ballastSensorAvailable = false;
+
+        ic_angle = 0;
+        temp_Angle = 0;
     }
 
     //*****************************************************************
@@ -163,6 +169,26 @@ public class DataHandler
     public boolean isDataFromArduinoAvailable()
     {
         return this.dataFromArduinoAvaliable;
+    }
+
+    public int getTemp_Angle()
+    {
+        return temp_Angle;
+    }
+
+    public void setTemp_Angle(int temp_Angle)
+    {
+        this.temp_Angle = temp_Angle;
+    }    
+    
+    public int getIc_angle()
+    {
+        return ic_angle;
+    }
+
+    public void setIc_angle(int ic_angle)
+    {
+        this.ic_angle = ic_angle;
     }
 
     public int getFb_speedSB()
@@ -299,12 +325,12 @@ public class DataHandler
     {
         return Roll;
     }
-    
+
     public long getComResponseTime()
     {
         return comResponseTime;
     }
-    
+
     public void setComResponseTime(long comResponseTime)
     {
         this.comResponseTime = comResponseTime;
@@ -537,17 +563,12 @@ public class DataHandler
 
 //        ConcurrentHashMap<String, String> dataFeedback = new ConcurrentHashMap<>();
 //        ConcurrentHashMap<String, String> dataIMU = new ConcurrentHashMap<>();
-
 //        dataFeedback = 
         //SerialDataHandler
         //sdh.readData(this, arduinoFeedbackComPort, arduinoBaudRate);
-        
-        
         //dataIMU = sdh.readData(arduinoFeedbackComPortIMU, arduinoBaudRate);
-
 //        dataFeedback.forEach(data::putIfAbsent);
         //dataIMU.forEach(data::putIfAbsent);
-
         for (Entry e : data.entrySet())
         {
             String key = (String) e.getKey();
@@ -574,6 +595,9 @@ public class DataHandler
                     break;
                 case "Roll":
                     this.Roll = Integer.parseInt(value);
+                    break;
+                case "angle":
+                    this.ic_angle = Integer.parseInt(value);
                     break;
             }
         }
