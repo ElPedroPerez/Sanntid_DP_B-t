@@ -25,6 +25,10 @@ class LeftThumbYListener implements ValueListener
     public void value(int newValue)
     {
         newValue = map(newValue, -32768, 32768, -100, 100);
+        if (newValue < 0)
+        {
+            newValue = 0;
+        }
         this.ic.setBtnLy(newValue);
         //System.out.printf("Ly: " + "%6d\n", newValue);
     }
