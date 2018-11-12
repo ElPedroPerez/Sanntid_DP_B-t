@@ -7,42 +7,64 @@ package guisystem;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Handles data from GUI
- * 
+ *
  * @author Bjørnar
  */
-
-public class Datahandler {
+public class Datahandler extends Observable
+{
 
     private String dataFromGui;
+    private int angle;
 
-
-    public Datahandler(String dataFromGui) 
+    public Datahandler()
     {
 
-        this.dataFromGui = dataFromGui;
+        //this.dataFromGui = dataFromGui;
     }
 
-    
+    public void setAngle(int angle)
+    {
+        this.angle = angle;
+        setChanged();
+        notifyObservers();
+    }
+
+    public int getAngle()
+    {
+        return this.angle;
+    }
+
     /**
      * Gets data from GUI
+     *
      * @return dataFromGui
      */
-    public String getDataFromGui() 
+    public String getDataFromGui()
     {
         return this.dataFromGui;
     }
 
-  
     /**
-    * Creates and sends the data String over UDP
-    */
-    public void sendData() 
+     * Creates and sends the data String over UDP
+     */
+    public void sendData()
     {
         new UDPsender().send(GUISystem.IPADDRESS, dataFromGui, GUISystem.SENDPORT);
     }
-
+    
+        /**
+     * Overrided function for adding observers to a observable object.
+     * 
+     * @param o Observer
+     */
+    @Override
+    public synchronized void addObserver(Observer o) {
+        super.addObserver(o); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }
