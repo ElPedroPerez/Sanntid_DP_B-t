@@ -7,6 +7,8 @@ package shipsystem;
 
 import SerialCom.SerialDataHandler;
 import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,7 +25,7 @@ public class ShipSystem
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
-    protected static String ipAdress = "localhost";
+    protected static String ipAdress = "158.38.199.132";
 
     /**
      * @param args the command line arguments
@@ -53,11 +55,23 @@ public class ShipSystem
         int pitch = 0;
         int roll = 0;
 
+//        // bRYNJARS testområde
+//        while (true)
+//        {
+//            try
+//            {
+//                System.out.println("Angle from IC: " + dh.getTemp_Angle());
+//                Thread.sleep(250);
+//            } catch (InterruptedException ex)
+//            {
+//                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+        // }
 //        //Robins test area
 //        dh.handleDataFromArduino();
 //        while (true)
 //        {
-//          
+//
 //
 //            yaw = dh.getYaw();
 //            pitch = dh.getPitch();
@@ -88,4 +102,7 @@ public class ShipSystem
 //        server.start();
 //        alarmList.start();
     }
+//
+//        }
+
 }
