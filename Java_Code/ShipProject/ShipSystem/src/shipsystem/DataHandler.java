@@ -64,6 +64,11 @@ public class DataHandler
     private boolean podPosPSavailable;
     private boolean ballastSensorAvailable;
 
+    private double xShipPos;
+    private double yShipPos;
+    private double posAccuracy;
+    
+    
     // pid parameters
     private double P; // prop gain
     private double I; // integral gain
@@ -101,6 +106,10 @@ public class DataHandler
         podPosSBavailable = false;
         podPosPSavailable = false;
         ballastSensorAvailable = false;
+        
+        xShipPos = 0;
+        yShipPos = 0;
+        posAccuracy = 0;
     }
 
     //*****************************************************************
@@ -524,6 +533,36 @@ public class DataHandler
         return ShipSystem.enumStateEvent == SendEventState.TRUE;
     }
 
+    public void setXShipPos(double xShipPos)
+    {
+        this.xShipPos = xShipPos;
+    }
+    
+    public double getXShipPos()
+    {
+        return xShipPos;
+    }
+    
+     public void setYShipPos(double yShipPos)
+    {
+        this.yShipPos = xShipPos;
+    }
+    
+    public double getYShipPos()
+    {
+        return yShipPos;
+    }
+    
+    public void getPosaccuracy(double posAccuracy)
+    {
+        this.posAccuracy = posAccuracy;
+    }
+    
+    public double setPosAccuracy()
+    {
+        return posAccuracy;
+    }
+    
     public String getDataToArduino()
     {
         return "podposps:" + this.getFb_podPosPS()
