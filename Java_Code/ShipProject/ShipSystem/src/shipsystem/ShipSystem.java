@@ -66,6 +66,8 @@ public class ShipSystem
 //            {
 //                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+//        }
+    
 
 //        //Robins test area
 //        dh.handleDataFromArduino();
@@ -101,8 +103,9 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
-//
-//        }
+
+        
 
     }
 }
+
