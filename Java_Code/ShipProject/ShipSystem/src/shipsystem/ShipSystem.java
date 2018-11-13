@@ -64,7 +64,13 @@ public class ShipSystem
 //            try
 //            {
 //                System.out.println("Angle from IC: " + dh.getTemp_Angle());
+//                System.out.println("Speed from IC: " + dh.getIc_speed());
 //                System.out.println("L1: " + dh.getIc_L1());
+//                System.out.println("R1: " + dh.getIc_R1());
+//                System.out.println("X: " + dh.getIc_X());
+//                System.out.println("A: " + dh.getIc_A());
+//                System.out.println("B: " + dh.getIc_B());
+//                System.out.println("Y: " + dh.getIc_Y());
 //                Thread.sleep(250);
 //            } catch (InterruptedException ex)
 //            {
