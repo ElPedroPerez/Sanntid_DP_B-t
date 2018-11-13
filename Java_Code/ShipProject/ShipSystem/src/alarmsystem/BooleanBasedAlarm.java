@@ -22,7 +22,7 @@ public class BooleanBasedAlarm implements Runnable
     boolean ack;
     boolean inhibit;
 
-    public BooleanBasedAlarm(int inputSignal, int setPoint, boolean alarm,
+    public BooleanBasedAlarm(AlarmList al, int inputSignal, int setPoint, boolean alarm,
             boolean HAlarm, boolean ack, boolean inhibit)
     {
         this.inputSignal = inputSignal;

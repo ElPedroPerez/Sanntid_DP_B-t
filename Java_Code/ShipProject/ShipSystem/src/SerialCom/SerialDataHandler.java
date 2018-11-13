@@ -35,8 +35,8 @@ public class SerialDataHandler implements Runnable
         readSerialDataCom3 = new Thread(new ReadSeriellData(dh, this, "Com3", 115200));
         readSerialDataCom4 = new Thread(new ReadSeriellData(dh, this, "Com4", 115200));
 
-        //readSerialDataCom3.start();
-        readSerialDataCom4.start();
+        readSerialDataCom3.start();
+        //readSerialDataCom4.start();
 
         //True equals port busy
         comPorts.put("Com1", false);

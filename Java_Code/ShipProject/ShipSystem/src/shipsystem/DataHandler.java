@@ -44,6 +44,7 @@ public class DataHandler
     private int fb_speedPS;
     private int fb_podPosSB;
     private int fb_podPosPS;
+    private int fb_speedPodRotPS;
     private boolean fb_ballastSensor;
     private int Yaw;
     private int Pitch;
@@ -56,6 +57,7 @@ public class DataHandler
     private int cmd_speedPodRotPS;
     private int cmd_podPosSB;
     private int cmd_podPosPS;
+
     private boolean cmd_ballastSensor;
 
     private boolean speedSBavailable;
@@ -97,6 +99,7 @@ public class DataHandler
         fb_speedPS = 0;
         fb_podPosSB = 0;
         fb_podPosPS = 0;
+        fb_speedPodRotPS = 0;
         fb_ballastSensor = false;
         Yaw = 0;
         Pitch = 0;
@@ -292,6 +295,16 @@ public class DataHandler
     public int getCmd_podPosSB()
     {
         return cmd_podPosSB;
+    }
+
+    public int getFb_speedPodRotPS()
+    {
+        return fb_speedPodRotPS;
+    }
+
+    public int getSpeedPodRotPS()
+    {
+        return fb_speedPodRotPS;
     }
 
     public void setCmd_podPosSB(int cmd_podPosSB)
@@ -578,14 +591,14 @@ public class DataHandler
         return yShipPos;
     }
 
-    public void getPosaccuracy(double posAccuracy)
-    {
-        this.posAccuracy = posAccuracy;
-    }
-
-    public double setPosAccuracy()
+    public double getPosAccuracy()
     {
         return posAccuracy;
+    }
+
+    public void setPosAccuracy(double posAccuracy)
+    {
+        this.posAccuracy = posAccuracy;
     }
 
     public String getDataToArduino()
@@ -624,6 +637,9 @@ public class DataHandler
                     break;
                 case "fb_speedSB":
                     this.fb_speedSB = Integer.parseInt(value);
+                    break;
+                case "fb_speedPodRotPS":
+                    this.fb_speedPodRotPS = Integer.parseInt(value);
                     break;
                 case "Yaw":
                     this.Yaw = Integer.parseInt(value);
