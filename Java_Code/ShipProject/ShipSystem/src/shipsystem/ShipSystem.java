@@ -61,6 +61,7 @@ public class ShipSystem
 //            try
 //            {
 //                System.out.println("Angle from IC: " + dh.getTemp_Angle());
+//                System.out.println("L1: " + dh.getIc_L1());
 //                Thread.sleep(250);
 //            } catch (InterruptedException ex)
 //            {

@@ -64,6 +64,7 @@ public class Controller implements Runnable
             try
             {
                 this.logic.calculateAngle();
+                
                 Thread.sleep(250);
             } catch (InterruptedException ex)
             {

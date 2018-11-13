@@ -44,6 +44,8 @@ public class Logic
     private final int minSpeed = 0;
     private int calculatedAngle;
     private int inputAngle;
+    private boolean input_L1;
+    
 
     private boolean isServoOut = false;
 
@@ -85,6 +87,11 @@ public class Logic
 //        this.setLeftSpeed(leftSpeed);
 //        this.setRightSpeed(rightSpeed);
 //    }
+    
+    protected void test_L1()
+    {
+        this.input_L1 = dh.getIc_L1();
+    }
     protected void calculateAngle()
     {
         this.inputAngle = dh.getIc_angle();
