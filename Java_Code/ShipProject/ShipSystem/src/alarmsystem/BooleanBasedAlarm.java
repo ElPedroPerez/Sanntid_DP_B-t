@@ -5,32 +5,39 @@
  */
 package alarmsystem;
 
+import shipsystem.DataHandler;
+
 /**
  *
  * @author rocio
  */
 public class BooleanBasedAlarm implements Runnable
 {
-
     long currentTime = 0;
     long lastTime = 0;
 
-    int inputSignal;
+    String input;
     int setPoint;
-    boolean alarm;
+    Boolean alarm;
     boolean HAlarm;
     boolean ack;
     boolean inhibit;
+    String alarmName;
+    AlarmList alarmList;
+    DataHandler dh;
 
-    public BooleanBasedAlarm(AlarmList al, int inputSignal, int setPoint, boolean alarm,
+    public BooleanBasedAlarm(DataHandler dh, AlarmList alarmList, String input, int setPoint, String alarmName,
             boolean HAlarm, boolean ack, boolean inhibit)
     {
-        this.inputSignal = inputSignal;
+        this.alarmList = alarmList;
+        this.input = input;
         this.setPoint = setPoint;
-        this.alarm = alarm;
+        
+        this.alarmName = alarmName;
         this.HAlarm = HAlarm;
         this.ack = ack;
         this.inhibit = inhibit;
+        this.dh = dh;
         currentTime = System.nanoTime();
     }
 
@@ -41,27 +48,31 @@ public class BooleanBasedAlarm implements Runnable
         {
             while (!inhibit)
             {
-                if (HAlarm && inputSignal > setPoint)
+                if (HAlarm && alarmList.alarmDataList.get(input) > setPoint)
                 {
                     // High Alarm
                     alarm = true;
+                    dh.handleDataFromAlarmList(alarmName, alarm);
                     while (alarm)
                     {
                         if (ack)
                         {
                             alarm = false;
+                            dh.handleDataFromAlarmList(alarmName, alarm);
                         }
                     }
                 }
-                if (!HAlarm && inputSignal < setPoint)
+                if (!HAlarm && alarmList.alarmDataList.get(input) < setPoint)
                 {
                     // Low Alarm
                     alarm = true;
+                    dh.handleDataFromAlarmList(alarmName, alarm);
                     while (alarm)
                     {
                         if (ack)
                         {
                             alarm = false;
+                            dh.handleDataFromAlarmList(alarmName, alarm);
                         }
                     }
                 }

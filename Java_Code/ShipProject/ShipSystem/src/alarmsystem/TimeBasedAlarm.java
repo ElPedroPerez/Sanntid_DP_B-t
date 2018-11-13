@@ -5,7 +5,6 @@
  */
 package alarmsystem;
 
-import alarmsystem.AlarmList;
 import shipsystem.DataHandler;
 
 /**
@@ -20,22 +19,21 @@ public class TimeBasedAlarm implements Runnable
 
     String input;
     String fb;
-    boolean alarm;
     int time;
+    boolean alarm;
     boolean ack;
     boolean inhibit;
-    String alarmName;
+    private String alarmName;
     AlarmList alarmList;
     DataHandler dh;
 
-    public TimeBasedAlarm(AlarmList alarmList, String input, String fb, boolean alarm,
+    public TimeBasedAlarm(DataHandler dh, AlarmList alarmList, String input, String fb, String alarmName,
             int time, boolean ack, boolean inhibit)
     {
         this.dh = dh;
         this.alarmList = alarmList;
         this.input = input;
         this.fb = fb;
-        this.alarm = alarm;
         this.time = time;
         this.ack = ack;
         this.inhibit = inhibit;
@@ -51,7 +49,7 @@ public class TimeBasedAlarm implements Runnable
         {
             while (!inhibit)
             {
- //if (alarmList.alarmDataList.get(input) > 0)
+                //if (alarmList.alarmDataList.get(input) > 0)
                 if (1 > 0)
                 {
                     lastTime = System.nanoTime();
@@ -61,12 +59,26 @@ public class TimeBasedAlarm implements Runnable
                         elapsedTime = (System.nanoTime() - lastTime) / 1000000000;
                         if (elapsedTime >= time)
                         {
-                            alarm = true;
+                            try
+                            {
+                                if (alarmName != null)
+                                {
+                                    alarm = true;
+                                    dh.handleDataFromAlarmList(alarmName, alarm);
+                                    //dh.handleDataFromAlarmList(alarmName, true);
+                                }
+
+                            } catch (Exception e)
+                            {
+                                System.out.println("Exception in TimeBasedAlarm when setting alarmstate in DataHandler: " + e);
+                            }
+
                             while (alarm)
                             {
                                 if (ack)
                                 {
                                     alarm = false;
+                                    dh.handleDataFromAlarmList(alarmName, false);
                                 }
                             }
                         }

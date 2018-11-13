@@ -49,7 +49,7 @@ public class AlarmList implements Runnable
     {
         initiateAlarmThreads();
         updateAlarmData();
-        
+
 //        while (true)
 //        {
 //            stbSpeedFeedbackError.updateInputs(dh.getCmd_speedPodRotPS(), dh.getFb_speedSB(), inhibit_stbSpeedFeedbackErrorAlarm);
@@ -59,7 +59,7 @@ public class AlarmList implements Runnable
     private void initiateAlarmThreads()
     {
         //stbSpeedFeedbackErrorAlarm
-        TimeBasedAlarm stbSpeedFeedbackError = new TimeBasedAlarm(this, "Cmd_podSpeedPS", "Fb_speedPodRotPS", stbSpeedFeedbackErrorAlarm, 5, ack, inhibit_stbSpeedFeedbackErrorAlarm);
+        TimeBasedAlarm stbSpeedFeedbackError = new TimeBasedAlarm(dh, this, "Cmd_podSpeedPS", "Fb_speedPodRotPS", "stbSpeedFeedbackErrorAlarm", 5, ack, inhibit_stbSpeedFeedbackErrorAlarm);
         Thread stbSpeedFeedbackError_Thread = new Thread(stbSpeedFeedbackError);
 
 //        //portSpeedFeedbackErrorAlarm
@@ -71,15 +71,15 @@ public class AlarmList implements Runnable
 //        //Steering Gear stb side
 //        Thread stbRotationFeedbackError = new Thread(new TimeBasedAlarm("stbRotationFeedbackError",this, dh.getCmd_podPosSB(), dh.getFb_podPosSB(), stbRotationFeedbackErrorAlarm, 0, ack, inhibit_stbRotationFeedbackErrorAlarm));
 //
-//        //VisionVarianceTreshholdAlarm
-//        Thread visionVarianceTreshhold = new Thread(new BooleanBasedAlarm(this, (int) Math.round(dh.getPosAccuracy()), 7, visionVarianceTreshholdAlarm, true, ack, inhibit_visionVarianceTreshholdAlarm));
+        //VisionVarianceTreshholdAlarm
+        Thread visionVarianceTreshhold = new Thread(new BooleanBasedAlarm(dh, this, "Cmd_PosAccuracy", 7, "visionVarianceTreshholdAlarm", true, ack, inhibit_visionVarianceTreshholdAlarm));
 
         //Start threads        
 //        stbRotationFeedbackError.start();
         stbSpeedFeedbackError_Thread.start();
 //        portRotationFeedbackError.start();
 //        psSpeedFeedbackError.start();
-//        visionVarianceTreshhold.start();
+        visionVarianceTreshhold.start();
 
     }
 
@@ -98,8 +98,10 @@ public class AlarmList implements Runnable
 
             alarmDataList.put("Cmd_podSpeedPS", dh.getCmd_speedSB());
             alarmDataList.put("Fb_podSpeedPS", dh.getFb_speedSB());
-            
+
             alarmDataList.put("Fb_speedPodRotPS", dh.getFb_speedPodRotPS());
+
+            alarmDataList.put("Cmd_PosAccuracy", (int) Math.round(dh.getCmd_PosAccuracy()));
 
             try
             {
