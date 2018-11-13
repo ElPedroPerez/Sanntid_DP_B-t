@@ -74,32 +74,32 @@ public class ShipSystem
     
 
         // }
-        //Robins test area
-        dh.handleDataFromArduino();
-        while (true)
-        {
-
-            yaw = dh.getYaw();
-            pitch = dh.getPitch();
-            roll = dh.getRoll();
-
-            fb_podPosPS = dh.getFb_podPosPS();
-            fb_podPosSB = dh.getFb_podPosSB();
-            fb_speedPS = dh.getFb_speedPS();
-            fb_speedSB = dh.getFb_podPosSB();
-
-            System.out.println("fb_podPosPS is: " + fb_podPosPS);
-            System.out.println("fb_podPosSB is: " + fb_podPosSB);
-            System.out.println("fb_speedPS is: " + fb_speedPS);
-            System.out.println("fb_speedSB is: " + fb_speedSB);
-
-            System.out.println("Yaw is: " + yaw);
-            System.out.println("Pitch is: " + pitch);
-            System.out.println("Roll is: " + roll);
-
-            System.out.println("Com response time: " + dh.getComResponseTime());
-        }
-//End of Robins test area
+//        //Robins test area
+//        dh.handleDataFromArduino();
+//        while (true)
+//        {
+//
+//            yaw = dh.getYaw();
+//            pitch = dh.getPitch();
+//            roll = dh.getRoll();
+//
+//            fb_podPosPS = dh.getFb_podPosPS();
+//            fb_podPosSB = dh.getFb_podPosSB();
+//            fb_speedPS = dh.getFb_speedPS();
+//            fb_speedSB = dh.getFb_podPosSB();
+//
+//            System.out.println("fb_podPosPS is: " + fb_podPosPS);
+//            System.out.println("fb_podPosSB is: " + fb_podPosSB);
+//            System.out.println("fb_speedPS is: " + fb_speedPS);
+//            System.out.println("fb_speedSB is: " + fb_speedSB);
+//
+//            System.out.println("Yaw is: " + yaw);
+//            System.out.println("Pitch is: " + pitch);
+//            System.out.println("Roll is: " + roll);
+//
+//            System.out.println("Com response time: " + dh.getComResponseTime());
+//        }
+////End of Robins test area
 //        controller = new Thread(new Controller(dh, semaphore));
 //        server = new Thread(new UDPServer(semaphore, dh));        
 //        alarmList = new Thread(new alarmsystem.AlarmList(dh));
