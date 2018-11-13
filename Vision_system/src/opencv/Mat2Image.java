@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 public class Mat2Image
 {
 
+    private UDPSender udpSender;
     private Random rng = new Random(12345);
     private JLabel imgContoursLabel;
     private static final double FOCAL_LENGTH = 293.23;//focal length in pixels obtained from Calibration class
@@ -82,7 +83,6 @@ public class Mat2Image
         //InternalWebCam
 //        Scalar lower_color_bounds = new Scalar(145 / 2, (70 * 255) / 100, (40 * 255) / 100);
 //        Scalar upper_color_bounds = new Scalar(183 / 2, (100 * 255) / 100, (100 * 255) / 100);
-        
         //ExtrenalWebCam
         Scalar lower_color_bounds = new Scalar(68 / 2, (80 * 255) / 100, (50 * 255) / 100);
         Scalar upper_color_bounds = new Scalar(120 / 2, (100 * 255) / 100, (100 * 255) / 100);
@@ -214,9 +214,9 @@ public class Mat2Image
                 System.out.println("Center is at X: " + averageCenter);
                 double Y = sqrt(averageCenter * averageCenter - distance * distance);
                 System.out.println("Y: " + Y);
-                
+//                this.udpSender = new UDPSender();
+//                udpSender.send("<Distance:" + (Math.round(distance * 100.0) / 100.0) + ":AverageCenter:" + (Math.round(averageCenter * 100.0) / 100.0) + ":Y:" +  (Math.round(Y * 100.0) / 100.0) + ">" );
                 //distanceCalculator.distanceToShip(averageCenter, distance);
-
             }
 
             distance = 0;
@@ -224,7 +224,7 @@ public class Mat2Image
 
         } catch (Exception e)
         {
-           //System.out.println("Something went wrong..." + e);
+            //System.out.println("Something went wrong..." + e);
         }
 
 //        }
