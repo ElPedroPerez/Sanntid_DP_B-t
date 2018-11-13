@@ -64,7 +64,13 @@ public class Controller implements Runnable
             try
             {
                 this.logic.calculateAngle();
-                
+                this.logic.test_Speed();
+                this.logic.test_L1();
+                this.logic.test_R1();
+                this.logic.test_X();
+                this.logic.test_A();
+                this.logic.test_B();
+                this.logic.test_Y();
                 Thread.sleep(250);
             } catch (InterruptedException ex)
             {
