@@ -64,11 +64,15 @@ public class ShipSystem
 //            try
 //            {
 //                System.out.println("Angle from IC: " + dh.getTemp_Angle());
+//                System.out.println("L1: " + dh.getIc_L1());
 //                Thread.sleep(250);
 //            } catch (InterruptedException ex)
 //            {
 //                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+//        }
+    
+
         // }
         //Robins test area
         dh.handleDataFromArduino();
@@ -103,8 +107,11 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
+
+        
     }
 //
 //        }
 
 }
+
