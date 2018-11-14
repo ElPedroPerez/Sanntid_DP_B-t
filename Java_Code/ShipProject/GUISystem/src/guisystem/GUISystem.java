@@ -16,10 +16,11 @@ import guisystem.Datahandler;
 public class GUISystem
 {
 
-    static final String IPADDRESS = "158.38.199.132"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
+    static final String IPADDRESS = "158.38.85.182"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
     static final int RECEIVEPORT = 9877;
     static final int SENDPORT = 5056; //9876
-    static Datahandler dh;
+    public static Datahandler dh;
+    public static InputController inputController;
 
     /**
      * @param args the command line arguments
@@ -28,7 +29,7 @@ public class GUISystem
     {
         dh = new Datahandler();
         GUI gui = new GUI();
-        InputController inputController = new InputController(IPADDRESS, SENDPORT, dh);
+        inputController = new InputController(IPADDRESS, SENDPORT, dh);
 
         Thread guiThread = new Thread(gui);
         Thread inputControllerThread = new Thread(inputController);
