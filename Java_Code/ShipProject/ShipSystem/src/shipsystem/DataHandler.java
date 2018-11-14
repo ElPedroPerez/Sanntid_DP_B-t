@@ -46,6 +46,8 @@ public class DataHandler
     private int fb_podPosPS;
     private int fb_speedPodRotPS;
     private boolean fb_ballastSensor;
+
+    //IMU variables
     private int Yaw;
     private int Pitch;
     private int Roll;
@@ -66,12 +68,19 @@ public class DataHandler
     private boolean podPosPSavailable;
     private boolean ballastSensorAvailable;
 
+    //Vision variables
     private double xShipPos;
     private double yShipPos;
     private double posAccuracy;
 
+    //Alarm variables
     private boolean stbSpeedFeedbackErrorAlarm;
 
+    //Ping variables
+    private boolean visionPosDataPing;
+    private boolean guiPing;
+
+    //Controller variables
     private boolean ic_L1;
     private boolean ic_R1;
     private boolean ic_X;
@@ -131,6 +140,11 @@ public class DataHandler
         //Alarms
         stbSpeedFeedbackErrorAlarm = false;
 
+        //Ping variables
+        visionPosDataPing = false;
+        guiPing = false;
+
+        //Controller variables
         ic_L1 = false;
         ic_R1 = false;
         ic_X = false;
@@ -691,6 +705,33 @@ public class DataHandler
     public void setPosAccuracy(double posAccuracy)
     {
         this.posAccuracy = posAccuracy;
+    }
+
+    /**
+     * // * ************************************************************** / *
+     * ************** PING*********************************
+     */
+    public boolean getVisionPosDataTime()
+    {
+        return visionPosDataPing;
+    }
+
+    public void setVisionPosDataTime(boolean visionPosDataPing)
+    {
+        this.visionPosDataPing = visionPosDataPing;
+
+    }
+
+     public void setGuiPing(boolean guiPing)
+    {
+        this.guiPing = guiPing;
+        sendBackGuiPing(true);
+        guiPing = false;
+    }
+
+    private void sendBackGuiPing(boolean value)
+    {
+//UDPServer.sendDataString("<ping:" + value + ">")
     }
 
     public String getDataToArduino()
