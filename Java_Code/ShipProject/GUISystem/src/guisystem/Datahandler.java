@@ -15,7 +15,7 @@ import java.util.Observer;
  *
  * @author Bjørnar
  */
-public class Datahandler extends Observable
+public class Datahandler
 {
 
     private String dataFromGui;
@@ -26,13 +26,19 @@ public class Datahandler extends Observable
 
         //this.dataFromGui = dataFromGui;
     }
-
-    public void setAngle(int angle)
-    {
-        this.angle = angle;
-        setChanged();
-        notifyObservers();
-    }
+//
+//    public void updateGUI()
+//    {
+//        setChanged();
+//        notifyObservers();
+//    }
+//
+//    public void setAngle(int angle)
+//    {
+//        this.angle = angle;
+//        setChanged();
+//        notifyObservers();
+//    }
 
     public int getAngle()
     {
@@ -55,16 +61,6 @@ public class Datahandler extends Observable
     public void sendData()
     {
         new UDPsender().send(GUISystem.IPADDRESS, dataFromGui, GUISystem.SENDPORT);
-    }
-    
-        /**
-     * Overrided function for adding observers to a observable object.
-     * 
-     * @param o Observer
-     */
-    @Override
-    public synchronized void addObserver(Observer o) {
-        super.addObserver(o); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
