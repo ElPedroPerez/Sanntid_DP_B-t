@@ -28,6 +28,7 @@ public class InputController implements Runnable
     private UDPsender udpsender;
     private Datahandler dh;
 
+    private double btnLyGUI = 0;
     private int btnLy = 0;
     private int btnLx = 0;
     private int btnRy = 0;
@@ -226,6 +227,11 @@ public class InputController implements Runnable
         return Math.round(value);
     }
 
+    public double getBtnLyGUI()
+    {
+        return btnLyGUI;
+    }
+
     public int getBtnLy()
     {
         return btnLy;
@@ -234,6 +240,7 @@ public class InputController implements Runnable
     public void setBtnLy(int btnLy)
     {
         this.btnLy = btnLy;
+        this.btnLyGUI = (double) (this.btnLy / 100.0);
     }
 
     public int getBtnLx()

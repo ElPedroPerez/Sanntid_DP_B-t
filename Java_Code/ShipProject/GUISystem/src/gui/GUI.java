@@ -73,7 +73,7 @@ public class GUI extends Application implements Runnable
                 {
                     try
                     {
-                        Thread.sleep(1000);
+                        Thread.sleep(1);
                     }
                     catch (InterruptedException ex)
                     {

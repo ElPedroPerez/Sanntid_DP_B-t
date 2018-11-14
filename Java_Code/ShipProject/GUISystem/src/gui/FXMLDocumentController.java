@@ -21,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import com.gluonhq.charm.glisten.control.ProgressBar;
+import eu.hansolo.tilesfx.Tile;
 
 /**
  *
@@ -33,21 +34,22 @@ public class FXMLDocumentController implements Initializable
     Button btn_main, btn_dp, btn_alarms;
 
     @FXML
-    ProgressBar throttlePS;
+    ProgressBar throttleps, throttlesb;
 
     @FXML
-    Gauge speedps;
+    Gauge speedps, speedsb, podposps_cmd, podposps_fb, podpossb_cmd, podpossb_fb,
+            compass, tunnelthruster;
 
-//    Datahandler dh = GUISystem.dh;
-//    InputController ic = GUISystem.inputController;
+    @FXML
+    Tile throttletrend, speedtrend;
+
+    Datahandler dh = GUISystem.dh;
+    InputController ic = GUISystem.inputController;
+
     @FXML
     private void handleButtonAction(ActionEvent event)
     {
         System.out.println("You clicked me!");
-        btn_main.setText("pressed");
-        //throttlePS.setProgress(0.6);
-        //speedps.setValue(0);
-
     }
 
     @FXML
@@ -89,9 +91,19 @@ public class FXMLDocumentController implements Initializable
     public void updatePage()
     {
         System.out.println("updated");
-        throttlePS.setProgress(0.6);
-        //btn_main.setText("pressed");
-        speedps.setValue(80);
+        throttleps.setProgress(ic.getBtnLyGUI());
+        throttlesb.setProgress(ic.getBtnLyGUI());
+
+        speedps.setValue(ic.getBtnLy());
+        speedsb.setValue(ic.getBtnLy());
+        podposps_cmd.setValue(ic.getBtnLy());
+        podpossb_cmd.setValue(ic.getBtnLy());
+        podpossb_fb.setValue(ic.getBtnLy());
+        podposps_fb.setValue(ic.getBtnLy());
+        tunnelthruster.setValue(ic.getBtnLy());
+        compass.setValue(ic.getBtnLy());
+        throttletrend.setValue(ic.getBtnLy());
+        speedtrend.setValue(ic.getBtnLy());
     }
 
     @Override
