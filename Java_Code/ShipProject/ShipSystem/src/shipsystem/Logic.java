@@ -40,7 +40,7 @@ public class Logic
     }
 
     private final DataHandler dh;
-    private final int maxSpeed = 255;
+    private final int maxSpeed = 100;
     private final int minSpeed = 0;
     private int calculatedAngle;
     private int inputAngle;
@@ -51,6 +51,18 @@ public class Logic
     private boolean input_A;
     private boolean input_B;
     private boolean input_Y;
+    
+    private boolean podPosPSPOK;
+    private boolean podPosSBOK;
+    
+    private int inputDPAngle;
+    private float currentDPXPos;
+    private float currentDPYPos;
+    private float newDPXPos;
+    private float newDPYPos;
+    
+    private int calculatedDPAnglePS;
+    private int calculatedDPAngleSB;
     
 
     private boolean isServoOut = false;
@@ -150,12 +162,44 @@ public class Logic
     
     protected void calculateDPAnglePS()
     {
-        
+       if(this.currentDPXPos > this.newDPXPos)
+       {
+           this.calculatedDPAnglePS = this.inputDPAngle + 180;
+           if (this.calculatedDPAnglePS > 360)
+           {
+               this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
+           }
+       }
+       
+       if(this.currentDPXPos < this.newDPXPos)
+       {
+           this.calculatedDPAnglePS = this.calculatedDPAnglePS - 180;
+           if (this.calculatedDPAnglePS < 0)
+           {
+               this.calculatedDPAnglePS = this.calculatedDPAnglePS + 360;
+           }
+       }
     }
     
     protected void calculateDPAngleSB()
     {
-        
+        if(this.currentDPXPos > this.newDPXPos)
+        {
+            this.calculatedDPAngleSB = this.inputDPAngle - 180;
+           if (this.calculatedDPAnglePS > 0)
+           {
+               this.calculatedDPAnglePS = this.calculatedDPAnglePS + 360;
+           }
+       }
+       
+       if(this.currentDPXPos < this.newDPXPos)
+       {
+           this.calculatedDPAnglePS = this.calculatedDPAnglePS + 180;
+           if (this.calculatedDPAnglePS < 360)
+           {
+               this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
+           }
+       }
     }
     
     protected void runPodSpeedPS()
@@ -189,6 +233,30 @@ public class Logic
         else
         {
             dh.setCmd_speedPodRotSB(minSpeed);
+        }
+    }
+    
+    protected void podPosPS_OK()
+    {
+        if(dh.getFb_podPosPS() <= this.calculatedAngle + 30 || dh.getFb_podPosPS() >= this.calculatedAngle - 30)
+        {
+            this.podPosPSPOK = true;
+        }
+        else 
+        {
+            this.podPosPSPOK = false;
+        }
+    }
+    
+    protected void podPosSB_OK()
+    {
+        if(dh.getFb_podPosSB() <= this.calculatedAngle + 30 || dh.getFb_podPosSB() >= this.calculatedAngle - 30)
+        {
+            this.podPosSBOK = true;
+        }
+        else
+        {
+            this.podPosSBOK = false;
         }
     }
 
@@ -320,28 +388,13 @@ public class Logic
                 dh.setCmd_speedSB(minSpeed);
                 break;
             case GOFWD:
-                if (dh.getFb_podPosPS() != 0)
+                if (this.podPosPSPOK && this.podPosSBOK)
                 {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
+                    dh.setCmd_speedPodRotPS(inputSpeed);
                 }
                 else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
-                }
-
-                if (dh.getFb_podPosSB() != 0)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-
-                if (dh.getFb_podPosPS() == 0 && dh.getFb_podPosSB() == 0)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             case GOREV:
