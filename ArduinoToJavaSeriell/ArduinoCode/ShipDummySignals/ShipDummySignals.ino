@@ -10,10 +10,11 @@ int fb_podPosSB = 0;
 int fb_podPosPS = 50;
 int cmd_podPosSB = 180;
 int cmd_podPosPS = 200;
+int fb_speedPodRotPS = 0;
 
 
 int const updateFrequenzy = 10; //Hz
-int const dataSize = 8;
+int const dataSize = 10;
 
 void setup()
 {
@@ -24,7 +25,7 @@ void setup()
 
 //<key:value>
 
-void sendDataOverSeriell(String data[8])
+void sendDataOverSeriell(String data[10])
 {
   String dataString = "";
   dataString = String("<");
@@ -32,7 +33,7 @@ void sendDataOverSeriell(String data[8])
   //Serial.println(dataSize);
 
   // Serial.print("<");
-  for (byte i = 0; i < 8; i++)
+  for (byte i = 0; i < 10; i++)
   {
     dataString = String(dataString + data[i]);
     if (i < dataSize - 1)
@@ -50,13 +51,14 @@ void sendDataOverSeriell(String data[8])
 
 void loop()
 {
-  String data[8];
+  String data[10];
 
 
   fb_speedPS = fb_speedPS + 1;
   fb_speedSB = fb_speedSB + 1;
   fb_podPosPS = fb_podPosPS + 1;
   fb_podPosSB = fb_podPosSB + 1;
+  //fb_speedPodRotPS = fb_speedPodRotPS +1;
 
 
 
@@ -76,6 +78,10 @@ void loop()
   {
     fb_podPosPS = 0;
   }
+  if (fb_speedPodRotPS >= 100)
+  {
+    fb_speedPodRotPS = 0;
+  }
 
 
 
@@ -89,6 +95,8 @@ void loop()
   data[5] = String(fb_podPosPS);
   data[6] = "fb_podPosSB";
   data[7] = String(fb_podPosSB);
+  data[8] = "fb_speedPodRotPS";
+  data[9] = String (fb_speedPodRotPS);
 
   //Serial.println("Sending");
   sendDataOverSeriell(data);

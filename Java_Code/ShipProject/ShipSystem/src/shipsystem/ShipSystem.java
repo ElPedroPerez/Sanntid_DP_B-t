@@ -6,6 +6,7 @@
 package shipsystem;
 
 import SerialCom.SerialDataHandler;
+import alarmsystem.AlarmList;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +39,7 @@ public class ShipSystem
         dh.setThreadStatus(true);
 
         serialDataHandler = new Thread(new SerialDataHandler(dh));
+        alarmList = new Thread(new AlarmList(dh));
 
         controller = new Thread(new Controller(dh, semaphore));
         server = new Thread(new UDPServer(semaphore, dh));
@@ -45,6 +47,7 @@ public class ShipSystem
         controller.start();
         server.start();
         serialDataHandler.start();
+        alarmList.start();
 
         int fb_podPosPS = 0;
         int fb_podPosSB = 0;
@@ -61,18 +64,29 @@ public class ShipSystem
 //            try
 //            {
 //                System.out.println("Angle from IC: " + dh.getTemp_Angle());
+//                System.out.println("Speed from IC: " + dh.getIc_speed());
+//                System.out.println("L1: " + dh.getIc_L1());
+//                System.out.println("R1: " + dh.getIc_R1());
+//                System.out.println("X: " + dh.getIc_X());
+//                System.out.println("A: " + dh.getIc_A());
+//                System.out.println("B: " + dh.getIc_B());
+//                System.out.println("Y: " + dh.getIc_Y());
 //                Thread.sleep(250);
 //            } catch (InterruptedException ex)
 //            {
 //                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
 //            }
+//        }
+    
+
         // }
 //        //Robins test area
 //        dh.handleDataFromArduino();
+//        
+//        
 //        while (true)
 //        {
-//
-//
+//            
 //            yaw = dh.getYaw();
 //            pitch = dh.getPitch();
 //            roll = dh.getRoll();
@@ -82,18 +96,18 @@ public class ShipSystem
 //            fb_speedPS = dh.getFb_speedPS();
 //            fb_speedSB = dh.getFb_podPosSB();
 //
-//            System.out.println("fb_podPosPS is: " + fb_podPosPS);
-//            System.out.println("fb_podPosSB is: " + fb_podPosSB);
-//            System.out.println("fb_speedPS is: " + fb_speedPS);
-//            System.out.println("fb_speedSB is: " + fb_speedSB);
-//
-//            System.out.println("Yaw is: " + yaw);
-//            System.out.println("Pitch is: " + pitch);
-//            System.out.println("Roll is: " + roll);
-//            
-//            System.out.println("Com response time: " + dh.getComResponseTime());
-//                }
-//End of Robins test area
+////            System.out.println("fb_podPosPS is: " + fb_podPosPS);
+////            System.out.println("fb_podPosSB is: " + fb_podPosSB);
+////            System.out.println("fb_speedPS is: " + fb_speedPS);
+////            System.out.println("fb_speedSB is: " + fb_speedSB);
+////
+////            System.out.println("Yaw is: " + yaw);
+////            System.out.println("Pitch is: " + pitch);
+////            System.out.println("Roll is: " + roll);
+////
+////            System.out.println("Com response time: " + dh.getComResponseTime());
+//        }
+////End of Robins test area
 //        controller = new Thread(new Controller(dh, semaphore));
 //        server = new Thread(new UDPServer(semaphore, dh));        
 //        alarmList = new Thread(new alarmsystem.AlarmList(dh));
@@ -101,8 +115,11 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
+
+        
     }
 //
 //        }
 
 }
+

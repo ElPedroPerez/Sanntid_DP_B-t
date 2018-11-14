@@ -44,6 +44,7 @@ public class DataHandler
     private int fb_speedPS;
     private int fb_podPosSB;
     private int fb_podPosPS;
+    private int fb_speedPodRotPS;
     private boolean fb_ballastSensor;
     private int Yaw;
     private int Pitch;
@@ -56,6 +57,7 @@ public class DataHandler
     private int cmd_speedPodRotPS;
     private int cmd_podPosSB;
     private int cmd_podPosPS;
+
     private boolean cmd_ballastSensor;
 
     private boolean speedSBavailable;
@@ -68,6 +70,15 @@ public class DataHandler
     private double yShipPos;
     private double posAccuracy;
 
+    private boolean stbSpeedFeedbackErrorAlarm;
+
+    private boolean ic_L1;
+    private boolean ic_R1;
+    private boolean ic_X;
+    private boolean ic_A;
+    private boolean ic_B;
+    private boolean ic_Y;
+    private int ic_speed;
     private int ic_angle;
     private int temp_Angle;
 
@@ -79,9 +90,12 @@ public class DataHandler
     private double RR; // output ramp rate (max delta output)
     private boolean PIDparamChanged;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, Boolean> listOfAlarms;
 
     public DataHandler()
     {
+        listOfAlarms = new ConcurrentHashMap<>();
+
         this.dataFromArduino = new byte[6];
         this.dataToArduino = new byte[6];
         this.dataFromGui = new byte[6];
@@ -97,6 +111,7 @@ public class DataHandler
         fb_speedPS = 0;
         fb_podPosSB = 0;
         fb_podPosPS = 0;
+        fb_speedPodRotPS = 0;
         fb_ballastSensor = false;
         Yaw = 0;
         Pitch = 0;
@@ -113,6 +128,16 @@ public class DataHandler
         yShipPos = 0;
         posAccuracy = 0;
 
+        //Alarms
+        stbSpeedFeedbackErrorAlarm = false;
+
+        ic_L1 = false;
+        ic_R1 = false;
+        ic_X = false;
+        ic_A = false;
+        ic_B = false;
+        ic_Y = false;
+        ic_speed = 0;
         ic_angle = 0;
         temp_Angle = 0;
     }
@@ -187,6 +212,76 @@ public class DataHandler
     public void setTemp_Angle(int temp_Angle)
     {
         this.temp_Angle = temp_Angle;
+    }
+
+    public boolean getIc_L1()
+    {
+        return ic_L1;
+    }
+
+    public void setIc_L1(boolean ic_L1)
+    {
+        this.ic_L1 = ic_L1;
+    }
+
+    public boolean getIc_R1()
+    {
+        return ic_R1;
+    }
+
+    public void setIc_R1(boolean ic_R1)
+    {
+        this.ic_R1 = ic_R1;
+    }
+
+    public boolean getIc_X()
+    {
+        return ic_X;
+    }
+
+    public void setIc_X(boolean ic_X)
+    {
+        this.ic_X = ic_X;
+    }
+
+    public boolean getIc_A()
+    {
+        return ic_A;
+    }
+
+    public void setIc_A(boolean ic_A)
+    {
+        this.ic_A = ic_A;
+    }
+
+    public boolean getIc_B()
+    {
+        return ic_B;
+    }
+
+    public void setIc_B(boolean ic_B)
+    {
+        this.ic_B = ic_B;
+    }
+
+    public boolean getIc_Y()
+    {
+        return ic_Y;
+    }
+
+    public void setIc_Y(boolean ic_Y)
+    {
+        this.ic_Y = ic_Y;
+    }
+
+    public int getIc_speed()
+    {
+        return ic_speed;
+    }
+
+    public void setIc_speed(int ic_speed)
+    {
+        this.ic_speed = ic_speed;
     }
 
     public int getIc_angle()
@@ -292,6 +387,16 @@ public class DataHandler
     public int getCmd_podPosSB()
     {
         return cmd_podPosSB;
+    }
+
+    public int getFb_speedPodRotPS()
+    {
+        return fb_speedPodRotPS;
+    }
+
+    public int getSpeedPodRotPS()
+    {
+        return fb_speedPodRotPS;
     }
 
     public void setCmd_podPosSB(int cmd_podPosSB)
@@ -578,14 +683,14 @@ public class DataHandler
         return yShipPos;
     }
 
-    public void getPosaccuracy(double posAccuracy)
-    {
-        this.posAccuracy = posAccuracy;
-    }
-
-    public double setPosAccuracy()
+    public double getCmd_PosAccuracy()
     {
         return posAccuracy;
+    }
+
+    public void setPosAccuracy(double posAccuracy)
+    {
+        this.posAccuracy = posAccuracy;
     }
 
     public String getDataToArduino()
@@ -594,6 +699,16 @@ public class DataHandler
                 + ":podpossb:" + this.getFb_podPosSB()
                 + ":speedps:" + this.getFb_speedPS()
                 + ":speedsb:" + this.getFb_speedSB();
+    }
+
+    public void handleDataFromAlarmList(String alarmName, boolean state)
+    {
+        listOfAlarms.put(alarmName, state);
+    }
+
+    public ConcurrentHashMap<String, Boolean> getListOfAlarms()
+    {
+        return listOfAlarms;
     }
 
     public synchronized void handleDataFromArduino()
@@ -625,6 +740,9 @@ public class DataHandler
                 case "fb_speedSB":
                     this.fb_speedSB = Integer.parseInt(value);
                     break;
+                case "fb_speedPodRotPS":
+                    this.fb_speedPodRotPS = Integer.parseInt(value);
+                    break;
                 case "Yaw":
                     this.Yaw = Integer.parseInt(value);
                     break;
@@ -636,6 +754,26 @@ public class DataHandler
                     break;
                 case "angle":
                     this.ic_angle = Integer.parseInt(value);
+                    break;
+                case "speed":
+                    this.ic_speed = Integer.parseInt(value);
+                case "L1":
+                    this.ic_L1 = "1".equals(value);
+                    break;
+                case "R1":
+                    this.ic_R1 = "1".equals(value);
+                    break;
+                case "X":
+                    this.ic_X = "1".equals(value);
+                    break;
+                case "A":
+                    this.ic_A = "1".equals(value);
+                    break;
+                case "B":
+                    this.ic_B = "1".equals(value);
+                    break;
+                case "Y":
+                    this.ic_Y = "1".equals(value);
                     break;
             }
         }

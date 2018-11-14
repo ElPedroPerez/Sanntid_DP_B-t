@@ -44,6 +44,14 @@ public class Logic
     private final int minSpeed = 0;
     private int calculatedAngle;
     private int inputAngle;
+    private int inputSpeed;
+    private boolean input_L1;
+    private boolean input_R1;
+    private boolean input_X;
+    private boolean input_A;
+    private boolean input_B;
+    private boolean input_Y;
+    
 
     private boolean isServoOut = false;
 
@@ -85,33 +93,82 @@ public class Logic
 //        this.setLeftSpeed(leftSpeed);
 //        this.setRightSpeed(rightSpeed);
 //    }
+    
+    protected void test_L1()
+    {
+        this.input_L1 = dh.getIc_L1();
+        dh.setIc_L1(input_L1);
+    }
+    
+    protected void test_R1()
+    {
+        this.input_R1 = dh.getIc_R1();
+        dh.setIc_R1(input_R1);
+    }
+    
+    protected void test_X()
+    {
+        this.input_X = dh.getIc_X();
+        dh.setIc_X(input_X);
+    }
+    
+    protected void test_A()
+    {
+        this.input_A = dh.getIc_A();
+        dh.setIc_A(input_A);
+    }
+    
+    protected void test_B()
+    {
+        this.input_B = dh.getIc_B();
+        dh.setIc_B(input_B);
+    }
+    
+    protected void test_Y()
+    {
+        this.input_Y = dh.getIc_Y();
+        dh.setIc_Y(input_Y);
+    }
+    
+    protected void test_Speed()
+    {
+        this.inputSpeed = dh.getIc_speed();
+        dh.setIc_speed(inputSpeed);
+    }
     protected void calculateAngle()
     {
         this.inputAngle = dh.getIc_angle();
-        if (this.inputAngle >= 0 && this.inputAngle <= 90
-                || this.inputAngle >= 270 && this.inputAngle <= 359)
+        this.calculatedAngle = 180 - this.inputAngle;
+        
+        if(this.calculatedAngle < 0)
         {
-            this.calculatedAngle = 180 - this.inputAngle;
-
-            if (this.calculatedAngle < 0)
-            {
-                this.calculatedAngle = this.calculatedAngle + 360;
-            }
+            this.calculatedAngle = this.calculatedAngle + 360;
         }
-        if (this.inputAngle >= 91 && this.inputAngle <= 269)
-        {
-            this.calculatedAngle = 0;
-            this.calculatedAngle = this.inputAngle - 180;
 
-            if (this.calculatedAngle > 0)
-            {
-                this.calculatedAngle = this.calculatedAngle + 360;
-            }
-        }
         dh.setTemp_Angle(this.calculatedAngle);
     }
+    
+    protected void calculateDPAnglePS()
+    {
+        
+    }
+    
+    protected void calculateDPAngleSB()
+    {
+        
+    }
+    
+    protected void runPodSpeedPS()
+    {
+        dh.setCmd_speedPS(inputSpeed);
+    }
+    
+    protected void runPodSpeedSB()
+    {
+        dh.setCmd_speedSB(inputSpeed);
+    }
 
-    protected void runPidRotPS()
+    protected void runPodRotPS()
     {
         if (this.calculatedAngle != dh.getFb_podPosPS())
         {
@@ -123,7 +180,7 @@ public class Logic
         }
     }
 
-    protected void runPidRotSB()
+    protected void runPodRotSB()
     {
         if (this.calculatedAngle != dh.getFb_podPosSB())
         {
