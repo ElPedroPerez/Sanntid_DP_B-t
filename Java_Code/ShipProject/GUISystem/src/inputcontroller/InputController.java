@@ -13,6 +13,8 @@ import guisystem.Datahandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import guisystem.UDPsender;
+import java.awt.Dialog;
+import java.awt.Window;
 import java.net.DatagramSocket;
 import java.util.HashSet;
 import java.util.Observable;

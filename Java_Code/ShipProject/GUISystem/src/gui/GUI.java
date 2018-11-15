@@ -23,6 +23,7 @@ import javafx.stage.StageStyle;
 public class GUI extends Application implements Runnable
 {
 
+    private boolean launched = false;
     private int count = 0;
 
     @Override
@@ -30,7 +31,11 @@ public class GUI extends Application implements Runnable
     {
         while (true)
         {
-            Application.launch();
+            if (!launched)
+            {
+                Application.launch();
+                this.launched = true;
+            }
         }
     }
 

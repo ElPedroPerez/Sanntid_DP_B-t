@@ -172,7 +172,7 @@
                                                             <Image url="@img/background.jpg" />
                                                         </backgroundImage>
                                                     </Tile>
-                                          <Button fx:id="btn_exit" contentDisplay="CENTER" mnemonicParsing="false" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" opacity="0.4" prefHeight="43.0" prefWidth="126.0" style="-fx-background-color: #364250; -fx-font-size: 14;" text="EXIT">
+                                          <Button fx:id="btn_exit" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exitButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" opacity="0.4" prefHeight="43.0" prefWidth="126.0" style="-fx-background-color: #364250; -fx-font-size: 14;" text="EXIT">
                                              <StackPane.margin>
                                                 <Insets top="115.0" />
                                              </StackPane.margin>

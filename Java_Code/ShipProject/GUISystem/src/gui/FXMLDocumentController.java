@@ -26,6 +26,7 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import javafx.stage.Stage;
 
 /**
  *
@@ -76,6 +77,14 @@ public class FXMLDocumentController implements Initializable
             buttonAlreadyPressed = false;
             btn_lock.setText("LOCK");
         }
+    }
+
+    @FXML
+    private void exitButtonAction(ActionEvent event)
+    {
+        Stage stage = (Stage) btn_exit.getScene().getWindow();
+        stage.close();
+        System.exit(0);
     }
 
     @FXML
