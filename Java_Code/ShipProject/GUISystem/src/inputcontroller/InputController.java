@@ -106,7 +106,7 @@ public class InputController implements Runnable
                 udpsender.send(ipAddress, getDataString(), sendPort);
                 // updateDatahandler();
                 //System.out.println("Sent data: " + getDataString());
-                Thread.sleep(500);
+                Thread.sleep(10);
             }
             catch (InterruptedException ex)
             {
@@ -237,6 +237,16 @@ public class InputController implements Runnable
         return btnLy;
     }
 
+    public boolean getBtnL1()
+    {
+        return btnL1;
+    }
+
+    public boolean getBtnR1()
+    {
+        return btnR1;
+    }
+
     public void setBtnLy(int btnLy)
     {
         this.btnLy = btnLy;
@@ -335,7 +345,29 @@ public class InputController implements Runnable
 
     public int getAngle()
     {
+        this.angle = this.FindDegree(btnRx, btnRy);
+        if (this.angle != this.lastAngle)
+        {
+            //System.out.println(angle);
+            this.lastAngle = this.angle;
+        }
         return this.angle;
+    }
+
+    public int getAngleForGUI()
+    {
+        this.angle = this.FindDegree(btnRx, btnRy);
+        if (this.angle != this.lastAngle)
+        {
+            //System.out.println(angle);
+            this.lastAngle = this.angle;
+        }
+        int returnAngle = this.angle - 10;
+        if (returnAngle < 0)
+        {
+            returnAngle = returnAngle + 360;
+        }
+        return returnAngle;
     }
 
 }
