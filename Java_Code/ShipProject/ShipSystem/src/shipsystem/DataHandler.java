@@ -26,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DataHandler
 {
 
+    private UDPsender udpSender = new UDPsender();
     //private SerialDataHandler sdh = new SerialDataHandler();
     private String arduinoFeedbackComPort;
     private String arduinoCommandComPort;
@@ -78,7 +79,9 @@ public class DataHandler
 
     //Ping variables
     private boolean visionPosDataPing;
-    private boolean guiPing;
+    private String guiPing;
+    private int Test;
+    private int Test2;
 
     //Controller variables
     private boolean ic_L1;
@@ -142,7 +145,9 @@ public class DataHandler
 
         //Ping variables
         visionPosDataPing = false;
-        guiPing = false;
+        guiPing = "0.0.0.0";
+        Test = 0;
+        Test2 = 0;
 
         //Controller variables
         ic_L1 = false;
@@ -722,16 +727,38 @@ public class DataHandler
 
     }
 
-     public void setGuiPing(boolean guiPing)
+    public void setGuiPing(String ipAddress)
     {
-        this.guiPing = guiPing;
-        sendBackGuiPing(true);
-        guiPing = false;
+       // this.guiPing = guiPing;
+        sendBackGuiPing(ipAddress);
+        guiPing = "0.0.0.0";
     }
 
-    private void sendBackGuiPing(boolean value)
+    private void sendBackGuiPing(String ipAddress)
     {
+        udpSender.send(ipAddress, "<PingBack:true>", 5057);
+
 //UDPServer.sendDataString("<ping:" + value + ">")
+    }
+
+    public int getTest()
+    {
+        return Test;
+    }
+
+    public void setTest(int test)
+    {
+        this.Test = Test;
+    }
+
+    public int getTest2()
+    {
+        return Test2;
+    }
+
+    public void setTest2(int Test2)
+    {
+        this.Test2 = Test2;
     }
 
     public String getDataToArduino()
@@ -815,6 +842,16 @@ public class DataHandler
                     break;
                 case "Y":
                     this.ic_Y = "1".equals(value);
+                    break;
+                case "Test":
+                    this.Test = Integer.parseInt(value);
+                    break;
+                case "Test2":
+                    this.Test2 = Integer.parseInt(value);
+                    break;
+                case "GuiPing":
+                    this.guiPing = value;
+                    setGuiPing(value);
                     break;
             }
         }
