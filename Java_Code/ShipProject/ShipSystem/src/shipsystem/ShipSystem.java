@@ -27,7 +27,8 @@ public class ShipSystem
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
-    protected static String ipAdress = "10.0.0.29";
+    
+    protected static String ipAdress = "158.38.199.111"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
 
     /**
      * @param args the command line arguments

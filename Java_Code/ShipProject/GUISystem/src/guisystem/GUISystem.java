@@ -16,11 +16,13 @@ import gui.GUI;
 public class GUISystem
 {
 
-    static final String IPADDRESS = "localhost"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
+    
+    private static UDPsender udpsender;
+    static final String IPADDRESS = "158.38.85.182"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
     static final int RECEIVEPORT = 5057;
     static final int SENDPORT = 5056; //9876
-    static Datahandler dh;
-    private static UDPsender udpsender;
+    public static Datahandler dh;
+    public static InputController inputController;
 
     /**
      * @param args the command line arguments
@@ -33,6 +35,7 @@ public class GUISystem
         InputController inputController = new InputController(IPADDRESS, SENDPORT, dh);
         UDPping udpPing = new UDPping(IPADDRESS, SENDPORT, dh);
         UDPListener udpListener = new UDPListener(dh, RECEIVEPORT );
+        inputController = new InputController(IPADDRESS, SENDPORT, dh);
 
         Thread guiThread = new Thread(gui);
         Thread inputControllerThread = new Thread(inputController);
