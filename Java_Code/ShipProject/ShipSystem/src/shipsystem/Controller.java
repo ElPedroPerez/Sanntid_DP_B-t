@@ -45,15 +45,6 @@ public class Controller implements Runnable
     }
 
     /**
-     * start a new thread containing the controller
-     */
-    public void start()
-    {
-        t = new Thread(this, "controller thread");
-        t.start();
-    }
-
-    /**
      * run the controller
      */
     @Override
@@ -64,15 +55,16 @@ public class Controller implements Runnable
             try
             {
                 this.logic.calculateAngle();
-                this.logic.test_Speed();
-                this.logic.test_L1();
-                this.logic.test_R1();
-                this.logic.test_X();
-                this.logic.test_A();
-                this.logic.test_B();
-                this.logic.test_Y();
-                logic.bowThrusterSignal();
+//                this.logic.test_Speed();
+//                this.logic.test_L1();
+//                this.logic.test_R1();
+//                this.logic.test_X();
+//                this.logic.test_A();
+//                this.logic.test_B();
+//                this.logic.test_Y();
+                this.logic.bowThrusterSignal();
                 Thread.sleep(500);
+                
                 dh.handleDataToRemote();
                 
                 

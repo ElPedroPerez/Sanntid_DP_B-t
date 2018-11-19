@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class ShipSystem
 {
-    
+
     protected static DataHandler dh;
     private static Thread acclerationFilter;
     private static Thread alarmList;
@@ -27,7 +27,7 @@ public class ShipSystem
     private static Thread udpListener;
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
-    
+
     protected static String ipAdress = "158.38.92.52"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
 
     /**
@@ -36,50 +36,51 @@ public class ShipSystem
     public static void main(String[] args)
     {
         semaphore = new Semaphore(1, true);
-        
+
         dh = new DataHandler();
         dh.setThreadStatus(true);
-        
-        acclerationFilter = new Thread(new AccelerationFilter(dh));
-        
-        udpListener = new Thread(new UDPListener(dh));
-        
-        serialDataHandler = new Thread(new SerialDataHandler(dh));
-        alarmList = new Thread(new AlarmList(dh));
-        
-        controller = new Thread(new Controller(dh, semaphore));
-        // server = new Thread(new UDPServer(semaphore, dh));
 
-        udpListener.start();
+        acclerationFilter = new Thread(new AccelerationFilter(dh));
+
+        udpListener = new Thread(new UDPListener(dh));
+
+        serialDataHandler = new Thread(new SerialDataHandler(dh));
+        //alarmList = new Thread(new AlarmList(dh));
+
+        controller = new Thread(new Controller(dh, semaphore));
+
+        controller.setName("Controller");
         udpListener.setName("UDPListener");
-        
-        controller.start();
-//        server.start();
-        acclerationFilter.start();
         acclerationFilter.setName("AccelerationFilter");
-        
+        serialDataHandler.setName("SerialDataHandler");
+
+        controller.start();
+        acclerationFilter.start();
+        udpListener.start();
         serialDataHandler.start();
-        alarmList.start();
-        
+        //alarmList.start();
+
         int fb_podPosPS = 0;
         int fb_podPosSB = 0;
         int fb_speedPS = 0;
         int fb_speedSB = 0;
-        
+
         int yaw = 0;
         int pitch = 0;
         int roll = 0;
-        
+
         while (true)
         {
             try
             {
                 System.out.println("dh.getIc_L1: " + dh.getIc_L1());
+                System.out.println("dh.setTemp_Angle: " + dh.getTemp_Angle());
+                System.out.println("A: " + dh.getIc_A());
                 Thread.sleep(250);
             } catch (Exception e)
             {
             }
-           // System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());
+            // System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());
             boolean kake = true;
             //  System.out.println("Test value is: " + dh.getTest()); 
             //  System.out.println("Test2 value is: " + dh.getTest2());

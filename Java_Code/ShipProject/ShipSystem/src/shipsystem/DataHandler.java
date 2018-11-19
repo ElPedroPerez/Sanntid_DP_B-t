@@ -30,8 +30,6 @@ public class DataHandler
     private UDPsender udpSender = new UDPsender();
     //private SerialDataHandler sdh = new SerialDataHandler();
 
-    
-
     private String arduinoFeedbackComPort;
     private String arduinoCommandComPort;
     private String arduinoFeedbackComPortIMU;
@@ -242,6 +240,16 @@ public class DataHandler
         return this.dataFromArduinoAvaliable;
     }
 
+    public synchronized boolean isDataToRemoteUpdated()
+    {
+        return dataToRemoteUpdated;
+    }
+
+    public synchronized void setDataToRemoteUpdated(boolean dataToRemoteUpdated)
+    {
+        this.dataToRemoteUpdated = dataToRemoteUpdated;
+    }
+
     public int getTemp_Angle()
     {
         return temp_Angle;
@@ -252,12 +260,12 @@ public class DataHandler
         this.temp_Angle = temp_Angle;
     }
 
-    public boolean getIc_L1()
+    public synchronized boolean getIc_L1()
     {
-        return ic_L1;
+        return this.ic_L1;
     }
 
-    public void setIc_L1(boolean ic_L1)
+    public synchronized void setIc_L1(boolean ic_L1)
     {
         this.ic_L1 = ic_L1;
     }
@@ -841,14 +849,14 @@ public class DataHandler
 
     public synchronized void handleDataToRemote()
     {
-        dataToRemote.put("softSpeedPod", Integer.toString(getSoftSpeedPod()));
-        dataToRemote.put("cmd_speedSB", Integer.toString(getCmd_speedSB()));
-        dataToRemote.put("cmd_speedPS", Integer.toString(getCmd_speedPS()));
-        dataToRemote.put("cmd_speedPodRotSB", Integer.toString(getCmd_speedPodRotSB()));
-        dataToRemote.put("cmd_speedPodRotPS", Integer.toString(getCmd_speedPodRotPS()));
-        dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
+        //dataToRemote.put("softSpeedPod", Integer.toString(getSoftSpeedPod()));
+//        dataToRemote.put("cmd_speedSB", Integer.toString(getCmd_speedSB()));
+//        dataToRemote.put("cmd_speedPS", Integer.toString(getCmd_speedPS()));
+//        dataToRemote.put("cmd_speedPodRotSB", Integer.toString(getCmd_speedPodRotSB()));
+//        dataToRemote.put("cmd_speedPodRotPS", Integer.toString(getCmd_speedPodRotPS()));
+//        dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
         dataToRemote.put("ThrusterCommand", Integer.toString(getThrusterCommand()));
-        dataToRemoteUpdated = true;
+        //this.setDataToRemoteUpdated(true);
 //
 //        for (Entry e : dataToRemote.entrySet())
 //        {
@@ -877,6 +885,7 @@ public class DataHandler
         {
             String key = (String) e.getKey();
             String value = (String) e.getValue();
+
             switch (key)
             {
                 case "fb_podPosPS":
@@ -909,7 +918,7 @@ public class DataHandler
                 case "speed":
                     this.ic_speed = Integer.parseInt(value);
                 case "L1":
-                    this.ic_L1 = "1".equals(value);
+                    this.setIc_L1("1".equals(value));
                     break;
                 case "R1":
                     this.ic_R1 = "1".equals(value);
@@ -918,7 +927,11 @@ public class DataHandler
                     this.ic_X = "1".equals(value);
                     break;
                 case "A":
-                    this.ic_A = "1".equals(value);
+                    if (this.ic_A != "1".equals(value))
+                    {
+                        this.setDataToRemoteUpdated(true);
+                        this.ic_A = "1".equals(value);
+                    }
                     break;
                 case "B":
                     this.ic_B = "1".equals(value);

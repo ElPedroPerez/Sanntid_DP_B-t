@@ -20,6 +20,9 @@ public class SerialDataHandler implements Runnable
 
     private static Thread readSerialDataCom3;
     private static Thread readSerialDataCom4;
+    private static Thread writeSerialDataCom3;
+    
+    private DataHandler dh;
 
     HashMap<String, Boolean> comPorts = new HashMap<>();
     long comResponseTimer = 0;
@@ -29,13 +32,13 @@ public class SerialDataHandler implements Runnable
     //Populate hashmap
     public SerialDataHandler(DataHandler dh)
     {
-        readSerialDataCom3 = new Thread(new WriteSerialData(dh, this, "Com3", 9600));
+
         //readSerialDataCom3 = new Thread(new ReadSeriellData(dh, this, "Com3", 115200));
         readSerialDataCom4 = new Thread(new ReadSeriellData(dh, this, "Com4", 115200));
 
-        readSerialDataCom3.start();
+        this.dh = dh;
+        //readSerialDataCom3.start();
         //readSerialDataCom4.start();
-
         //True equals port busy
         comPorts.put("Com1", false);
         comPorts.put("Com2", false);
@@ -49,6 +52,9 @@ public class SerialDataHandler implements Runnable
     @Override
     public void run()
     {
+        writeSerialDataCom3 = new Thread(new WriteSerialData(dh, this, "Com3", 9600));
+        writeSerialDataCom3.setName("writeSerialDataCom3");
+        writeSerialDataCom3.start();
         while (true)
         {
             // Wait

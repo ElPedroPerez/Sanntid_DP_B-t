@@ -107,23 +107,23 @@ public class Logic
     
     protected void bowThrusterSignal()
     {
-        if(dh.getIc_L1())
+        if(dh.getIc_A())
+        {
+            dh.setThrusterCommand((byte) 0);
+        }
+        else
         {
             dh.setThrusterCommand((byte) 1);
         }
-        else
-        {
-            dh.setThrusterCommand((byte) 0);
-        }
         
-         if(dh.getIc_R1())
-        {
-            dh.setThrusterCommand((byte) 2);
-        }
-        else
-        {
-            dh.setThrusterCommand((byte) 0);
-        }
+//         if(dh.getIc_B())
+//        {
+//            dh.setThrusterCommand((byte) 2);
+//        }
+//        else
+//        {
+//            dh.setThrusterCommand((byte) 0);
+//        }
         
         
     }
@@ -131,7 +131,7 @@ public class Logic
     protected void test_L1()
     {
         this.input_L1 = dh.getIc_L1();
-        dh.setIc_L1(input_L1);
+        //dh.setIc_L1(input_L1);
     }
     
     protected void test_R1()

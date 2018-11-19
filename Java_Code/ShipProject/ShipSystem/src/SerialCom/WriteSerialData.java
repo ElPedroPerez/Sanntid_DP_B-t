@@ -24,6 +24,7 @@ public class WriteSerialData implements Runnable
     String comPort;
     int baudRate;
     String data;
+    SerialPort serialPort;
 
     public WriteSerialData(DataHandler dh, SerialDataHandler sdh, String comPort, int baudRate)
     {
@@ -38,18 +39,43 @@ public class WriteSerialData implements Runnable
     @Override
     public void run()
     {
-        if (dh.dataToRemoteUpdated)
+        serialPort = new SerialPort(comPort);
+        try
         {
-            for (Map.Entry e : dh.dataToRemote.entrySet())
+            serialPort.openPort();
+            serialPort.setParams(baudRate, 8, 1, 0);
+            try
             {
-                String key = (String) e.getKey();
-                String value = (String) e.getValue();
-                String data = ("<" + key + ":" + value + ">");
-
-                this.write(comPort, 9600, data);
-                //wsd.writeData("Com3", arduinoBaudRate, data);
+                Thread.sleep(500);
+            } catch (Exception e)
+            {
             }
-            dh.dataToRemoteUpdated = false;
+
+        } catch (SerialPortException ex)
+        {
+            System.out.println(ex);
+        }
+        while (true)
+        {
+
+            if (dh.isDataToRemoteUpdated())
+            {
+                for (Map.Entry e : dh.dataToRemote.entrySet())
+                {
+                    String key = (String) e.getKey();
+                    String value = (String) e.getValue();
+                    String data = ("<" + key + ":" + value + ">");
+                    try
+                    {
+                        Thread.sleep(100);
+                    } catch (Exception x)
+                    {
+                    }
+                    this.write(comPort, 9600, data);
+                    //wsd.writeData("Com3", arduinoBaudRate, data);
+                }
+                dh.setDataToRemoteUpdated(false);
+            }
         }
     }
 
@@ -60,16 +86,6 @@ public class WriteSerialData implements Runnable
         String end_char = ">";
         String sep_char = ":";
         //Define Serial Port # -- can be found in Device Manager or Arduino IDE
-        SerialPort serialPort = new SerialPort(comPort);
-
-        try
-        {
-            serialPort.openPort();
-
-        } catch (SerialPortException ex)
-        {
-            System.out.println(ex);
-        }
 
         try
         {
@@ -81,8 +97,8 @@ public class WriteSerialData implements Runnable
 
         try
         {
-            serialPort.setParams(baudRate, 8, 1, 0);
-            String stringData = start_char + data + end_char;
+            
+            String stringData = data;
 
 //            for (int i = 0; i <= serialDataList.size(); i++)
 //            {
@@ -98,7 +114,7 @@ public class WriteSerialData implements Runnable
 
         try
         {
-            serialPort.closePort();
+            //serialPort.closePort();
         } catch (Exception e)
         {
             System.err.println(e);
