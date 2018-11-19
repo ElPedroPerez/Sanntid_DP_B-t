@@ -364,7 +364,7 @@ public class InputController implements Runnable
             //System.out.println(angle);
             this.lastAngle = this.angle;
         }
-        int returnAngle = this.angle - 10;
+        int returnAngle = this.angle - 15;
         if (returnAngle < 0)
         {
             returnAngle = returnAngle + 360;
