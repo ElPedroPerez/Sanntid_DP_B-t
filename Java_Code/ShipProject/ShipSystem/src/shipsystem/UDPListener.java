@@ -88,7 +88,7 @@ public class UDPListener implements Runnable
                         //SerialDataList.put(data[i], data[i + 1]);
                         //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);                   
                     }
-                    dh.handleDataFromArduino();
+                    dh.handleDataFromRemote();
                 }
             }
 
