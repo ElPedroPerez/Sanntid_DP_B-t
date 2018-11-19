@@ -39,7 +39,7 @@ public class WriteSerialData
 
         try
         {
-            System.out.println("Sleep");
+//            System.out.println("Sleep");
             //Thread.sleep(2000);
         } catch (Exception e)
         {
@@ -48,7 +48,7 @@ public class WriteSerialData
         try
         {
             serialPort.setParams(baudRate, 8, 1, 0);
-            String stringData = start_char + "This is my data" + end_char;
+            String stringData = start_char + data + end_char;
             
             
 //            for (int i = 0; i <= serialDataList.size(); i++)

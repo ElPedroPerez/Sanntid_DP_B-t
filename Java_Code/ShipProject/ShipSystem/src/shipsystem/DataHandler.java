@@ -6,6 +6,7 @@
 package shipsystem;
 
 import SerialCom.SerialDataHandler;
+import SerialCom.WriteSerialData;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -28,6 +29,9 @@ public class DataHandler
 
     private UDPsender udpSender = new UDPsender();
     //private SerialDataHandler sdh = new SerialDataHandler();
+
+    private WriteSerialData wsd = new WriteSerialData();
+
     private String arduinoFeedbackComPort;
     private String arduinoCommandComPort;
     private String arduinoFeedbackComPortIMU;
@@ -95,6 +99,9 @@ public class DataHandler
     private int ic_angle;
     private int temp_Angle;
 
+    //Filtered signals
+    private int softSpeedPod;
+
     // pid parameters
     private double P; // prop gain
     private double I; // integral gain
@@ -103,6 +110,7 @@ public class DataHandler
     private double RR; // output ramp rate (max delta output)
     private boolean PIDparamChanged;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
+    public ConcurrentHashMap<String, String> dataToRemote = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Boolean> listOfAlarms;
 
     public DataHandler()
@@ -160,6 +168,9 @@ public class DataHandler
         ic_speed = 0;
         ic_angle = 0;
         temp_Angle = 0;
+
+        //Filtered controller variables
+        softSpeedPod = 0;
     }
     //*****************************************************************
     //********************** THREAD STATUS METHODS*********************
@@ -723,6 +734,16 @@ public class DataHandler
         this.posAccuracy = posAccuracy;
     }
 
+    public int getSoftSpeedPod()
+    {
+        return softSpeedPod;
+    }
+
+    public void setSoftSpeedPod(int softSpeed)
+    {
+        this.softSpeedPod = softSpeed;
+    }
+
     /**
      * // * ************************************************************** / *
      * ************** PING*********************************
@@ -799,6 +820,26 @@ public class DataHandler
     public ConcurrentHashMap<String, Boolean> getListOfAlarms()
     {
         return listOfAlarms;
+    }
+
+    public synchronized void handleDataToRemote()
+    {
+        dataToRemote.put("softSpeedPod", Integer.toString(getSoftSpeedPod()));
+        dataToRemote.put("cmd_speedSB", Integer.toString(getCmd_speedSB()));
+        dataToRemote.put("cmd_speedPS", Integer.toString(getCmd_speedPS()));
+        dataToRemote.put("cmd_speedPodRotSB", Integer.toString(getCmd_speedPodRotSB()));
+        dataToRemote.put("cmd_speedPodRotPS", Integer.toString(getCmd_speedPodRotPS()));
+        dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
+        dataToRemote.put("cmd_podPosPS", Integer.toString(getCmd_podPosPS()));
+
+        for (Entry e : dataToRemote.entrySet())
+        {
+            String key = (String) e.getKey();
+            String value = (String) e.getValue();
+            String data = ("<" + key + ":" + value + ">");
+            wsd.writeData("Com3", arduinoBaudRate, data);
+
+        }
     }
 
     public synchronized void handleDataFromRemote()

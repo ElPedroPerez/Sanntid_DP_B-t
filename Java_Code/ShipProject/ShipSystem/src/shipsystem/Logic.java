@@ -56,10 +56,9 @@ public class Logic
     private boolean podPosSBOK;
     
     private int inputDPAngle;
-    private float currentDPXPos;
-    private float currentDPYPos;
-    private float newDPXPos;
-    private float newDPYPos;
+    
+    
+    private int calibratedZeroIMU = 100;
     
     private int calculatedDPAnglePS;
     private int calculatedDPAngleSB;
@@ -162,43 +161,42 @@ public class Logic
     
     protected void calculateDPAnglePS()
     {
-       if(this.currentDPXPos > this.newDPXPos)
+       if(this.inputDPAngle >= 180)
        {
-           this.calculatedDPAnglePS = this.inputDPAngle + 180;
-           if (this.calculatedDPAnglePS > 360)
-           {
-               this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
-           }
+            this.calculatedDPAnglePS = this.inputDPAngle - 180 - (dh.getYaw() - this.calibratedZeroIMU);
+           
+            if (this.calculatedDPAnglePS > 360) 
+            {
+                this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
+            }
+            
+            if (this.calculatedDPAnglePS < 0)
+            {
+                this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
+            }
+       }
+       else
+           this.calculatedDPAnglePS = this.inputDPAngle + 180 - (dh.getYaw() - this.calibratedZeroIMU);
+       
+       if(this.calculatedDPAnglePS > 360)
+       {
+           this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
        }
        
-       if(this.currentDPXPos < this.newDPXPos)
+       if (this.calculatedDPAnglePS < 0)
        {
-           this.calculatedDPAnglePS = this.calculatedDPAnglePS - 180;
-           if (this.calculatedDPAnglePS < 0)
-           {
-               this.calculatedDPAnglePS = this.calculatedDPAnglePS + 360;
-           }
+           this.calculatedDPAnglePS = this.calculatedDPAnglePS + 360;
        }
+       
     }
     
     protected void calculateDPAngleSB()
     {
-        if(this.currentDPXPos > this.newDPXPos)
-        {
-            this.calculatedDPAngleSB = this.inputDPAngle - 180;
-           if (this.calculatedDPAnglePS > 0)
-           {
-               this.calculatedDPAnglePS = this.calculatedDPAnglePS + 360;
-           }
-       }
+       this.calculatedDPAngleSB = this.calculatedDPAnglePS - 180;
        
-       if(this.currentDPXPos < this.newDPXPos)
+       if(this.calculatedDPAngleSB < 0)
        {
-           this.calculatedDPAnglePS = this.calculatedDPAnglePS + 180;
-           if (this.calculatedDPAnglePS < 360)
-           {
-               this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
-           }
+           this.calculatedDPAngleSB = this.calculatedDPAngleSB + 360;
        }
     }
     

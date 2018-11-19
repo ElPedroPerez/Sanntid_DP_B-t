@@ -72,6 +72,8 @@ public class Controller implements Runnable
                 this.logic.test_B();
                 this.logic.test_Y();
                 Thread.sleep(250);
+                
+                
             } catch (InterruptedException ex)
             {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
