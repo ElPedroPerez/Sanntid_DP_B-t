@@ -16,7 +16,7 @@ public class UDPping implements Runnable
     private UDPsender udpsender;
     private String ipAddress = "";
     private int sendPort;
-    private long timeout = 15000;
+    private long timeout = 1500000000;
 
     public UDPping(String ipAddress, int sendPort, Datahandler dh)
     {
@@ -43,7 +43,7 @@ public class UDPping implements Runnable
                 udpsender.send(ipAddress, "<GuiPing:true>", sendPort);
                 while (!dh.getGuiPing() && elapsedTimer < timeout)
                 {
-                    elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
+                    elapsedTimer = (System.nanoTime() - lastTime) / 10;
                 }
 
                 if (dh.getGuiPing())

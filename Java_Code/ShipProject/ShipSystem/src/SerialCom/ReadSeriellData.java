@@ -202,7 +202,7 @@ public class ReadSeriellData implements Runnable
                     //System.out.println("Key: " + data[i] + "     Value:" + data[i + 1]);                   
                 }
                 receivedData = true;
-                dh.handleDataFromArduino();
+                dh.handleDataFromRemote();
 
                 long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
                 if (elapsedTimer != 0)

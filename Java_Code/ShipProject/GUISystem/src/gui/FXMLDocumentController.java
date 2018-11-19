@@ -22,7 +22,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import com.gluonhq.charm.glisten.control.ProgressBar;
 import eu.hansolo.tilesfx.Tile;
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -36,9 +42,12 @@ public class FXMLDocumentController implements Initializable
 {
 
     private boolean buttonAlreadyPressed = false;
+    private boolean btn_main_active = true;
+    private boolean btn_dp_active = false;
+    private boolean btn_alarms_active = false;
 
     @FXML
-    Button btn_main, btn_dp, btn_alarms, btn_lock, btn_exit;
+    Button btn_main, btn_dp, btn_alarms, btn_lock, btn_exit, newButton;
 
     @FXML
     ProgressBar throttleps, throttlesb;
@@ -54,14 +63,62 @@ public class FXMLDocumentController implements Initializable
     Label port_lbl, starboard_lbl, speedps_lbl, speedsb_lbl, podposps_lbl, podpossb_lbl,
             tunnelthruster_lbl, compass_lbl, alarm_lbl;
 
+    @FXML
+    VBox centerBox;
+
     Datahandler dh = GUISystem.dh;
     InputController ic = GUISystem.inputController;
 
     @FXML
-    private void handleButtonAction(ActionEvent event)
+    private void handleMainButtonAction(ActionEvent event)
     {
-        System.out.println("You clicked me!");
-        //port_lbl.setText("asd"); // TREIG metode??
+        btn_main_active = true;
+        btn_dp_active = false;
+        btn_alarms_active = false;
+//        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+//        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+
+        try
+        {
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @FXML
+    private void handleDpButtonAction(ActionEvent event)
+    {
+        btn_main_active = false;
+        btn_dp_active = true;
+        btn_alarms_active = false;
+//        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+//        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+
+        GUI.window.setScene(GUI.scene);
+
+    }
+
+    @FXML
+    private void handleAlarmsButtonAction(ActionEvent event)
+    {
+        btn_main_active = false;
+        btn_dp_active = false;
+        btn_alarms_active = true;
+        
+        
+//        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+//        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+
+        centerBox.getChildren().clear();
+        centerBox.getChildren().add(newButton);
+
     }
 
     @FXML
@@ -146,25 +203,53 @@ public class FXMLDocumentController implements Initializable
         throttleps.setProgress(ic.getBtnLyGUI());
         throttlesb.setProgress(ic.getBtnLyGUI());
 
-        speedps_lbl.setText(Integer.toString(ic.getBtnLy()));
-        speedsb_lbl.setText(Integer.toString(ic.getBtnLy()));
-        speedps.setValue(ic.getBtnLy());
-        speedsb.setValue(ic.getBtnLy());
+        speedps_lbl.setText(Integer.toString(dh.getFb_speedPS()));
+        speedsb_lbl.setText(Integer.toString(dh.getFb_speedSB()));
+        speedps.setValue(dh.getFb_speedPS());
+        speedsb.setValue(dh.getFb_speedSB());
 
         podposps_cmd.setRotate(ic.getAngleForGUI());
         podpossb_cmd.setRotate(ic.getAngleForGUI());
-        podpossb_fb.setRotate(ic.getAngleForGUI());
-        podposps_fb.setRotate(ic.getAngleForGUI());
-        podposps_lbl.setText(Integer.toString(ic.getAngle()));
-        podpossb_lbl.setText(Integer.toString(ic.getAngle()));
+        podposps_fb.setRotate(dh.getFb_podPosPS());
+        podpossb_fb.setRotate(dh.getFb_podPosSB());
+        podposps_lbl.setText(Integer.toString(dh.getFb_podPosPS()));
+        podpossb_lbl.setText(Integer.toString(dh.getFb_podPosSB()));
 
-        compass.setRotate(ic.getAngleForGUI());
-        compass_lbl.setText(Integer.toString(ic.getAngle()));
+        compass.setRotate(dh.getFb_heading());
+        compass_lbl.setText(Integer.toString(dh.getFb_heading()));
 
         tunnelThruster();
 
         throttletrend.setValue(ic.getBtnLy());
         speedtrend.setValue(ic.getBtnLy());
+
+        throttletrend.setValue(ic.getBtnLyGUI());
+        speedtrend.setValue(dh.getFb_speedPS());
+        //speedtrend.setChartData(DATA);
+
+//        //System.out.println("updated (test)");
+//        throttleps.setProgress(ic.getBtnLyGUI());
+//        throttlesb.setProgress(ic.getBtnLyGUI());
+//
+//        speedps_lbl.setText(Integer.toString(ic.getBtnLy()));
+//        speedsb_lbl.setText(Integer.toString(ic.getBtnLy()));
+//        speedps.setValue(ic.getBtnLy());
+//        speedsb.setValue(ic.getBtnLy());
+//
+//        podposps_cmd.setRotate(ic.getAngleForGUI());
+//        podpossb_cmd.setRotate(ic.getAngleForGUI());
+//        podposps_fb.setRotate(ic.getAngleForGUI());
+//        podpossb_fb.setRotate(ic.getAngleForGUI());
+//        podposps_lbl.setText(Integer.toString(ic.getAngle()));
+//        podpossb_lbl.setText(Integer.toString(ic.getAngle()));
+//
+//        compass.setRotate(ic.getAngleForGUI());
+//        compass_lbl.setText(Integer.toString(ic.getAngle()));
+//
+//        tunnelThruster();
+//
+//        throttletrend.setValue(ic.getBtnLy());
+//        speedtrend.setValue(ic.getBtnLy());
     }
 
     public void tunnelThruster()
@@ -194,12 +279,40 @@ public class FXMLDocumentController implements Initializable
             tunnelthruster_lbl.setText("-");
             tunnelthruster.setValue(0);
         }
+    }
 
+    public void checkButtonStates()
+    {
+        if (btn_main_active && !btn_dp_active && !btn_alarms_active)
+        {
+            btn_main.setStyle("-fx-background-color: #3d4b5b; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+            btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+            btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+        }
+        if (!btn_main_active && btn_dp_active && !btn_alarms_active)
+        {
+            btn_dp.setStyle("-fx-background-color: #3d4b5b; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+            btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+            btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+        }
+        if (!btn_main_active && !btn_dp_active && btn_alarms_active)
+        {
+            btn_alarms.setStyle("-fx-background-color: #3d4b5b; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+            btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+            btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
+        }
+    }
+
+    public void buildAlarmBox()
+    {
+        newButton = new Button("test");
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        //checkButtonStates();
+        buildAlarmBox();
         speedps_lbl.setTextFill(Color.web("#d8dbe2"));
         speedsb_lbl.setTextFill(Color.web("#d8dbe2"));
         podposps_lbl.setTextFill(Color.web("#d8dbe2"));

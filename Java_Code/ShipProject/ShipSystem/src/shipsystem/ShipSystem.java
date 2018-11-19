@@ -95,7 +95,7 @@ public class ShipSystem
 
         // }
 //        //Robins test area
-//        dh.handleDataFromArduino();
+//        dh.handleDataFromRemote();
 //        
 //        
 //        while (true)

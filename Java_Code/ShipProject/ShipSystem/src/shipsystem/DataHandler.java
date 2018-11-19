@@ -46,6 +46,7 @@ public class DataHandler
     private int fb_podPosSB;
     private int fb_podPosPS;
     private int fb_speedPodRotPS;
+    private int fb_heading;
     private boolean fb_ballastSensor;
 
     //IMU variables
@@ -351,6 +352,16 @@ public class DataHandler
     public void setFb_podPosPS(int fb_podPosPS)
     {
         this.fb_podPosPS = fb_podPosPS;
+    }
+
+    public int getFb_heading()
+    {
+        return fb_heading;
+    }
+
+    public void setFb_heading(int fb_heading)
+    {
+        this.fb_heading = fb_heading;
     }
 
     public boolean isFb_ballastSensor()
@@ -729,7 +740,7 @@ public class DataHandler
 
     public void setGuiPing(String ipAddress)
     {
-       // this.guiPing = guiPing;
+        // this.guiPing = guiPing;
         sendBackGuiPing(ipAddress);
         guiPing = "0.0.0.0";
     }
@@ -769,6 +780,17 @@ public class DataHandler
                 + ":speedsb:" + this.getFb_speedSB();
     }
 
+    public String getDataToGUI()
+    {
+        return "<"
+                + "podposps:" + this.getFb_podPosPS()
+                + ":podpossb:" + this.getFb_podPosSB()
+                + ":speedps:" + this.getFb_speedPS()
+                + ":speedsb:" + this.getFb_speedSB()
+                + ":heading:" + this.getFb_heading()
+                + ">";
+    }
+
     public void handleDataFromAlarmList(String alarmName, boolean state)
     {
         listOfAlarms.put(alarmName, state);
@@ -779,7 +801,7 @@ public class DataHandler
         return listOfAlarms;
     }
 
-    public synchronized void handleDataFromArduino()
+    public synchronized void handleDataFromRemote()
     {
 
 //        ConcurrentHashMap<String, String> dataFeedback = new ConcurrentHashMap<>();

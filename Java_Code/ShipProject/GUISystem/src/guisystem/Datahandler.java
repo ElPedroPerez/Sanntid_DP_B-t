@@ -25,11 +25,20 @@ public class Datahandler
     private Boolean guiPing;
     private long ping;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
+    private int fb_podPosPS;
+    private int fb_podPosSB;
+    private int fb_speedPS;
+    private int fb_speedSB;
+    private int fb_heading;
 
     public Datahandler()
     {
         guiPing = false;
         ping = 0;
+        fb_podPosPS = 0;
+        fb_podPosSB = 0;
+        fb_speedPS = 0;
+        fb_speedSB = 0;
         //this.dataFromGui = dataFromGui;
     }
 //
@@ -39,24 +48,76 @@ public class Datahandler
 //        notifyObservers();
 //    }
 //
-    public void setAngle(int angle)
+
+    public synchronized void setAngle(int angle)
     {
         this.angle = angle;
 //        setChanged();
 //        notifyObservers();
     }
 
-    public int getAngle()
+    public synchronized int getAngle()
     {
         return this.angle;
     }
 
+    public synchronized int getFb_podPosPS()
+    {
+        return fb_podPosPS;
+    }
+
+    public synchronized void setFb_podPosPS(int fb_podPosPS)
+    {
+        this.fb_podPosPS = fb_podPosPS;
+    }
+
+    public synchronized int getFb_podPosSB()
+    {
+        return fb_podPosSB;
+    }
+
+    public synchronized void setFb_podPosSB(int fb_podPosSB)
+    {
+        this.fb_podPosSB = fb_podPosSB;
+    }
+
+    public synchronized int getFb_speedPS()
+    {
+        return fb_speedPS;
+    }
+
+    public synchronized void setFb_speedPS(int fb_speedPS)
+    {
+        this.fb_speedPS = fb_speedPS;
+    }
+
+    public synchronized int getFb_speedSB()
+    {
+        return fb_speedSB;
+    }
+
+    public synchronized void setFb_speedSB(int fb_speedSB)
+    {
+        this.fb_speedSB = fb_speedSB;
+    }
+
+    public synchronized int getFb_heading()
+    {
+        return fb_heading;
+    }
+
+    public synchronized void setFb_heading(int fb_heading)
+    {
+        this.fb_heading = fb_heading;
+    }
+    
+    
     /**
      * Gets data from GUI
      *
      * @return dataFromGui
      */
-    public String getDataFromGui()
+    public synchronized String getDataFromGui()
     {
         return this.dataFromGui;
     }
@@ -88,10 +149,8 @@ public class Datahandler
     {
         this.ping = ping;
     }
-    
-    
 
-    public synchronized void handleDataFromArduino()
+    public synchronized void handleDataFromRemote()
     {
 
 //        ConcurrentHashMap<String, String> dataFeedback = new ConcurrentHashMap<>();
@@ -110,6 +169,21 @@ public class Datahandler
             {
                 case "PingBack":
                     this.guiPing = Boolean.parseBoolean(value);
+                    break;
+                case "fb_podPosPS":
+                    this.fb_podPosPS = Integer.parseInt(value);
+                    break;
+                case "fb_podPosSB":
+                    this.fb_podPosSB = Integer.parseInt(value);
+                    break;
+                case "fb_speedPS":
+                    this.fb_speedPS = Integer.parseInt(value);
+                    break;
+                case "fb_speedSB":
+                    this.fb_speedSB = Integer.parseInt(value);
+                    break;
+                case "fb_heading":
+                    this.fb_heading = Integer.parseInt(value);
                     break;
             }
         }
