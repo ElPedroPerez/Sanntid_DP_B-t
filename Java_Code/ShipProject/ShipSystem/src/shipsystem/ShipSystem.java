@@ -23,10 +23,12 @@ public class ShipSystem
     private static Thread controller;
     private static Thread server;
     private static Thread serialDataHandler;
+    private static Thread udpListener;
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
-    protected static String ipAdress = "158.38.199.111"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
+    
+    protected static String ipAdress = "10.0.0.100"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
 
     /**
      * @param args the command line arguments
@@ -38,14 +40,19 @@ public class ShipSystem
         dh = new DataHandler();
         dh.setThreadStatus(true);
 
+        udpListener = new Thread(new UDPListener(dh));
+
         serialDataHandler = new Thread(new SerialDataHandler(dh));
         alarmList = new Thread(new AlarmList(dh));
 
         controller = new Thread(new Controller(dh, semaphore));
-        server = new Thread(new UDPServer(semaphore, dh));
+       // server = new Thread(new UDPServer(semaphore, dh));
+
+        udpListener.start();
+        udpListener.setName("UDPListener");
 
         controller.start();
-        server.start();
+//        server.start();
         serialDataHandler.start();
         alarmList.start();
 
@@ -58,6 +65,14 @@ public class ShipSystem
         int pitch = 0;
         int roll = 0;
 
+        while (true)
+        {
+            boolean kake = true;
+            //  System.out.println("Test value is: " + dh.getTest()); 
+            //  System.out.println("Test2 value is: " + dh.getTest2());
+           // System.out.println("Ping : " + dh.);
+            //do nothing
+        }
 //        // bRYNJARS testområde
 //        while (true)
 //        {
@@ -77,7 +92,6 @@ public class ShipSystem
 //                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
 //            }
 //        }
-    
 
         // }
 //        //Robins test area
@@ -115,11 +129,8 @@ public class ShipSystem
 //        controller.start();
 //        server.start();
 //        alarmList.start();
-
-        
     }
 //
 //        }
 
 }
-

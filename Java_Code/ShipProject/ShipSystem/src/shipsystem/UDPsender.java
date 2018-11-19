@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package guisystem;
+package shipsystem;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -61,7 +61,7 @@ public class UDPsender
                     data.length,
                     InetAddress.getByName(ipAddress),
                     port);
-           // System.out.println("Data sent: " + new String(packet.getData()));
+            System.out.println("Data sent: " + new String(packet.getData()));
             clientSocket.send(packet);
             //System.out.println(Arrays.toString(data));
             //System.out.println("UDP send");
