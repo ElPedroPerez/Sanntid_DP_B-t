@@ -71,7 +71,9 @@ public class Controller implements Runnable
                 this.logic.test_A();
                 this.logic.test_B();
                 this.logic.test_Y();
-                Thread.sleep(250);
+                logic.bowThrusterSignal();
+                Thread.sleep(500);
+                dh.handleDataToRemote();
                 
                 
             } catch (InterruptedException ex)

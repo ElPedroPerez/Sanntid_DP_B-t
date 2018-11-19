@@ -7,27 +7,61 @@ package SerialCom;
 
 import java.awt.BorderLayout;
 import java.util.HashMap;
+import java.util.Map;
 import jssc.SerialPort;
 import jssc.SerialPortException;
+import shipsystem.DataHandler;
 
 /**
  *
  * @author rocio
  */
-public class WriteSerialData
+public class WriteSerialData implements Runnable
 {
 
-    public void writeData(String comPort, int baudRate, String data)
-    {
+    DataHandler dh;
+    SerialDataHandler sdh;
+    String comPort;
+    int baudRate;
+    String data;
 
+    public WriteSerialData(DataHandler dh, SerialDataHandler sdh, String comPort, int baudRate)
+    {
+        this.dh = dh;
+        this.sdh = sdh;
+        this.comPort = comPort;
+        this.baudRate = baudRate;
+        this.data = data;
+
+    }
+
+    @Override
+    public void run()
+    {
+        if (dh.dataToRemoteUpdated)
+        {
+            for (Map.Entry e : dh.dataToRemote.entrySet())
+            {
+                String key = (String) e.getKey();
+                String value = (String) e.getValue();
+                String data = ("<" + key + ":" + value + ">");
+
+                this.write(comPort, 9600, data);
+                //wsd.writeData("Com3", arduinoBaudRate, data);
+            }
+            dh.dataToRemoteUpdated = false;
+        }
+    }
+
+    public void write(String comPort, int baudRate, String data)
+    {
         //Declare Special Symbol Used in Serial Data Stream from Arduino
         String start_char = "<";
         String end_char = ">";
         String sep_char = ":";
         //Define Serial Port # -- can be found in Device Manager or Arduino IDE
         SerialPort serialPort = new SerialPort(comPort);
-        
-      
+
         try
         {
             serialPort.openPort();
@@ -49,15 +83,13 @@ public class WriteSerialData
         {
             serialPort.setParams(baudRate, 8, 1, 0);
             String stringData = start_char + data + end_char;
-            
-            
+
 //            for (int i = 0; i <= serialDataList.size(); i++)
 //            {
 //                stringData = stringData + serialDataList.
 //            }
-
             serialPort.writeString(stringData);
-             System.out.println("Data is sent");
+            System.out.println("Data is sent");
 
         } catch (Exception ex)
         {

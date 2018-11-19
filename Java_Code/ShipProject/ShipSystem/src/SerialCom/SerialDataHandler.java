@@ -23,16 +23,14 @@ public class SerialDataHandler implements Runnable
 
     HashMap<String, Boolean> comPorts = new HashMap<>();
     long comResponseTimer = 0;
-    
 
     //ReadSeriellData reader = new ReadSeriellData();
-    WriteSerialData writer = new WriteSerialData();
-
+    //WriteSerialData writer = new WriteSerialData();
     //Populate hashmap
     public SerialDataHandler(DataHandler dh)
     {
-
-        readSerialDataCom3 = new Thread(new ReadSeriellData(dh, this, "Com3", 115200));
+        readSerialDataCom3 = new Thread(new WriteSerialData(dh, this, "Com3", 9600));
+        //readSerialDataCom3 = new Thread(new ReadSeriellData(dh, this, "Com3", 115200));
         readSerialDataCom4 = new Thread(new ReadSeriellData(dh, this, "Com4", 115200));
 
         readSerialDataCom3.start();

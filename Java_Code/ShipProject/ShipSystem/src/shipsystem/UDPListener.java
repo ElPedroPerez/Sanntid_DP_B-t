@@ -59,6 +59,7 @@ public class UDPListener implements Runnable
                 //  String dataReceived = new String(p.getData());
 
                 String dataReceived = new String(listenPacket.getData());
+                //System.out.println("Received: " + dataReceived);
                 if (dataReceived != null)
                 {
                     dataReceived = dataReceived.substring(dataReceived.indexOf(start_char) + 1);

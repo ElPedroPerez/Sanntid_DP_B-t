@@ -74,11 +74,12 @@ public class ShipSystem
         {
             try
             {
+                System.out.println("dh.getIc_L1: " + dh.getIc_L1());
                 Thread.sleep(250);
             } catch (Exception e)
             {
             }
-            System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());
+           // System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());
             boolean kake = true;
             //  System.out.println("Test value is: " + dh.getTest()); 
             //  System.out.println("Test2 value is: " + dh.getTest2());

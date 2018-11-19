@@ -105,6 +105,29 @@ public class Logic
 //        this.setRightSpeed(rightSpeed);
 //    }
     
+    protected void bowThrusterSignal()
+    {
+        if(dh.getIc_L1())
+        {
+            dh.setThrusterCommand((byte) 1);
+        }
+        else
+        {
+            dh.setThrusterCommand((byte) 0);
+        }
+        
+         if(dh.getIc_R1())
+        {
+            dh.setThrusterCommand((byte) 2);
+        }
+        else
+        {
+            dh.setThrusterCommand((byte) 0);
+        }
+        
+        
+    }
+    
     protected void test_L1()
     {
         this.input_L1 = dh.getIc_L1();

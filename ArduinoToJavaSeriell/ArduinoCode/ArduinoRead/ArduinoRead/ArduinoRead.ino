@@ -205,7 +205,7 @@ void parseData() {      // split the data into its parts
     }
   }
 
-if (str.equals("case_cmd_thrusterSpeed"))
+if (str.equals("ThrusterCommand"))
   {
     if (integerFromPC == 0)
     {

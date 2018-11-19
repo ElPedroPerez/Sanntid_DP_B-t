@@ -30,7 +30,7 @@ public class DataHandler
     private UDPsender udpSender = new UDPsender();
     //private SerialDataHandler sdh = new SerialDataHandler();
 
-    private WriteSerialData wsd = new WriteSerialData();
+    
 
     private String arduinoFeedbackComPort;
     private String arduinoCommandComPort;
@@ -43,6 +43,7 @@ public class DataHandler
     private boolean dataFromArduinoAvaliable = false;
     private boolean dataFromGuiAvailable = false;
     private boolean threadStatus = true;
+    public boolean dataToRemoteUpdated = false;
     private byte requestCodeFromArduino;
 
     private int fb_speedSB;
@@ -101,6 +102,9 @@ public class DataHandler
     //Filtered signals
     private int softSpeedPod;
 
+    //Logical outputs
+    private byte thrusterCommand;
+
     // pid parameters
     private double P; // prop gain
     private double I; // integral gain
@@ -122,9 +126,9 @@ public class DataHandler
         dataFromArduinoAvaliable = false;
         dataFromGuiAvailable = false;
 
-        arduinoFeedbackComPort = "Com3";
-        arduinoFeedbackComPortIMU = "Com4";
-        arduinoCommandComPort = "Com2";
+        arduinoFeedbackComPort = "Com5";
+        arduinoFeedbackComPortIMU = "Com6";
+        arduinoCommandComPort = "Com7";
         arduinoBaudRate = 115200;
 
         fb_speedSB = 0;
@@ -170,6 +174,9 @@ public class DataHandler
 
         //Filtered controller variables
         softSpeedPod = 0;
+
+        //Logical outputs
+        thrusterCommand = 0;
     }
     //*****************************************************************
     //********************** THREAD STATUS METHODS*********************
@@ -782,6 +789,16 @@ public class DataHandler
         this.Test2 = Test2;
     }
 
+    public byte getThrusterCommand()
+    {
+        return thrusterCommand;
+    }
+
+    public void setThrusterCommand(byte thrusterCommand)
+    {
+        this.thrusterCommand = thrusterCommand;
+    }
+
     public String getDataToArduino()
     {
         return "podposps:" + this.getFb_podPosPS()
@@ -808,16 +825,19 @@ public class DataHandler
         dataToRemote.put("cmd_speedPodRotSB", Integer.toString(getCmd_speedPodRotSB()));
         dataToRemote.put("cmd_speedPodRotPS", Integer.toString(getCmd_speedPodRotPS()));
         dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
-        dataToRemote.put("cmd_podPosPS", Integer.toString(getCmd_podPosPS()));
-
-        for (Entry e : dataToRemote.entrySet())
-        {
-            String key = (String) e.getKey();
-            String value = (String) e.getValue();
-            String data = ("<" + key + ":" + value + ">");
-            wsd.writeData("Com3", arduinoBaudRate, data);
-
-        }
+        dataToRemote.put("ThrusterCommand", Integer.toString(getThrusterCommand()));
+        dataToRemoteUpdated = true;
+//
+//        for (Entry e : dataToRemote.entrySet())
+//        {
+//            String key = (String) e.getKey();
+//            String value = (String) e.getValue();
+//            String data = ("<" + key + ":" + value + ">");
+//            
+//            wsd("Com3", arduinoBaudRate, data);
+//            //wsd.writeData("Com3", arduinoBaudRate, data);
+//
+//        }
     }
 
     public synchronized void handleDataFromArduino()
