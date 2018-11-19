@@ -18,7 +18,7 @@ public class GUISystem
 
     
     private static UDPsender udpsender;
-    static final String IPADDRESS = "158.38.85.182"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
+    static final String IPADDRESS = "158.38.92.52"; //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";  //Fugl"158.38.199.58";  // Jørg"10.16.5.58";
     static final int RECEIVEPORT = 5057;
     static final int SENDPORT = 5056; //9876
     public static Datahandler dh;
@@ -32,7 +32,7 @@ public class GUISystem
         GUISystem.udpsender = new UDPsender();
         dh = new Datahandler();
         GUI gui = new GUI();
-        InputController inputController = new InputController(IPADDRESS, SENDPORT, dh);
+        //  InputController inputController = new InputController(IPADDRESS, SENDPORT, dh);
         UDPping udpPing = new UDPping(IPADDRESS, SENDPORT, dh);
         UDPListener udpListener = new UDPListener(dh, RECEIVEPORT );
         inputController = new InputController(IPADDRESS, SENDPORT, dh);
