@@ -28,7 +28,7 @@ public class ShipSystem
     static SendEventState enumStateEvent;
 
     
-    protected static String ipAdress = "158.38.199.111"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
+    protected static String ipAdress = "10.0.0.100"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
 
     /**
      * @param args the command line arguments
@@ -46,7 +46,7 @@ public class ShipSystem
         alarmList = new Thread(new AlarmList(dh));
 
         controller = new Thread(new Controller(dh, semaphore));
-        server = new Thread(new UDPServer(semaphore, dh));
+       // server = new Thread(new UDPServer(semaphore, dh));
 
         udpListener.start();
         udpListener.setName("UDPListener");
