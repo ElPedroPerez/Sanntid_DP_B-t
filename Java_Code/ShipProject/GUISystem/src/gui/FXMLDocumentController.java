@@ -57,10 +57,10 @@ public class FXMLDocumentController implements Initializable
             podpossb_fb, compass, tunnelthruster;
 
     @FXML
-    Tile throttletrend, speedtrend;
+    Tile throttletrend, speedtrend, clock;
 
     @FXML
-    Label port_lbl, starboard_lbl, speedps_lbl, speedsb_lbl, podposps_lbl, podpossb_lbl,
+    Label port_lbl, starboard_lbl, title_lbl, speedps_lbl, speedsb_lbl, podposps_lbl, podpossb_lbl,
             tunnelthruster_lbl, compass_lbl, alarm_lbl;
 
     @FXML
@@ -78,18 +78,9 @@ public class FXMLDocumentController implements Initializable
 //        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
 //        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
 
-        try
-        {
-            Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        centerBox.getChildren().clear();
+        centerBox.getChildren().add(speedtrend);
+        centerBox.getChildren().add(throttletrend);
     }
 
     @FXML
@@ -101,7 +92,8 @@ public class FXMLDocumentController implements Initializable
 //        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
 //        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
 
-        GUI.window.setScene(GUI.scene);
+        centerBox.getChildren().clear();
+        centerBox.getChildren().add(newButton);
 
     }
 
@@ -111,11 +103,9 @@ public class FXMLDocumentController implements Initializable
         btn_main_active = false;
         btn_dp_active = false;
         btn_alarms_active = true;
-        
-        
+
 //        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
 //        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-
         centerBox.getChildren().clear();
         centerBox.getChildren().add(newButton);
 
@@ -145,7 +135,30 @@ public class FXMLDocumentController implements Initializable
     }
 
     @FXML
+    private void onMouseClickedAction(MouseEvent event)
+    {
+        setButtonSelectedOn(event);
+    }
+
+    @FXML
+    private void onMouseReleasedAction(MouseEvent event)
+    {
+        setButtonSelectedOff(event);
+    }
+
+    @FXML
     private void enterHoverButtonAction(MouseEvent event)
+    {
+        setButtonSelectedOn(event);
+    }
+
+    @FXML
+    private void exitHoverButtonAction(MouseEvent event)
+    {
+        setButtonSelectedOff(event);
+    }
+
+    private void setButtonSelectedOn(MouseEvent event)
     {
         String button = event.getSource().toString();
         if (button.toLowerCase().contains("btn_main"))
@@ -168,11 +181,9 @@ public class FXMLDocumentController implements Initializable
         {
             btn_exit.setStyle("-fx-background-color: #3d4b5b; -fx-font-size: 14;");
         }
-
     }
 
-    @FXML
-    private void exitHoverButtonAction(MouseEvent event)
+    private void setButtonSelectedOff(MouseEvent event)
     {
         String button = event.getSource().toString();
         if (button.toLowerCase().contains("btn_main"))
@@ -200,6 +211,8 @@ public class FXMLDocumentController implements Initializable
     public void updatePage()
     {
         //System.out.println("updated");
+        //clock.
+
         throttleps.setProgress(ic.getBtnLyGUI());
         throttlesb.setProgress(ic.getBtnLyGUI());
 
@@ -321,6 +334,7 @@ public class FXMLDocumentController implements Initializable
         tunnelthruster_lbl.setTextFill(Color.web("#d8dbe2"));
         port_lbl.setTextFill(Color.web("8e9397"));
         starboard_lbl.setTextFill(Color.web("8e9397"));
+        title_lbl.setTextFill(Color.web("8e9397"));
         btn_lock.setTextFill(Color.web("8e9397"));
         btn_main.setTextFill(Color.web("8e9397"));
         btn_dp.setTextFill(Color.web("8e9397"));

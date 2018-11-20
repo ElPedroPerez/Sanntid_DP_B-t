@@ -44,29 +44,28 @@ public class DataHandler
     private boolean dataFromGuiAvailable = false;
     private boolean threadStatus = true;
     private byte requestCodeFromArduino;
+    public String ipAddressGUI;
+    public int sendPort;
 
-    private int fb_speedSB;
-    private int fb_speedPS;
-    private int fb_podPosSB;
-    private int fb_podPosPS;
-    private int fb_speedPodRotPS;
-    private int fb_heading;
-    private boolean fb_ballastSensor;
+    public int fb_speedSB;
+    public int fb_speedPS;
+    public int fb_podPosSB;
+    public int fb_podPosPS;
+    public int fb_speedPodRotPS;
+    public int fb_heading;
+    public boolean fb_ballastSensor;
 
     //IMU variables
-    private int Yaw;
-    private int Pitch;
-    private int Roll;
+    public int Yaw;
+    public int Pitch;
+    public int Roll;
     private long comResponseTime;
 
-    private int cmd_speedSB;
-    private int cmd_speedPS;
-    private int cmd_speedPodRotSB;
-    private int cmd_speedPodRotPS;
-    private int cmd_podPosSB;
-    private int cmd_podPosPS;
-
-    private boolean cmd_ballastSensor;
+    public int cmd_speedSB;
+    public int cmd_speedPS;
+    public int cmd_podPosSB;
+    public int cmd_podPosPS;
+    public boolean cmd_ballastSensor;
 
     private boolean speedSBavailable;
     private boolean speedPSavailable;
@@ -77,10 +76,16 @@ public class DataHandler
     //Vision variables
     private double xShipPos;
     private double yShipPos;
-    private double posAccuracy;
+    public double posAccuracy;
 
     //Alarm variables
-    private boolean stbSpeedFeedbackErrorAlarm;
+    private boolean sbSpeedFbAlarm;
+    private boolean psSpeedFbAlarm;
+    private boolean sbPodPosFbAlarm;
+    private boolean psPodPosFbAlarm;
+    private boolean visionDeviationAlarm;
+    private boolean imuRollAlarm;
+    //private boolean pingAlarm;
 
     //Ping variables
     private boolean visionPosDataPing;
@@ -102,16 +107,9 @@ public class DataHandler
     //Filtered signals
     private int softSpeedPod;
 
-    // pid parameters
-    private double P; // prop gain
-    private double I; // integral gain
-    private double D; // derivation gain
-    private double F; // feed fwd gain
-    private double RR; // output ramp rate (max delta output)
-    private boolean PIDparamChanged;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
     public ConcurrentHashMap<String, String> dataToRemote = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Boolean> listOfAlarms;
+    public ConcurrentHashMap<String, Boolean> listOfAlarms;
 
     public DataHandler()
     {
@@ -127,6 +125,8 @@ public class DataHandler
         arduinoFeedbackComPortIMU = "Com4";
         arduinoCommandComPort = "Com2";
         arduinoBaudRate = 115200;
+        ipAddressGUI = ShipSystem.ipAddressGUI;
+        sendPort = ShipSystem.sendPort;
 
         fb_speedSB = 0;
         fb_speedPS = 0;
@@ -150,7 +150,13 @@ public class DataHandler
         posAccuracy = 0;
 
         //Alarms
-        stbSpeedFeedbackErrorAlarm = false;
+        sbSpeedFbAlarm = listOfAlarms.get(sbSpeedFbAlarm).booleanValue();
+        psSpeedFbAlarm = listOfAlarms.get(psSpeedFbAlarm).booleanValue();
+        sbPodPosFbAlarm = listOfAlarms.get(sbPodPosFbAlarm).booleanValue();
+        psPodPosFbAlarm = listOfAlarms.get(psPodPosFbAlarm).booleanValue();
+        visionDeviationAlarm = listOfAlarms.get(visionDeviationAlarm).booleanValue();
+        imuRollAlarm = listOfAlarms.get(imuRollAlarm).booleanValue();
+        //pingAlarm = listOfAlarms.get(pingAlarm).booleanValue();
 
         //Ping variables
         visionPosDataPing = false;
@@ -193,16 +199,6 @@ public class DataHandler
     public void setThreadStatus(boolean threadStatus)
     {
         this.threadStatus = threadStatus;
-    }
-
-    public void setPidParamChanged(boolean state)
-    {
-        this.PIDparamChanged = state;
-    }
-
-    public boolean getPidParamChanged()
-    {
-        return this.PIDparamChanged;
     }
 
     //*****************************************************************
@@ -405,26 +401,6 @@ public class DataHandler
         this.cmd_speedPS = cmd_speedPS;
     }
 
-    public int getCmd_speedPodRotSB()
-    {
-        return cmd_speedPodRotSB;
-    }
-
-    public void setCmd_speedPodRotSB(int cmd_speedPodRotSB)
-    {
-        this.cmd_speedPodRotSB = cmd_speedPodRotSB;
-    }
-
-    public int getCmd_speedPodRotPS()
-    {
-        return cmd_speedPodRotPS;
-    }
-
-    public void setCmd_speedPodRotPS(int cmd_speedPodRotPS)
-    {
-        this.cmd_speedPodRotPS = cmd_speedPodRotPS;
-    }
-
     public int getCmd_podPosSB()
     {
         return cmd_podPosSB;
@@ -571,63 +547,6 @@ public class DataHandler
     {
         ShipSystem.enumStateEvent = SendEventState.FALSE;
         return this.dataToArduino;
-    }
-
-    /**
-     * Sets the byte array containing data from GUI
-     *
-     * @param data New byte array
-     */
-    public void setDataFromGUI(byte[] data)
-    {
-
-        for (int i = 0; i < 6; i++)
-        {
-            this.dataFromGui[i] = data[i];
-        }
-
-        // pid parameters
-        double P = (double) data[6] / 10.0;
-        double I = (double) data[7] / 10.0;
-        double D = (double) data[8] / 10.0;
-        double F = (double) data[9] / 10.0;    // feed fwd
-        double RR = (double) data[10] / 10.0; // ramp rate
-
-        // set new values if value changed
-        if (P != this.P)
-        {
-            this.P = P;
-            this.PIDparamChanged = true;
-        }
-        if (I != this.I)
-        {
-            this.I = I;
-            this.PIDparamChanged = true;
-        }
-        if (D != this.D)
-        {
-            this.D = D;
-            this.PIDparamChanged = true;
-        }
-        if (F != this.F)
-        {
-            this.F = F;
-            this.PIDparamChanged = true;
-        }
-        if (RR != this.RR)
-        {
-            this.RR = RR;
-            this.PIDparamChanged = true;
-        }
-
-        this.setDataFromGuiAvailable(true);
-
-        // Values below should be equal in both dataFromGui and dataToArduino
-        //this.dataToArduino[Protocol.CONTROLS.getValue()] = this.dataFromGui[Protocol.CONTROLS.getValue()];
-        //this.dataToArduino[Protocol.COMMANDS.getValue()] = this.dataFromGui[Protocol.COMMANDS.getValue()];
-        this.dataToArduino[Protocol.SENSITIVITY.getValue()] = this.dataFromGui[Protocol.SENSITIVITY.getValue()];
-
-        this.fireStateChanged();
     }
 
     /**
@@ -827,8 +746,6 @@ public class DataHandler
         dataToRemote.put("softSpeedPod", Integer.toString(getSoftSpeedPod()));
         dataToRemote.put("cmd_speedSB", Integer.toString(getCmd_speedSB()));
         dataToRemote.put("cmd_speedPS", Integer.toString(getCmd_speedPS()));
-        dataToRemote.put("cmd_speedPodRotSB", Integer.toString(getCmd_speedPodRotSB()));
-        dataToRemote.put("cmd_speedPodRotPS", Integer.toString(getCmd_speedPodRotPS()));
         dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
         dataToRemote.put("cmd_podPosPS", Integer.toString(getCmd_podPosPS()));
 

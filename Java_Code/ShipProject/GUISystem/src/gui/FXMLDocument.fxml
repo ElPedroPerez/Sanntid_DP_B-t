@@ -118,7 +118,7 @@
                                     <center>
                                         <VBox alignment="BOTTOM_CENTER" prefHeight="819.0" prefWidth="784.0" BorderPane.alignment="BOTTOM_CENTER">
                                             <children>
-                                    <Label style="-fx-font-size: 20; -fx-font-family: Yu Gothic; -fx-font-weight: Bold;" text="MAIN">
+                                    <Label fx:id="title_lbl" alignment="CENTER" style="-fx-font-size: 20; -fx-font-family: Yu Gothic; -fx-font-weight: Bold;" text="MAIN">
                                        <VBox.margin>
                                           <Insets bottom="55.0" />
                                        </VBox.margin>
@@ -175,7 +175,7 @@
                                             <children>
                                                 <StackPane prefHeight="190.0" prefWidth="126.0">
                                                     <children>
-                                                        <Tile backgroundImageKeepAspect="false" backgroundImageOpacity="1.0" prefHeight="190.0" prefWidth="126.0" skinType="CLOCK">
+                                                        <Tile fx:id="clock" active="true" animated="true" backgroundImageKeepAspect="false" backgroundImageOpacity="1.0" prefHeight="190.0" prefWidth="126.0" skinType="CLOCK">
                                                             <backgroundImage>
                                                                 <Image url="@img/background.jpg" />
                                                             </backgroundImage>
