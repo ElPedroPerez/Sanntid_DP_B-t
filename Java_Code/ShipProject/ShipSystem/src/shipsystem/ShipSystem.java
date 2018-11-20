@@ -28,7 +28,8 @@ public class ShipSystem
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
-    protected static String ipAdress = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
+    protected static String ipAddressGUI = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
+    protected static int sendPort = 5057;
 
     /**
      * @param args the command line arguments
@@ -77,7 +78,8 @@ public class ShipSystem
                 //System.out.println("dh.setTemp_Angle: " + dh.getTemp_Angle());
                 System.out.println("R1: " + dh.ic_R1);
                 Thread.sleep(250);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
             }
             // System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());

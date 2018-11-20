@@ -35,6 +35,9 @@ public class DataHandler
     private String arduinoFeedbackComPortIMU;
     private int arduinoBaudRate;
 
+    public String ipAddressGUI;
+    public int sendPort;
+
     private byte[] dataFromArduino;
     private byte[] dataToArduino;
     private byte[] dataFromGui;
@@ -55,28 +58,27 @@ public class DataHandler
     public boolean dataToRemoteUpdated = false;
     public boolean dataUpdated = false;
 
-    private int fb_speedSB;
-    private int fb_speedPS;
-    private int fb_podPosSB;
-    private int fb_podPosPS;
-    private int fb_speedPodRotPS;
-    private int fb_heading;
-    private boolean fb_ballastSensor;
+    public int fb_speedSB;
+    public int fb_speedPS;
+    public int fb_podPosSB;
+    public int fb_podPosPS;
+    public int fb_speedPodRotPS;
+    public int fb_heading;
+    public boolean fb_ballastSensor;
 
     //IMU variables
     private int Yaw;
     private int Pitch;
-    private int Roll;
+    public int Roll;
     private long comResponseTime;
 
-    private int cmd_speedSB;
-    private int cmd_speedPS;
-    private int cmd_speedPodRotSB;
-    private int cmd_speedPodRotPS;
-    private int cmd_podPosSB;
-    private int cmd_podPosPS;
-
-    private boolean cmd_ballastSensor;
+    public int cmd_speedSB;
+    public int cmd_speedPS;
+    public int cmd_speedPodRotSB;
+    public int cmd_speedPodRotPS;
+    public int cmd_podPosSB;
+    public int cmd_podPosPS;
+    public boolean cmd_ballastSensor;
 
     private boolean speedSBavailable;
     private boolean speedPSavailable;
@@ -87,10 +89,16 @@ public class DataHandler
     //Vision variables
     private double xShipPos;
     private double yShipPos;
-    private double posAccuracy;
+    public double posAccuracy;
 
     //Alarm variables
-    private boolean stbSpeedFeedbackErrorAlarm;
+    private boolean sbSpeedFbAlarm;
+    private boolean psSpeedFbAlarm;
+    private boolean sbPodPosFbAlarm;
+    private boolean psPodPosFbAlarm;
+    private boolean visionDeviationAlarm;
+    private boolean imuRollAlarm;
+    //private boolean pingAlarm;
 
     //Ping variables
     private boolean visionPosDataPing;
@@ -124,7 +132,7 @@ public class DataHandler
     private boolean PIDparamChanged;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
     public ConcurrentHashMap<String, String> dataToRemote = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, Boolean> listOfAlarms;
+    public ConcurrentHashMap<String, Boolean> listOfAlarms;
 
     public DataHandler()
     {
@@ -140,6 +148,8 @@ public class DataHandler
         arduinoFeedbackComPortIMU = "Com6";
         arduinoCommandComPort = "Com7";
         arduinoBaudRate = 115200;
+        ipAddressGUI = ShipSystem.ipAddressGUI;
+        sendPort = ShipSystem.sendPort;
 
         fb_speedSB = 0;
         fb_speedPS = 0;
@@ -163,7 +173,13 @@ public class DataHandler
         posAccuracy = 0;
 
         //Alarms
-        stbSpeedFeedbackErrorAlarm = false;
+        sbSpeedFbAlarm = listOfAlarms.get(sbSpeedFbAlarm).booleanValue();
+        psSpeedFbAlarm = listOfAlarms.get(psSpeedFbAlarm).booleanValue();
+        sbPodPosFbAlarm = listOfAlarms.get(sbPodPosFbAlarm).booleanValue();
+        psPodPosFbAlarm = listOfAlarms.get(psPodPosFbAlarm).booleanValue();
+        visionDeviationAlarm = listOfAlarms.get(visionDeviationAlarm).booleanValue();
+        imuRollAlarm = listOfAlarms.get(imuRollAlarm).booleanValue();
+        //pingAlarm = listOfAlarms.get(pingAlarm).booleanValue();
 
         //Ping variables
         visionPosDataPing = false;
@@ -188,8 +204,8 @@ public class DataHandler
         //Logical outputs
         thrusterCommand = 0;
     }
-    //*****************************************************************
-    //********************** THREAD STATUS METHODS*********************
+//*****************************************************************
+//********************** THREAD STATUS METHODS*********************
 
     /**
      * Returns the threads status
