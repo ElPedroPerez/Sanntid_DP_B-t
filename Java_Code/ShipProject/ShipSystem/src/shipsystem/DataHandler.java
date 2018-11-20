@@ -41,19 +41,19 @@ public class DataHandler
     private boolean dataFromArduinoAvaliable = false;
     private boolean dataFromGuiAvailable = false;
     private boolean threadStatus = true;
-    public boolean dataToRemoteUpdated = false;
     private byte requestCodeFromArduino;
 
     // flags
-    
     private boolean ic_R1_flag = false;
     private boolean ic_L1_flag = false;
     private boolean ic_A_flag = false;
     private boolean ic_B_flag = false;
-    private boolean ic_X_flag = false;    
+    private boolean ic_X_flag = false;
     private boolean ic_Y_flag = false;
     private boolean ic_speed_flag = false;
     private boolean ic_angle_flag = false;
+    public boolean dataToRemoteUpdated = false;
+    public boolean dataUpdated = false;
 
     private int fb_speedSB;
     private int fb_speedPS;
@@ -113,7 +113,7 @@ public class DataHandler
     private int softSpeedPod;
 
     //Logical outputs
-    private byte thrusterCommand;
+    public byte thrusterCommand;
 
     // pid parameters
     private double P; // prop gain
@@ -321,8 +321,6 @@ public class DataHandler
     {
         this.ic_angle_flag = ic_angle_flag;
     }
-    
-    
 
     /**
      *
@@ -343,6 +341,16 @@ public class DataHandler
         this.dataToRemoteUpdated = dataToRemoteUpdated;
     }
 
+    public synchronized boolean isDataUpdated()
+    {
+        return dataUpdated;
+    }
+
+    public synchronized void setDataUpdated(boolean dataUpdated)
+    {
+        this.dataUpdated = dataUpdated;
+    }
+
     public int getTemp_Angle()
     {
         return temp_Angle;
@@ -353,30 +361,30 @@ public class DataHandler
         this.temp_Angle = temp_Angle;
     }
 
-    public  boolean getIc_L1()
+    public synchronized boolean getIc_L1()
     {
         this.setIc_L1_flag(false);
         return this.ic_L1;
     }
 
-    public  void setIc_L1(boolean ic_L1)
-    {        
+    public synchronized void setIc_L1(boolean ic_L1)
+    {
         this.ic_L1 = ic_L1;
         this.setIc_L1_flag(true);
-        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(true);
     }
 
-    public  boolean getIc_R1()
+    public synchronized boolean getIc_R1()
     {
         this.setIc_R1_flag(false);
         return ic_R1;
     }
 
-    public  void setIc_R1(boolean ic_R1)
+    public synchronized void setIc_R1(boolean ic_R1)
     {
         this.ic_R1 = ic_R1;
         this.setIc_R1_flag(true);
-        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(true);
     }
 
     public boolean getIc_X()
@@ -399,7 +407,7 @@ public class DataHandler
     {
         this.ic_A = ic_A;
         this.setIc_A_flag(true);
-        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(true);
     }
 
     public boolean getIc_B()
@@ -918,6 +926,8 @@ public class DataHandler
     public synchronized void setThrusterCommand(byte thrusterCommand)
     {
         this.thrusterCommand = thrusterCommand;
+        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(false);
     }
 
     public String getDataToArduino()
@@ -1020,10 +1030,10 @@ public class DataHandler
                 case "speed":
                     this.ic_speed = Integer.parseInt(value);
                 case "L1":
-//                    if (this.ic_L1 != "1".equals(value))
-//                    {
-//                        this.setIc_L1("1".equals(value));
-//                    }
+                    if (this.ic_L1 != "1".equals(value))
+                    {
+                        this.setIc_L1("1".equals(value));
+                    }
                     break;
                 case "R1":
                     if (this.ic_R1 != "1".equals(value))

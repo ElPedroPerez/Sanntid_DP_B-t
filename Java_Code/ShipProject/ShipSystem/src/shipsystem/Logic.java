@@ -78,20 +78,22 @@ public class Logic
         this.switchCaseMotorSpeeds();
     }
 
-   
     protected void bowThrusterSignal()
     {
-        if (dh.ic_R1 && dh.isDataToRemoteUpdated())
+        if (dh.getIc_R1() && dh.isDataUpdated())
         {
             dh.setThrusterCommand((byte) 1);
-        } 
-//        else if (dh.ic_L1 && dh.isDataToRemoteUpdated())
-//        {
-//            dh.setThrusterCommand((byte) 2);
-//        } 
-        else if ( !dh.ic_R1 && dh.isDataToRemoteUpdated())
+        }
+        if (dh.getIc_L1() && dh.isDataUpdated())
         {
-            dh.setThrusterCommand((byte) 0);
+            dh.setThrusterCommand((byte) 2);
+        }
+        if (!dh.getIc_R1() && !dh.getIc_L1() )
+        {
+            if (dh.thrusterCommand != 0)
+            {
+                dh.setThrusterCommand((byte) 0);
+            }
         }
 
 //         else if (!dh.ic_R1 && dh.isDataToRemoteUpdated())
@@ -251,8 +253,6 @@ public class Logic
         }
     }
 
-   
-
     /**
      * Sets system to DP controll
      */
@@ -268,7 +268,6 @@ public class Logic
     {
         this.setState(STATES.MANUALCONTROLL);
     }
-
 
     /**
      * sets the correct motorspeeds from state (manual mode)

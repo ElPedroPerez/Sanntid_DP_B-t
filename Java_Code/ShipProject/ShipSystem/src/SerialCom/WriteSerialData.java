@@ -63,7 +63,7 @@ public class WriteSerialData implements Runnable
             {
                 ConcurrentHashMap<String, String> tempList = new ConcurrentHashMap<>();
                 tempList.entrySet().addAll(dh.dataToRemote.entrySet());
-                
+
                 for (Map.Entry e : tempList.entrySet())
                 {
                     String key = (String) e.getKey();
