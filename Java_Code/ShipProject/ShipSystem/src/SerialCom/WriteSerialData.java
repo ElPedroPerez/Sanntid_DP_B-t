@@ -8,6 +8,7 @@ package SerialCom;
 import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 import shipsystem.DataHandler;
@@ -60,14 +61,17 @@ public class WriteSerialData implements Runnable
 
             if (dh.isDataToRemoteUpdated())
             {
-                for (Map.Entry e : dh.dataToRemote.entrySet())
+                ConcurrentHashMap<String, String> tempList = new ConcurrentHashMap<>();
+                tempList.entrySet().addAll(dh.dataToRemote.entrySet());
+                
+                for (Map.Entry e : tempList.entrySet())
                 {
                     String key = (String) e.getKey();
                     String value = (String) e.getValue();
                     String data = ("<" + key + ":" + value + ">");
                     try
                     {
-                        Thread.sleep(100);
+                        Thread.sleep(10);
                     } catch (Exception x)
                     {
                     }
@@ -97,7 +101,7 @@ public class WriteSerialData implements Runnable
 
         try
         {
-            
+
             String stringData = data;
 
 //            for (int i = 0; i <= serialDataList.size(); i++)

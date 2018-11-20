@@ -50,11 +50,13 @@ public class Controller implements Runnable
     @Override
     public void run()
     {
+        long lastTime = System.nanoTime();
         while (true)
         {
-            try
-            {
-                this.logic.calculateAngle();
+//            try
+//            {
+
+            this.logic.calculateAngle();
 //                this.logic.test_Speed();
 //                this.logic.test_L1();
 //                this.logic.test_R1();
@@ -62,16 +64,23 @@ public class Controller implements Runnable
 //                this.logic.test_A();
 //                this.logic.test_B();
 //                this.logic.test_Y();
-                this.logic.bowThrusterSignal();
-                Thread.sleep(500);
-                
-                dh.handleDataToRemote();
-                
-                
-            } catch (InterruptedException ex)
+            this.logic.bowThrusterSignal();
+            //Thread.sleep(500);
+
+            dh.handleDataToRemote();
+            long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
+
+            if (elapsedTimer > 250)
             {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                elapsedTimer = 0;
+                lastTime = System.nanoTime();
+                
             }
+
+            //} catch (InterruptedException ex)
+//            {
+//                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
 
 //        //this.startRequestFeedbacks();

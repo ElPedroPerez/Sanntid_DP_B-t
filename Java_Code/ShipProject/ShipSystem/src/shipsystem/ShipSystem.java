@@ -28,7 +28,7 @@ public class ShipSystem
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
-    protected static String ipAdress = "158.38.92.52"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
+    protected static String ipAdress = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
 
     /**
      * @param args the command line arguments
@@ -73,9 +73,9 @@ public class ShipSystem
         {
             try
             {
-                System.out.println("dh.getIc_L1: " + dh.getIc_L1());
-                System.out.println("dh.setTemp_Angle: " + dh.getTemp_Angle());
-                System.out.println("A: " + dh.getIc_A());
+                System.out.println("A: " + dh.ic_A);
+                //System.out.println("dh.setTemp_Angle: " + dh.getTemp_Angle());
+                System.out.println("R1: " + dh.ic_R1);
                 Thread.sleep(250);
             } catch (Exception e)
             {

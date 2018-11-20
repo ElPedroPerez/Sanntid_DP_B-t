@@ -44,6 +44,17 @@ public class DataHandler
     public boolean dataToRemoteUpdated = false;
     private byte requestCodeFromArduino;
 
+    // flags
+    
+    private boolean ic_R1_flag = false;
+    private boolean ic_L1_flag = false;
+    private boolean ic_A_flag = false;
+    private boolean ic_B_flag = false;
+    private boolean ic_X_flag = false;    
+    private boolean ic_Y_flag = false;
+    private boolean ic_speed_flag = false;
+    private boolean ic_angle_flag = false;
+
     private int fb_speedSB;
     private int fb_speedPS;
     private int fb_podPosSB;
@@ -88,14 +99,14 @@ public class DataHandler
     private int Test2;
 
     //Controller variables
-    private boolean ic_L1;
-    private boolean ic_R1;
-    private boolean ic_X;
-    private boolean ic_A;
-    private boolean ic_B;
-    private boolean ic_Y;
-    private int ic_speed;
-    private int ic_angle;
+    public boolean ic_L1;
+    public boolean ic_R1;
+    public boolean ic_X;
+    public boolean ic_A;
+    public boolean ic_B;
+    public boolean ic_Y;
+    public int ic_speed;
+    public int ic_angle;
     private int temp_Angle;
 
     //Filtered signals
@@ -231,11 +242,93 @@ public class DataHandler
         return dataFromArduino;
     }
 
+    public synchronized boolean isIc_A_flag()
+    {
+        return ic_A_flag;
+    }
+
+    public synchronized void setIc_A_flag(boolean ic_A_flag)
+    {
+        this.ic_A_flag = ic_A_flag;
+    }
+
+    public synchronized boolean isIc_R1_flag()
+    {
+        return ic_R1_flag;
+    }
+
+    public synchronized void setIc_R1_flag(boolean ic_R1_flag)
+    {
+        this.ic_R1_flag = ic_R1_flag;
+    }
+
+    public synchronized boolean isIc_L1_flag()
+    {
+        return ic_L1_flag;
+    }
+
+    public synchronized void setIc_L1_flag(boolean ic_L1_flag)
+    {
+        this.ic_L1_flag = ic_L1_flag;
+    }
+
+    public synchronized boolean isIc_B_flag()
+    {
+        return ic_B_flag;
+    }
+
+    public synchronized void setIc_B_flag(boolean ic_B_flag)
+    {
+        this.ic_B_flag = ic_B_flag;
+    }
+
+    public synchronized boolean isIc_X_flag()
+    {
+        return ic_X_flag;
+    }
+
+    public synchronized void setIc_X_flag(boolean ic_X_flag)
+    {
+        this.ic_X_flag = ic_X_flag;
+    }
+
+    public synchronized boolean isIc_Y_flag()
+    {
+        return ic_Y_flag;
+    }
+
+    public synchronized void setIc_Y_flag(boolean ic_Y_flag)
+    {
+        this.ic_Y_flag = ic_Y_flag;
+    }
+
+    public synchronized boolean isIc_speed_flag()
+    {
+        return ic_speed_flag;
+    }
+
+    public synchronized void setIc_speed_flag(boolean ic_speed_flag)
+    {
+        this.ic_speed_flag = ic_speed_flag;
+    }
+
+    public synchronized boolean isIc_angle_flag()
+    {
+        return ic_angle_flag;
+    }
+
+    public synchronized void setIc_angle_flag(boolean ic_angle_flag)
+    {
+        this.ic_angle_flag = ic_angle_flag;
+    }
+    
+    
+
     /**
      *
      * @return true if new data available, false if not
      */
-    public boolean isDataFromArduinoAvailable()
+    public synchronized boolean isDataFromArduinoAvailable()
     {
         return this.dataFromArduinoAvaliable;
     }
@@ -260,24 +353,30 @@ public class DataHandler
         this.temp_Angle = temp_Angle;
     }
 
-    public synchronized boolean getIc_L1()
+    public  boolean getIc_L1()
     {
+        this.setIc_L1_flag(false);
         return this.ic_L1;
     }
 
-    public synchronized void setIc_L1(boolean ic_L1)
-    {
+    public  void setIc_L1(boolean ic_L1)
+    {        
         this.ic_L1 = ic_L1;
+        this.setIc_L1_flag(true);
+        this.setDataToRemoteUpdated(true);
     }
 
-    public boolean getIc_R1()
+    public  boolean getIc_R1()
     {
+        this.setIc_R1_flag(false);
         return ic_R1;
     }
 
-    public void setIc_R1(boolean ic_R1)
+    public  void setIc_R1(boolean ic_R1)
     {
         this.ic_R1 = ic_R1;
+        this.setIc_R1_flag(true);
+        this.setDataToRemoteUpdated(true);
     }
 
     public boolean getIc_X()
@@ -290,14 +389,17 @@ public class DataHandler
         this.ic_X = ic_X;
     }
 
-    public boolean getIc_A()
+    public synchronized boolean getIc_A()
     {
+        this.setIc_A_flag(false);
         return ic_A;
     }
 
-    public void setIc_A(boolean ic_A)
+    public synchronized void setIc_A(boolean ic_A)
     {
         this.ic_A = ic_A;
+        this.setIc_A_flag(true);
+        this.setDataToRemoteUpdated(true);
     }
 
     public boolean getIc_B()
@@ -808,12 +910,12 @@ public class DataHandler
         this.Test2 = Test2;
     }
 
-    public byte getThrusterCommand()
+    public synchronized byte getThrusterCommand()
     {
         return thrusterCommand;
     }
 
-    public void setThrusterCommand(byte thrusterCommand)
+    public synchronized void setThrusterCommand(byte thrusterCommand)
     {
         this.thrusterCommand = thrusterCommand;
     }
@@ -918,10 +1020,16 @@ public class DataHandler
                 case "speed":
                     this.ic_speed = Integer.parseInt(value);
                 case "L1":
-                    this.setIc_L1("1".equals(value));
+//                    if (this.ic_L1 != "1".equals(value))
+//                    {
+//                        this.setIc_L1("1".equals(value));
+//                    }
                     break;
                 case "R1":
-                    this.ic_R1 = "1".equals(value);
+                    if (this.ic_R1 != "1".equals(value))
+                    {
+                        this.setIc_R1("1".equals(value));
+                    }
                     break;
                 case "X":
                     this.ic_X = "1".equals(value);
@@ -929,8 +1037,7 @@ public class DataHandler
                 case "A":
                     if (this.ic_A != "1".equals(value))
                     {
-                        this.setDataToRemoteUpdated(true);
-                        this.ic_A = "1".equals(value);
+                        this.setIc_A("1".equals(value));
                     }
                     break;
                 case "B":
