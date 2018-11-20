@@ -1029,6 +1029,7 @@ public class DataHandler
                     break;
                 case "speed":
                     this.ic_speed = Integer.parseInt(value);
+                    break;
                 case "L1":
                     if (this.ic_L1 != "1".equals(value))
                     {
