@@ -30,8 +30,6 @@ public class DataHandler
     private UDPsender udpSender = new UDPsender();
     //private SerialDataHandler sdh = new SerialDataHandler();
 
-    private WriteSerialData wsd = new WriteSerialData();
-
     private String arduinoFeedbackComPort;
     private String arduinoCommandComPort;
     private String arduinoFeedbackComPortIMU;
@@ -44,28 +42,41 @@ public class DataHandler
     private boolean dataFromGuiAvailable = false;
     private boolean threadStatus = true;
     private byte requestCodeFromArduino;
-    public String ipAddressGUI;
-    public int sendPort;
 
-    public int fb_speedSB;
-    public int fb_speedPS;
-    public int fb_podPosSB;
-    public int fb_podPosPS;
-    public int fb_speedPodRotPS;
-    public int fb_heading;
-    public boolean fb_ballastSensor;
+    // flags
+    private boolean ic_R1_flag = false;
+    private boolean ic_L1_flag = false;
+    private boolean ic_A_flag = false;
+    private boolean ic_B_flag = false;
+    private boolean ic_X_flag = false;
+    private boolean ic_Y_flag = false;
+    private boolean ic_speed_flag = false;
+    private boolean ic_angle_flag = false;
+    public boolean dataToRemoteUpdated = false;
+    public boolean dataUpdated = false;
+
+    private int fb_speedSB;
+    private int fb_speedPS;
+    private int fb_podPosSB;
+    private int fb_podPosPS;
+    private int fb_speedPodRotPS;
+    private int fb_heading;
+    private boolean fb_ballastSensor;
 
     //IMU variables
-    public int Yaw;
-    public int Pitch;
-    public int Roll;
+    private int Yaw;
+    private int Pitch;
+    private int Roll;
     private long comResponseTime;
 
-    public int cmd_speedSB;
-    public int cmd_speedPS;
-    public int cmd_podPosSB;
-    public int cmd_podPosPS;
-    public boolean cmd_ballastSensor;
+    private int cmd_speedSB;
+    private int cmd_speedPS;
+    private int cmd_speedPodRotSB;
+    private int cmd_speedPodRotPS;
+    private int cmd_podPosSB;
+    private int cmd_podPosPS;
+
+    private boolean cmd_ballastSensor;
 
     private boolean speedSBavailable;
     private boolean speedPSavailable;
@@ -76,16 +87,10 @@ public class DataHandler
     //Vision variables
     private double xShipPos;
     private double yShipPos;
-    public double posAccuracy;
+    private double posAccuracy;
 
     //Alarm variables
-    private boolean sbSpeedFbAlarm;
-    private boolean psSpeedFbAlarm;
-    private boolean sbPodPosFbAlarm;
-    private boolean psPodPosFbAlarm;
-    private boolean visionDeviationAlarm;
-    private boolean imuRollAlarm;
-    //private boolean pingAlarm;
+    private boolean stbSpeedFeedbackErrorAlarm;
 
     //Ping variables
     private boolean visionPosDataPing;
@@ -94,22 +99,32 @@ public class DataHandler
     private int Test2;
 
     //Controller variables
-    private boolean ic_L1;
-    private boolean ic_R1;
-    private boolean ic_X;
-    private boolean ic_A;
-    private boolean ic_B;
-    private boolean ic_Y;
-    private int ic_speed;
-    private int ic_angle;
+    public boolean ic_L1;
+    public boolean ic_R1;
+    public boolean ic_X;
+    public boolean ic_A;
+    public boolean ic_B;
+    public boolean ic_Y;
+    public int ic_speed;
+    public int ic_angle;
     private int temp_Angle;
 
     //Filtered signals
     private int softSpeedPod;
 
+    //Logical outputs
+    public byte thrusterCommand;
+
+    // pid parameters
+    private double P; // prop gain
+    private double I; // integral gain
+    private double D; // derivation gain
+    private double F; // feed fwd gain
+    private double RR; // output ramp rate (max delta output)
+    private boolean PIDparamChanged;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
     public ConcurrentHashMap<String, String> dataToRemote = new ConcurrentHashMap<>();
-    public ConcurrentHashMap<String, Boolean> listOfAlarms;
+    private ConcurrentHashMap<String, Boolean> listOfAlarms;
 
     public DataHandler()
     {
@@ -121,12 +136,10 @@ public class DataHandler
         dataFromArduinoAvaliable = false;
         dataFromGuiAvailable = false;
 
-        arduinoFeedbackComPort = "Com3";
-        arduinoFeedbackComPortIMU = "Com4";
-        arduinoCommandComPort = "Com2";
+        arduinoFeedbackComPort = "Com5";
+        arduinoFeedbackComPortIMU = "Com6";
+        arduinoCommandComPort = "Com7";
         arduinoBaudRate = 115200;
-        ipAddressGUI = ShipSystem.ipAddressGUI;
-        sendPort = ShipSystem.sendPort;
 
         fb_speedSB = 0;
         fb_speedPS = 0;
@@ -150,13 +163,7 @@ public class DataHandler
         posAccuracy = 0;
 
         //Alarms
-        sbSpeedFbAlarm = listOfAlarms.get(sbSpeedFbAlarm).booleanValue();
-        psSpeedFbAlarm = listOfAlarms.get(psSpeedFbAlarm).booleanValue();
-        sbPodPosFbAlarm = listOfAlarms.get(sbPodPosFbAlarm).booleanValue();
-        psPodPosFbAlarm = listOfAlarms.get(psPodPosFbAlarm).booleanValue();
-        visionDeviationAlarm = listOfAlarms.get(visionDeviationAlarm).booleanValue();
-        imuRollAlarm = listOfAlarms.get(imuRollAlarm).booleanValue();
-        //pingAlarm = listOfAlarms.get(pingAlarm).booleanValue();
+        stbSpeedFeedbackErrorAlarm = false;
 
         //Ping variables
         visionPosDataPing = false;
@@ -177,6 +184,9 @@ public class DataHandler
 
         //Filtered controller variables
         softSpeedPod = 0;
+
+        //Logical outputs
+        thrusterCommand = 0;
     }
     //*****************************************************************
     //********************** THREAD STATUS METHODS*********************
@@ -201,6 +211,16 @@ public class DataHandler
         this.threadStatus = threadStatus;
     }
 
+    public void setPidParamChanged(boolean state)
+    {
+        this.PIDparamChanged = state;
+    }
+
+    public boolean getPidParamChanged()
+    {
+        return this.PIDparamChanged;
+    }
+
     //*****************************************************************
     //*************** FROM ARDUINO METHODS*****************************
     public void handleDataFromArduino(byte[] data)
@@ -222,13 +242,113 @@ public class DataHandler
         return dataFromArduino;
     }
 
+    public synchronized boolean isIc_A_flag()
+    {
+        return ic_A_flag;
+    }
+
+    public synchronized void setIc_A_flag(boolean ic_A_flag)
+    {
+        this.ic_A_flag = ic_A_flag;
+    }
+
+    public synchronized boolean isIc_R1_flag()
+    {
+        return ic_R1_flag;
+    }
+
+    public synchronized void setIc_R1_flag(boolean ic_R1_flag)
+    {
+        this.ic_R1_flag = ic_R1_flag;
+    }
+
+    public synchronized boolean isIc_L1_flag()
+    {
+        return ic_L1_flag;
+    }
+
+    public synchronized void setIc_L1_flag(boolean ic_L1_flag)
+    {
+        this.ic_L1_flag = ic_L1_flag;
+    }
+
+    public synchronized boolean isIc_B_flag()
+    {
+        return ic_B_flag;
+    }
+
+    public synchronized void setIc_B_flag(boolean ic_B_flag)
+    {
+        this.ic_B_flag = ic_B_flag;
+    }
+
+    public synchronized boolean isIc_X_flag()
+    {
+        return ic_X_flag;
+    }
+
+    public synchronized void setIc_X_flag(boolean ic_X_flag)
+    {
+        this.ic_X_flag = ic_X_flag;
+    }
+
+    public synchronized boolean isIc_Y_flag()
+    {
+        return ic_Y_flag;
+    }
+
+    public synchronized void setIc_Y_flag(boolean ic_Y_flag)
+    {
+        this.ic_Y_flag = ic_Y_flag;
+    }
+
+    public synchronized boolean isIc_speed_flag()
+    {
+        return ic_speed_flag;
+    }
+
+    public synchronized void setIc_speed_flag(boolean ic_speed_flag)
+    {
+        this.ic_speed_flag = ic_speed_flag;
+    }
+
+    public synchronized boolean isIc_angle_flag()
+    {
+        return ic_angle_flag;
+    }
+
+    public synchronized void setIc_angle_flag(boolean ic_angle_flag)
+    {
+        this.ic_angle_flag = ic_angle_flag;
+    }
+
     /**
      *
      * @return true if new data available, false if not
      */
-    public boolean isDataFromArduinoAvailable()
+    public synchronized boolean isDataFromArduinoAvailable()
     {
         return this.dataFromArduinoAvaliable;
+    }
+
+    public synchronized boolean isDataToRemoteUpdated()
+    {
+        return dataToRemoteUpdated;
+    }
+
+    public synchronized void setDataToRemoteUpdated(boolean dataToRemoteUpdated)
+    {
+        this.dataToRemoteUpdated = dataToRemoteUpdated;
+    }
+
+    public synchronized boolean isDataUpdated()
+    {
+        return dataUpdated;
+    }
+
+    public synchronized void setDataUpdated(boolean dataUpdated)
+    {
+        this.dataUpdated = dataUpdated;
     }
 
     public int getTemp_Angle()
@@ -241,24 +361,30 @@ public class DataHandler
         this.temp_Angle = temp_Angle;
     }
 
-    public boolean getIc_L1()
+    public synchronized boolean getIc_L1()
     {
-        return ic_L1;
+        this.setIc_L1_flag(false);
+        return this.ic_L1;
     }
 
-    public void setIc_L1(boolean ic_L1)
+    public synchronized void setIc_L1(boolean ic_L1)
     {
         this.ic_L1 = ic_L1;
+        this.setIc_L1_flag(true);
+        this.setDataUpdated(true);
     }
 
-    public boolean getIc_R1()
+    public synchronized boolean getIc_R1()
     {
+        this.setIc_R1_flag(false);
         return ic_R1;
     }
 
-    public void setIc_R1(boolean ic_R1)
+    public synchronized void setIc_R1(boolean ic_R1)
     {
         this.ic_R1 = ic_R1;
+        this.setIc_R1_flag(true);
+        this.setDataUpdated(true);
     }
 
     public boolean getIc_X()
@@ -271,14 +397,17 @@ public class DataHandler
         this.ic_X = ic_X;
     }
 
-    public boolean getIc_A()
+    public synchronized boolean getIc_A()
     {
+        this.setIc_A_flag(false);
         return ic_A;
     }
 
-    public void setIc_A(boolean ic_A)
+    public synchronized void setIc_A(boolean ic_A)
     {
         this.ic_A = ic_A;
+        this.setIc_A_flag(true);
+        this.setDataUpdated(true);
     }
 
     public boolean getIc_B()
@@ -399,6 +528,26 @@ public class DataHandler
     public void setCmd_speedPS(int cmd_speedPS)
     {
         this.cmd_speedPS = cmd_speedPS;
+    }
+
+    public int getCmd_speedPodRotSB()
+    {
+        return cmd_speedPodRotSB;
+    }
+
+    public void setCmd_speedPodRotSB(int cmd_speedPodRotSB)
+    {
+        this.cmd_speedPodRotSB = cmd_speedPodRotSB;
+    }
+
+    public int getCmd_speedPodRotPS()
+    {
+        return cmd_speedPodRotPS;
+    }
+
+    public void setCmd_speedPodRotPS(int cmd_speedPodRotPS)
+    {
+        this.cmd_speedPodRotPS = cmd_speedPodRotPS;
     }
 
     public int getCmd_podPosSB()
@@ -547,6 +696,63 @@ public class DataHandler
     {
         ShipSystem.enumStateEvent = SendEventState.FALSE;
         return this.dataToArduino;
+    }
+
+    /**
+     * Sets the byte array containing data from GUI
+     *
+     * @param data New byte array
+     */
+    public void setDataFromGUI(byte[] data)
+    {
+
+        for (int i = 0; i < 6; i++)
+        {
+            this.dataFromGui[i] = data[i];
+        }
+
+        // pid parameters
+        double P = (double) data[6] / 10.0;
+        double I = (double) data[7] / 10.0;
+        double D = (double) data[8] / 10.0;
+        double F = (double) data[9] / 10.0;    // feed fwd
+        double RR = (double) data[10] / 10.0; // ramp rate
+
+        // set new values if value changed
+        if (P != this.P)
+        {
+            this.P = P;
+            this.PIDparamChanged = true;
+        }
+        if (I != this.I)
+        {
+            this.I = I;
+            this.PIDparamChanged = true;
+        }
+        if (D != this.D)
+        {
+            this.D = D;
+            this.PIDparamChanged = true;
+        }
+        if (F != this.F)
+        {
+            this.F = F;
+            this.PIDparamChanged = true;
+        }
+        if (RR != this.RR)
+        {
+            this.RR = RR;
+            this.PIDparamChanged = true;
+        }
+
+        this.setDataFromGuiAvailable(true);
+
+        // Values below should be equal in both dataFromGui and dataToArduino
+        //this.dataToArduino[Protocol.CONTROLS.getValue()] = this.dataFromGui[Protocol.CONTROLS.getValue()];
+        //this.dataToArduino[Protocol.COMMANDS.getValue()] = this.dataFromGui[Protocol.COMMANDS.getValue()];
+        this.dataToArduino[Protocol.SENSITIVITY.getValue()] = this.dataFromGui[Protocol.SENSITIVITY.getValue()];
+
+        this.fireStateChanged();
     }
 
     /**
@@ -712,6 +918,18 @@ public class DataHandler
         this.Test2 = Test2;
     }
 
+    public synchronized byte getThrusterCommand()
+    {
+        return thrusterCommand;
+    }
+
+    public synchronized void setThrusterCommand(byte thrusterCommand)
+    {
+        this.thrusterCommand = thrusterCommand;
+        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(false);
+    }
+
     public String getDataToArduino()
     {
         return "podposps:" + this.getFb_podPosPS()
@@ -743,20 +961,25 @@ public class DataHandler
 
     public synchronized void handleDataToRemote()
     {
-        dataToRemote.put("softSpeedPod", Integer.toString(getSoftSpeedPod()));
-        dataToRemote.put("cmd_speedSB", Integer.toString(getCmd_speedSB()));
-        dataToRemote.put("cmd_speedPS", Integer.toString(getCmd_speedPS()));
-        dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
-        dataToRemote.put("cmd_podPosPS", Integer.toString(getCmd_podPosPS()));
-
-        for (Entry e : dataToRemote.entrySet())
-        {
-            String key = (String) e.getKey();
-            String value = (String) e.getValue();
-            String data = ("<" + key + ":" + value + ">");
-            wsd.writeData("Com3", arduinoBaudRate, data);
-
-        }
+        //dataToRemote.put("softSpeedPod", Integer.toString(getSoftSpeedPod()));
+//        dataToRemote.put("cmd_speedSB", Integer.toString(getCmd_speedSB()));
+//        dataToRemote.put("cmd_speedPS", Integer.toString(getCmd_speedPS()));
+//        dataToRemote.put("cmd_speedPodRotSB", Integer.toString(getCmd_speedPodRotSB()));
+//        dataToRemote.put("cmd_speedPodRotPS", Integer.toString(getCmd_speedPodRotPS()));
+//        dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
+        dataToRemote.put("ThrusterCommand", Integer.toString(getThrusterCommand()));
+        //this.setDataToRemoteUpdated(true);
+//
+//        for (Entry e : dataToRemote.entrySet())
+//        {
+//            String key = (String) e.getKey();
+//            String value = (String) e.getValue();
+//            String data = ("<" + key + ":" + value + ">");
+//            
+//            wsd("Com3", arduinoBaudRate, data);
+//            //wsd.writeData("Com3", arduinoBaudRate, data);
+//
+//        }
     }
 
     public synchronized void handleDataFromRemote()
@@ -774,6 +997,7 @@ public class DataHandler
         {
             String key = (String) e.getKey();
             String value = (String) e.getValue();
+
             switch (key)
             {
                 case "fb_podPosPS":
@@ -805,17 +1029,27 @@ public class DataHandler
                     break;
                 case "speed":
                     this.ic_speed = Integer.parseInt(value);
+                    break;
                 case "L1":
-                    this.ic_L1 = "1".equals(value);
+                    if (this.ic_L1 != "1".equals(value))
+                    {
+                        this.setIc_L1("1".equals(value));
+                    }
                     break;
                 case "R1":
-                    this.ic_R1 = "1".equals(value);
+                    if (this.ic_R1 != "1".equals(value))
+                    {
+                        this.setIc_R1("1".equals(value));
+                    }
                     break;
                 case "X":
                     this.ic_X = "1".equals(value);
                     break;
                 case "A":
-                    this.ic_A = "1".equals(value);
+                    if (this.ic_A != "1".equals(value))
+                    {
+                        this.setIc_A("1".equals(value));
+                    }
                     break;
                 case "B":
                     this.ic_B = "1".equals(value);

@@ -78,34 +78,34 @@ public class Logic
         this.switchCaseMotorSpeeds();
     }
 
-//    /**
-//     * Sets motor speed to run forward
-//     * 
-//     * @param leftSpeed
-//     * @param rightSpeed
-//     */
-//    protected void runFWD(float leftSpeed, float rightSpeed)
-//    {
-//     this.setState(STATES.GOFWD);
-//     this.setLeftSpeed(leftSpeed);
-//     this.setRightSpeed(rightSpeed);
-//    }
-//    
-//    /**
-//     * Sets motor speed to run reverse
-//     * @param leftSpeed
-//     * @param rightSpeed 
-//     */
-//    protected void runRev(float leftSpeed, float rightSpeed)
-//    {
-//        this.setState(STATES.GOREV);
-//        this.setLeftSpeed(leftSpeed);
-//        this.setRightSpeed(rightSpeed);
-//    }
+    protected void bowThrusterSignal()
+    {
+        if (dh.getIc_R1() && dh.isDataUpdated())
+        {
+            dh.setThrusterCommand((byte) 1);
+        }
+        if (dh.getIc_L1() && dh.isDataUpdated())
+        {
+            dh.setThrusterCommand((byte) 2);
+        }
+        if (!dh.getIc_R1() && !dh.getIc_L1() )
+        {
+            if (dh.thrusterCommand != 0)
+            {
+                dh.setThrusterCommand((byte) 0);
+            }
+        }
+
+//         else if (!dh.ic_R1 && dh.isDataToRemoteUpdated())
+//        {
+//            dh.setThrusterCommand((byte) 0);
+//        }
+    }
+
     protected void test_L1()
     {
         this.input_L1 = dh.getIc_L1();
-        dh.setIc_L1(input_L1);
+        //dh.setIc_L1(input_L1);
     }
 
     protected void test_R1()
@@ -172,8 +172,7 @@ public class Logic
             {
                 this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
             }
-        }
-        else
+        } else
         {
             this.calculatedDPAnglePS = this.inputDPAngle + 180 - (dh.getYaw() - this.calibratedZeroIMU);
         }
@@ -214,11 +213,10 @@ public class Logic
     {
         if (this.calculatedAngle != dh.getFb_podPosPS())
         {
-            //  dh.setCmd_speedPodRotPS(maxSpeed);
-        }
-        else
+            dh.setCmd_speedPodRotPS(maxSpeed);
+        } else
         {
-            // dh.setCmd_speedPodRotPS(minSpeed);
+            dh.setCmd_speedPodRotPS(minSpeed);
         }
     }
 
@@ -226,11 +224,10 @@ public class Logic
     {
         if (this.calculatedAngle != dh.getFb_podPosSB())
         {
-            //  dh.setCmd_speedPodRotSB(maxSpeed);
-        }
-        else
+            dh.setCmd_speedPodRotSB(maxSpeed);
+        } else
         {
-            //  dh.setCmd_speedPodRotSB(minSpeed);
+            dh.setCmd_speedPodRotSB(minSpeed);
         }
     }
 
@@ -239,8 +236,7 @@ public class Logic
         if (dh.getFb_podPosPS() <= this.calculatedAngle + 30 || dh.getFb_podPosPS() >= this.calculatedAngle - 30)
         {
             this.podPosPSPOK = true;
-        }
-        else
+        } else
         {
             this.podPosPSPOK = false;
         }
@@ -251,36 +247,10 @@ public class Logic
         if (dh.getFb_podPosSB() <= this.calculatedAngle + 30 || dh.getFb_podPosSB() >= this.calculatedAngle - 30)
         {
             this.podPosSBOK = true;
-        }
-        else
+        } else
         {
             this.podPosSBOK = false;
         }
-    }
-
-    /**
-     * Sets motor speed to run left
-     */
-    protected void runLeft()
-    {
-        this.setState(STATES.GOLEFT);
-
-    }
-
-    /**
-     * Sets motor speed to run right
-     */
-    protected void runRight()
-    {
-        this.setState(STATES.GORIGHT);
-    }
-
-    /**
-     * Sets motor speed zero/stop
-     */
-    protected void stop()
-    {
-        this.setState(STATES.STOP);
     }
 
     /**
@@ -299,80 +269,6 @@ public class Logic
         this.setState(STATES.MANUALCONTROLL);
     }
 
-//    
-//    protected void handleButtonState()
-//    {
-//        int buttonState = 0;
-//   
-//        if (0 != dh.getFromGuiByte((byte) 0))
-//        {
-//            if(!(((1 == dh.getFwd()) && (1 == dh.getRev())) || 
-//                    ((1 == dh.getLeft()) && (1 == dh.getRight()))))
-//            {
-//                if (1 == dh.getFwd())
-//                {
-//                    buttonState = STATES.GOFWD.getValue();
-//                }
-//                else if (1 == dh.getRev())
-//                {
-//                    buttonState = STATES.GOREV.getValue();
-//                }
-//                if (1 == dh.getLeft())
-//                {
-//                    buttonState = STATES.GOLEFT.getValue();
-//                } else if (1 == dh.getRight())
-//                {
-//                    buttonState += STATES.GORIGHT.getValue();
-//                }
-//            }
-//        }
-//        this.setStateByValue(buttonState);
-//    }
-//    
-//    
-//    /**
-//     * Selects the correct movement of the ship from state
-//     */
-//    protected void switchCaseButtonStates()
-//    {
-//        dh.resetToArduinoByte(0);
-//        
-//        switch (this.getState())
-//        {
-//            case STOP:
-//                dh.stopAUV();
-//                break;
-//            case GOFWD:
-//                dh.goFwd();
-//                break;
-//            case GOREV:
-//                dh.goRev();
-//                break;
-//            case GOLEFT:
-//                dh.goLeft();
-//                break;
-//            case GORIGHT:
-//                dh.goRight();
-//                break;
-//            case GOFWDANDLEFT:
-//                dh.goFwd();
-//                break;
-//            case GOFWDANDRIGHT:
-//                dh.goFwd();
-//                break;
-//            case GOREVANDRIGHT:
-//                dh.goRev();
-//                break;
-//            case GOREVANDLEFT:
-//                dh.goRev();
-//                break;
-//                // unknown command
-//            case DEFAULT:
-//                break;
-//            default:
-//                break;
-//        }
-//    }
     /**
      * sets the correct motorspeeds from state (manual mode)
      */
@@ -388,30 +284,27 @@ public class Logic
             case GOFWD:
                 if (this.podPosPSPOK && this.podPosSBOK)
                 {
-                    // dh.setCmd_speedPodRotPS(inputSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(inputSpeed);
+                } else
                 {
-                    // dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
                 break;
             case GOREV:
                 if (dh.getFb_podPosPS() != 0)
                 {
-                    // dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
 
                 if (dh.getFb_podPosSB() != 0)
                 {
-                    // dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                } else
                 {
-                    // dh.setCmd_speedPodRotSB(minSpeed);
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
 
                 if (dh.getFb_podPosPS() == 0 && dh.getFb_podPosSB() == 0)
@@ -423,20 +316,18 @@ public class Logic
             case GOLEFT:
                 if (dh.getFb_podPosPS() != 315)
                 {
-                    //  dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
 
                 if (dh.getFb_podPosSB() != 315)
                 {
-                    //  dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotSB(minSpeed);
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
 
                 if (dh.getFb_podPosPS() == 315 && dh.getFb_podPosSB() == 315)
@@ -448,20 +339,18 @@ public class Logic
             case GORIGHT:
                 if (dh.getFb_podPosPS() != 45)
                 {
-                    //  dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
 
                 if (dh.getFb_podPosSB() != 45)
                 {
-                    //  dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotSB(minSpeed);
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
 
                 if (dh.getFb_podPosPS() == 45 && dh.getFb_podPosSB() == 45)
@@ -473,20 +362,18 @@ public class Logic
             case GOFWDANDLEFT:
                 if (dh.getFb_podPosPS() != 345)
                 {
-                    //  dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
 
                 if (dh.getFb_podPosSB() != 345)
                 {
-                    //  dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotSB(minSpeed);
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
 
                 if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
@@ -498,19 +385,17 @@ public class Logic
             case GOFWDANDRIGHT:
                 if (dh.getFb_podPosPS() != 15)
                 {
-                    //  dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
                 if (dh.getFb_podPosSB() != 15)
                 {
-                    //  dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                } else
                 {
-                    //   dh.setCmd_speedPodRotSB(minSpeed);
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
                 if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
                 {
@@ -521,19 +406,17 @@ public class Logic
             case GOREVANDRIGHT:
                 if (dh.getFb_podPosPS() != 15)
                 {
-                    // dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
                 if (dh.getFb_podPosSB() != 15)
                 {
-                    //  dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotSB(minSpeed);
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
                 if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
                 {
@@ -544,20 +427,18 @@ public class Logic
             case GOREVANDLEFT:
                 if (dh.getFb_podPosPS() != 345)
                 {
-                    //  dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotPS(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotPS(minSpeed);
+                    dh.setCmd_speedPodRotPS(minSpeed);
                 }
 
                 if (dh.getFb_podPosSB() != 345)
                 {
-                    //  dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
+                    dh.setCmd_speedPodRotSB(maxSpeed);
+                } else
                 {
-                    //  dh.setCmd_speedPodRotSB(minSpeed);
+                    dh.setCmd_speedPodRotSB(minSpeed);
                 }
 
                 if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
@@ -592,7 +473,7 @@ public class Logic
      */
     public void setSBpodSpeed(int speedPodSB)
     {
-        //  dh.setCmd_speedPodRotSB(speedPodSB);
+        dh.setCmd_speedPodRotSB(speedPodSB);
     }
 
     /**
@@ -612,7 +493,7 @@ public class Logic
      */
     public void setPSpodSpeed(int speedPodPS)
     {
-        //  dh.setCmd_speedPodRotPS(speedPodPS);
+        dh.setCmd_speedPodRotPS(speedPodPS);
     }
 
     /**

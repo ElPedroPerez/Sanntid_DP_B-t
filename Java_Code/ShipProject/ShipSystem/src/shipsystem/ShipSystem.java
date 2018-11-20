@@ -28,8 +28,7 @@ public class ShipSystem
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
-    protected static String ipAddressGUI = "158.38.92.52"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
-    protected static int sendPort = 5057;
+    protected static String ipAdress = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
 
     /**
      * @param args the command line arguments
@@ -46,21 +45,20 @@ public class ShipSystem
         udpListener = new Thread(new UDPListener(dh));
 
         serialDataHandler = new Thread(new SerialDataHandler(dh));
-        alarmList = new Thread(new AlarmList(dh));
+        //alarmList = new Thread(new AlarmList(dh));
 
         controller = new Thread(new Controller(dh, semaphore));
-        // server = new Thread(new UDPServer(semaphore, dh));
 
-        udpListener.start();
+        controller.setName("Controller");
         udpListener.setName("UDPListener");
+        acclerationFilter.setName("AccelerationFilter");
+        serialDataHandler.setName("SerialDataHandler");
 
         controller.start();
-//        server.start();
         acclerationFilter.start();
-        acclerationFilter.setName("AccelerationFilter");
-
+        udpListener.start();
         serialDataHandler.start();
-        alarmList.start();
+        //alarmList.start();
 
         int fb_podPosPS = 0;
         int fb_podPosSB = 0;
@@ -75,12 +73,14 @@ public class ShipSystem
         {
             try
             {
+                System.out.println("A: " + dh.ic_A);
+                //System.out.println("dh.setTemp_Angle: " + dh.getTemp_Angle());
+                System.out.println("R1: " + dh.ic_R1);
                 Thread.sleep(250);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
             }
-            System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());
+            // System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());
             boolean kake = true;
             //  System.out.println("Test value is: " + dh.getTest()); 
             //  System.out.println("Test2 value is: " + dh.getTest2());

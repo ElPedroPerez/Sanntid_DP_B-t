@@ -45,39 +45,42 @@ public class Controller implements Runnable
     }
 
     /**
-     * start a new thread containing the controller
-     */
-    public void start()
-    {
-        t = new Thread(this, "controller thread");
-        t.start();
-    }
-
-    /**
      * run the controller
      */
     @Override
     public void run()
     {
+        long lastTime = System.nanoTime();
         while (true)
         {
-            try
+//            try
+//            {
+
+            this.logic.calculateAngle();
+//                this.logic.test_Speed();
+//                this.logic.test_L1();
+//                this.logic.test_R1();
+//                this.logic.test_X();
+//                this.logic.test_A();
+//                this.logic.test_B();
+//                this.logic.test_Y();
+            this.logic.bowThrusterSignal();
+            //Thread.sleep(500);
+
+            dh.handleDataToRemote();
+            long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
+
+            if (elapsedTimer > 250)
             {
-                this.logic.calculateAngle();
-                this.logic.test_Speed();
-                this.logic.test_L1();
-                this.logic.test_R1();
-                this.logic.test_X();
-                this.logic.test_A();
-                this.logic.test_B();
-                this.logic.test_Y();
-                Thread.sleep(250);
+                elapsedTimer = 0;
+                lastTime = System.nanoTime();
                 
-                
-            } catch (InterruptedException ex)
-            {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            //} catch (InterruptedException ex)
+//            {
+//                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//            }
         }
 
 //        //this.startRequestFeedbacks();
