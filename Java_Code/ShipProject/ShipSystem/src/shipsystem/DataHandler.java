@@ -13,16 +13,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Overview protocol: To Arduino: Byte 0: bit 0 - stopp bit 1 - fwd bit 2 - rev
- * bit 3 - left bit 4 - right Byte 1: Left motor speed Byte 2: Right motor speed
- * Byte 3: bit 0 - left servo bit 1 - right servo bit 2 - auto/manual bit 3 -
- * start bit 7 - request feedback Byte 4: Sensitivity Byte 5: Reserved
+ * Responsible for handling data from GUI and and from arduino
  *
- * From Arduino: Byte 0: Pixy x value low byte Byte 1: Pixy x value high byte
- * Byte 2: Pixy y value low byte Byte 3: Pixy y value high byte Byte 4: Distance
- * sensor 4-30 cm Byte 5: Reserved
- *
- * @author Eivind Fugledal
+ * @author Haakon, Bjørnar, Robin
  */
 public class DataHandler
 {

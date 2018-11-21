@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Controller class controls the vehicle and the states of it
  *
- * @author lars-harald
+ * @author Haakon, Bjørnar, Robin
  */
 public class Controller implements Runnable
 {
