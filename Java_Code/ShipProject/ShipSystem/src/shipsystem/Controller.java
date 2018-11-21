@@ -56,16 +56,10 @@ public class Controller implements Runnable
 //            try
 //            {
 
+            //Calculate angle on the pods from PS3 controller and moves the pods
             this.logic.calculateAngle();
-//                this.logic.test_Speed();
-//                this.logic.test_L1();
-//                this.logic.test_R1();
-//                this.logic.test_X();
-//                this.logic.test_A();
-//                this.logic.test_B();
-//                this.logic.test_Y();
             this.logic.bowThrusterSignal();
-            //Thread.sleep(500);
+            
 
             dh.handleDataToRemote();
             long elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
@@ -74,7 +68,7 @@ public class Controller implements Runnable
             {
                 elapsedTimer = 0;
                 lastTime = System.nanoTime();
-                
+
             }
 
             //} catch (InterruptedException ex)

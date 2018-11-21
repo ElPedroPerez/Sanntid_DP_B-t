@@ -88,7 +88,7 @@ public class Logic
         {
             dh.setThrusterCommand((byte) 2);
         }
-        if (!dh.getIc_R1() && !dh.getIc_L1() )
+        if (!dh.getIc_R1() && !dh.getIc_L1())
         {
             if (dh.thrusterCommand != 0)
             {
@@ -102,50 +102,9 @@ public class Logic
 //        }
     }
 
-    protected void test_L1()
-    {
-        this.input_L1 = dh.getIc_L1();
-        //dh.setIc_L1(input_L1);
-    }
-
-    protected void test_R1()
-    {
-        this.input_R1 = dh.getIc_R1();
-        dh.setIc_R1(input_R1);
-    }
-
-    protected void test_X()
-    {
-        this.input_X = dh.getIc_X();
-        dh.setIc_X(input_X);
-    }
-
-    protected void test_A()
-    {
-        this.input_A = dh.getIc_A();
-        dh.setIc_A(input_A);
-    }
-
-    protected void test_B()
-    {
-        this.input_B = dh.getIc_B();
-        dh.setIc_B(input_B);
-    }
-
-    protected void test_Y()
-    {
-        this.input_Y = dh.getIc_Y();
-        dh.setIc_Y(input_Y);
-    }
-
-    protected void test_Speed()
-    {
-        this.inputSpeed = dh.getIc_speed();
-        dh.setIc_speed(inputSpeed);
-    }
-
     protected void calculateAngle()
     {
+
         this.inputAngle = dh.getIc_angle();
         this.calculatedAngle = 180 - this.inputAngle;
 
@@ -155,6 +114,47 @@ public class Logic
         }
 
         dh.setTemp_Angle(this.calculatedAngle);
+        calculatePodMovement();
+
+    }
+
+    protected void calculatePodMovement()
+    {
+        //PS Pod rotation
+        if ((dh.getTemp_Angle() > (dh.getFb_podPosPS() + 2))
+                && dh.getTemp_Angle() < (dh.getFb_podPosPS() - 2))
+        {
+            if ((this.calculatedAngle - dh.getFb_podPosPS() + 360) % 360 < 180)
+            // clockwise
+            {
+                dh.setPodPosPSCommand((byte) 1);
+            } // anti-clockwise
+            else
+            {
+                dh.setPodPosPSCommand((byte) 2);
+            }
+        } else
+        {
+            dh.setPodPosPSCommand((byte) 0);
+        }
+
+        //SB Pod rotation
+        if ((dh.getTemp_Angle() > (dh.getFb_podPosSB() + 2))
+                && dh.getTemp_Angle() < (dh.getFb_podPosSB() - 2))
+        {
+            if ((this.calculatedAngle - dh.getFb_podPosSB() + 360) % 360 < 180)
+            // clockwise
+            {
+                dh.setPodPosSBCommand((byte) 1);
+            } // anti-clockwise
+            else
+            {
+                dh.setPodPosSBCommand((byte) 2);
+            }
+        } else
+        {
+            dh.setPodPosSBCommand((byte) 0);
+        }
     }
 
     protected void calculateDPAnglePS()
