@@ -102,50 +102,12 @@ public class Logic
 //        }
     }
 
-    protected void test_L1()
-    {
-        this.input_L1 = dh.getIc_L1();
-        //dh.setIc_L1(input_L1);
-    }
-
-    protected void test_R1()
-    {
-        this.input_R1 = dh.getIc_R1();
-        dh.setIc_R1(input_R1);
-    }
-
-    protected void test_X()
-    {
-        this.input_X = dh.getIc_X();
-        dh.setIc_X(input_X);
-    }
-
-    protected void test_A()
-    {
-        this.input_A = dh.getIc_A();
-        dh.setIc_A(input_A);
-    }
-
-    protected void test_B()
-    {
-        this.input_B = dh.getIc_B();
-        dh.setIc_B(input_B);
-    }
-
-    protected void test_Y()
-    {
-        this.input_Y = dh.getIc_Y();
-        dh.setIc_Y(input_Y);
-    }
-
-    protected void test_Speed()
-    {
-        this.inputSpeed = dh.getIc_speed();
-        dh.setIc_speed(inputSpeed);
-    }
-
+    /**
+     * Reads angle on controller and calculates the value og angle on pods.
+     */
     protected void calculateAngle()
     {
+
         this.inputAngle = dh.getIc_angle();
         this.calculatedAngle = 180 - this.inputAngle;
 
@@ -155,8 +117,55 @@ public class Logic
         }
 
         dh.setTemp_Angle(this.calculatedAngle);
+        calculatePodMovement();
+
     }
 
+    /**
+     * Finds the shortes route to new angle.
+     */
+    protected void calculatePodMovement()
+    {
+        //PS Pod rotation
+        if ((dh.getTemp_Angle() > (dh.getFb_podPosPS() + 2))
+                && dh.getTemp_Angle() < (dh.getFb_podPosPS() - 2))
+        {
+            if ((this.calculatedAngle - dh.getFb_podPosPS() + 360) % 360 < 180)
+            // clockwise
+            {
+                dh.setPodPosPSCommand((byte) 1);
+            } // anti-clockwise
+            else
+            {
+                dh.setPodPosPSCommand((byte) 2);
+            }
+        } else
+        {
+            dh.setPodPosPSCommand((byte) 0);
+        }
+
+        //SB Pod rotation
+        if ((dh.getTemp_Angle() > (dh.getFb_podPosSB() + 2))
+                && dh.getTemp_Angle() < (dh.getFb_podPosSB() - 2))
+        {
+            if ((this.calculatedAngle - dh.getFb_podPosSB() + 360) % 360 < 180)
+            // clockwise
+            {
+                dh.setPodPosSBCommand((byte) 1);
+            } // anti-clockwise
+            else
+            {
+                dh.setPodPosSBCommand((byte) 2);
+            }
+        } else
+        {
+            dh.setPodPosSBCommand((byte) 0);
+        }
+    }
+
+    /**
+     * Calculates angle when in DP mode.
+     */
     protected void calculateDPAnglePS()
     {
         if (this.inputDPAngle >= 180)
@@ -189,7 +198,9 @@ public class Logic
         }
 
     }
-
+    /**
+     * Calculate angle to be on the opposite side of the Port Side pod.
+     */
     protected void calculateDPAngleSB()
     {
         this.calculatedDPAngleSB = this.calculatedDPAnglePS - 180;
@@ -200,16 +211,26 @@ public class Logic
         }
     }
 
+    /**
+     * Sets the speed of the Port side motor equal to the speed of the controller.
+     */
     protected void runPodSpeedPS()
     {
         dh.setCmd_speedPS(inputSpeed);
     }
 
+    /**
+     * Sets the speed of the Star Board side motor equal to the speed of the controller.
+     */
     protected void runPodSpeedSB()
     {
         dh.setCmd_speedSB(inputSpeed);
     }
 
+    /**
+     * Checks if feedback angle is the same as the calculated angle.
+     * If angles does not match, the rotation motor runs.
+     */
     protected void runPodRotPS()
     {
         if (this.calculatedAngle != dh.getFb_podPosPS())
@@ -222,6 +243,10 @@ public class Logic
         }
     }
 
+    /**
+     * Checks if feedback angle is the same as the calculated angle.
+     * If angles does not match, the rotation motor runs.
+     */
     protected void runPodRotSB()
     {
         if (this.calculatedAngle != dh.getFb_podPosSB())
@@ -234,6 +259,9 @@ public class Logic
         }
     }
 
+    /**
+     * Checks if feedback value is within a set offset.
+     */
     protected void podPosPS_OK()
     {
         if (dh.getFb_podPosPS() <= this.calculatedAngle + 30 || dh.getFb_podPosPS() >= this.calculatedAngle - 30)
@@ -246,6 +274,9 @@ public class Logic
         }
     }
 
+    /**
+     * Checks if feedback value is within a set offset.
+     */
     protected void podPosSB_OK()
     {
         if (dh.getFb_podPosSB() <= this.calculatedAngle + 30 || dh.getFb_podPosSB() >= this.calculatedAngle - 30)

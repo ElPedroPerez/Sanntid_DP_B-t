@@ -8,7 +8,7 @@ package shipsystem;
 import static java.lang.Math.toIntExact;
 
 /**
- *
+ * Acceleration filter is responsible for accelerate and decelerate motor speeds
  * @author rocio
  */
 public class AccelerationFilter implements Runnable
