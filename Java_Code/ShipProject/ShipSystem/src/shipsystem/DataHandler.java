@@ -122,6 +122,8 @@ public class DataHandler
 
     //Logical outputs
     public byte thrusterCommand;
+    public byte podPosSBCommand;
+    public byte podPosPSCommand;
 
     // pid parameters
     private double P; // prop gain
@@ -203,6 +205,8 @@ public class DataHandler
 
         //Logical outputs
         thrusterCommand = 0;
+        podPosSBCommand = 0;
+        podPosPSCommand = 0;
     }
 //*****************************************************************
 //********************** THREAD STATUS METHODS*********************
@@ -448,22 +452,28 @@ public class DataHandler
 
     public int getIc_speed()
     {
+        this.setIc_speed_flag(false);
         return ic_speed;
     }
-
+    
     public void setIc_speed(int ic_speed)
     {
         this.ic_speed = ic_speed;
+        this.setIc_speed_flag(true);
+        this.setDataUpdated(true);
     }
 
     public int getIc_angle()
     {
-        return ic_angle;
+        this.setIc_angle_flag(false);
+        return ic_angle;        
     }
-
+    
     public void setIc_angle(int ic_angle)
     {
         this.ic_angle = ic_angle;
+        this.setIc_angle_flag(true);
+        this.setDataUpdated(true);
     }
 
     public int getFb_speedSB()
@@ -945,6 +955,26 @@ public class DataHandler
         this.setDataToRemoteUpdated(true);
         this.setDataUpdated(false);
     }
+    
+    public byte getPodPosSBCommand()
+    {
+        return podPosSBCommand;
+    }
+    
+    public void setPodPosSBCommand(byte podPosSBCommand)
+    {
+        this.podPosSBCommand = podPosSBCommand;
+    }
+    
+    public byte getPodPosPSCommand()
+    {
+        return podPosPSCommand;
+    }
+    
+    public void setPodPosPSCommand(byte podPosPSCommand)
+    {
+        this.podPosPSCommand = podPosPSCommand;
+    }
 
     public String getDataToArduino()
     {
@@ -1041,7 +1071,10 @@ public class DataHandler
                     this.Roll = Integer.parseInt(value);
                     break;
                 case "angle":
-                    this.ic_angle = Integer.parseInt(value);
+                    if (this.ic_angle != Integer.parseInt(value))
+                    {
+                        this.ic_angle = Integer.parseInt(value);
+                    }
                     break;
                 case "speed":
                     this.ic_speed = Integer.parseInt(value);
