@@ -49,8 +49,7 @@ public class TimeBasedAlarm implements Runnable
         {
             while (!inhibit)
             {
-                //if (alarmList.alarmDataList.get(input) > 0)
-                if (1 > 0)
+                if (alarmList.alarmDataList.get(input) > 0)
                 {
                     lastTime = System.nanoTime();
                     double elapsedTime = 0;

@@ -172,7 +172,8 @@ public class Logic
             {
                 this.calculatedDPAnglePS = this.calculatedDPAnglePS - 360;
             }
-        } else
+        }
+        else
         {
             this.calculatedDPAnglePS = this.inputDPAngle + 180 - (dh.getYaw() - this.calibratedZeroIMU);
         }
@@ -214,7 +215,8 @@ public class Logic
         if (this.calculatedAngle != dh.getFb_podPosPS())
         {
             dh.setCmd_speedPodRotPS(maxSpeed);
-        } else
+        }
+        else
         {
             dh.setCmd_speedPodRotPS(minSpeed);
         }
@@ -225,7 +227,8 @@ public class Logic
         if (this.calculatedAngle != dh.getFb_podPosSB())
         {
             dh.setCmd_speedPodRotSB(maxSpeed);
-        } else
+        }
+        else
         {
             dh.setCmd_speedPodRotSB(minSpeed);
         }
@@ -236,7 +239,8 @@ public class Logic
         if (dh.getFb_podPosPS() <= this.calculatedAngle + 30 || dh.getFb_podPosPS() >= this.calculatedAngle - 30)
         {
             this.podPosPSPOK = true;
-        } else
+        }
+        else
         {
             this.podPosPSPOK = false;
         }
@@ -247,7 +251,8 @@ public class Logic
         if (dh.getFb_podPosSB() <= this.calculatedAngle + 30 || dh.getFb_podPosSB() >= this.calculatedAngle - 30)
         {
             this.podPosSBOK = true;
-        } else
+        }
+        else
         {
             this.podPosSBOK = false;
         }
@@ -285,7 +290,8 @@ public class Logic
                 if (this.podPosPSPOK && this.podPosSBOK)
                 {
                     dh.setCmd_speedPodRotPS(inputSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
@@ -294,7 +300,8 @@ public class Logic
                 if (dh.getFb_podPosPS() != 0)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
@@ -302,7 +309,8 @@ public class Logic
                 if (dh.getFb_podPosSB() != 0)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotSB(minSpeed);
                 }
@@ -317,7 +325,8 @@ public class Logic
                 if (dh.getFb_podPosPS() != 315)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
@@ -325,7 +334,8 @@ public class Logic
                 if (dh.getFb_podPosSB() != 315)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotSB(minSpeed);
                 }
@@ -340,7 +350,8 @@ public class Logic
                 if (dh.getFb_podPosPS() != 45)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
@@ -348,7 +359,8 @@ public class Logic
                 if (dh.getFb_podPosSB() != 45)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotSB(minSpeed);
                 }
@@ -363,7 +375,8 @@ public class Logic
                 if (dh.getFb_podPosPS() != 345)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
@@ -371,7 +384,8 @@ public class Logic
                 if (dh.getFb_podPosSB() != 345)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotSB(minSpeed);
                 }
@@ -386,14 +400,16 @@ public class Logic
                 if (dh.getFb_podPosPS() != 15)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
                 if (dh.getFb_podPosSB() != 15)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotSB(minSpeed);
                 }
@@ -407,14 +423,16 @@ public class Logic
                 if (dh.getFb_podPosPS() != 15)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
                 if (dh.getFb_podPosSB() != 15)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotSB(minSpeed);
                 }
@@ -428,7 +446,8 @@ public class Logic
                 if (dh.getFb_podPosPS() != 345)
                 {
                     dh.setCmd_speedPodRotPS(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
                 }
@@ -436,7 +455,8 @@ public class Logic
                 if (dh.getFb_podPosSB() != 345)
                 {
                     dh.setCmd_speedPodRotSB(maxSpeed);
-                } else
+                }
+                else
                 {
                     dh.setCmd_speedPodRotSB(minSpeed);
                 }

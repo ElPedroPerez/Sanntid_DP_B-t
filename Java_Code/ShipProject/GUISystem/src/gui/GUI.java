@@ -26,7 +26,7 @@ public class GUI extends Application implements Runnable
     private boolean launched = false;
     private int count = 0;
     public static Stage window;
-    public static Scene scene, scene_Alarms, scene_DP;
+    public static Scene scene;
 
     @Override
     public void run()
@@ -57,14 +57,6 @@ public class GUI extends Application implements Runnable
         Parent root = fxmlLoader.load();
         FXMLDocumentController fxController = fxmlLoader.getController();
         this.scene = new Scene(root);
-
-        FXMLLoader fxmlAlarmsLoader = new FXMLLoader(getClass().getResource("FXML_AlarmsPage.fxml"));
-        Parent root_Alarms = fxmlAlarmsLoader.load();
-        this.scene_Alarms = new Scene(root_Alarms);
-
-        FXMLLoader fxmlDPLoader = new FXMLLoader(getClass().getResource("FXML_DPPage.fxml"));
-        Parent root_DP = fxmlDPLoader.load();
-        this.scene_DP = new Scene(root_DP);
 
         // longrunning operation runs on different thread 
         Thread thread = new Thread(new Runnable()

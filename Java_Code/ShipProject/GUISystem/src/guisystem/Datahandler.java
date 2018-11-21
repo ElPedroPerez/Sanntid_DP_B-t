@@ -7,6 +7,7 @@ package guisystem;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -25,6 +26,8 @@ public class Datahandler
     private Boolean guiPing;
     private long ping;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
+    public ConcurrentHashMap<String, Boolean> alarmList = new ConcurrentHashMap<>();
+
     private int fb_podPosPS;
     private int fb_podPosSB;
     private int fb_speedPS;
@@ -110,8 +113,7 @@ public class Datahandler
     {
         this.fb_heading = fb_heading;
     }
-    
-    
+
     /**
      * Gets data from GUI
      *
@@ -150,6 +152,19 @@ public class Datahandler
         this.ping = ping;
     }
 
+    public synchronized void setAlarmList()
+    {
+        for (Map.Entry e : data.entrySet())
+        {
+            String key = (String) e.getKey();
+            String value = (String) e.getValue();
+            switch (key)
+            {
+
+            }
+        }
+    }
+
     public synchronized void handleDataFromRemote()
     {
 
@@ -185,6 +200,27 @@ public class Datahandler
                 case "fb_heading":
                     this.fb_heading = Integer.parseInt(value);
                     break;
+                case "sbSpeedFbAlarm":
+                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    break;
+                case "psSpeedFbAlarm":
+                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    break;
+                case "sbPodPosFbAlarm":
+                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    break;
+                case "psPodPosFbAlarm":
+                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    break;
+                case "visionDeviationAlarm":
+                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    break;
+                case "imuRollAlarm":
+                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    break;
+//              case "pingAlarm":
+//                  this.alarmList.put(key, Boolean.parseBoolean(value));
+//                  break;
             }
         }
     }
