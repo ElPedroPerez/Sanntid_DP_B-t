@@ -34,6 +34,15 @@ public class Datahandler
     private int fb_speedSB;
     private int fb_heading;
 
+    //Alarm variables
+    private boolean sbSpeedFbAlarm;
+    private boolean psSpeedFbAlarm;
+    private boolean sbPodPosFbAlarm;
+    private boolean psPodPosFbAlarm;
+    private boolean visionDeviationAlarm;
+    private boolean imuRollAlarm;
+    //private boolean pingAlarm;
+
     public Datahandler()
     {
         guiPing = false;
@@ -152,19 +161,6 @@ public class Datahandler
         this.ping = ping;
     }
 
-    public synchronized void setAlarmList()
-    {
-        for (Map.Entry e : data.entrySet())
-        {
-            String key = (String) e.getKey();
-            String value = (String) e.getValue();
-            switch (key)
-            {
-
-            }
-        }
-    }
-
     public synchronized void handleDataFromRemote()
     {
 
@@ -201,26 +197,54 @@ public class Datahandler
                     this.fb_heading = Integer.parseInt(value);
                     break;
                 case "sbSpeedFbAlarm":
-                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    if (this.sbSpeedFbAlarm != "1".equals(value))
+                    {
+                        this.sbSpeedFbAlarm = Boolean.parseBoolean(value);
+                        this.alarmList.put(key, Boolean.parseBoolean(value));
+                    }
                     break;
                 case "psSpeedFbAlarm":
-                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    if (this.psSpeedFbAlarm != "1".equals(value))
+                    {
+                        this.psSpeedFbAlarm = Boolean.parseBoolean(value);
+                        this.alarmList.put(key, Boolean.parseBoolean(value));
+                    }
                     break;
                 case "sbPodPosFbAlarm":
-                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    if (this.sbPodPosFbAlarm != "1".equals(value))
+                    {
+                        this.sbPodPosFbAlarm = Boolean.parseBoolean(value);
+                        this.alarmList.put(key, Boolean.parseBoolean(value));
+                    }
                     break;
                 case "psPodPosFbAlarm":
-                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    if (this.psPodPosFbAlarm != "1".equals(value))
+                    {
+                        this.psPodPosFbAlarm = Boolean.parseBoolean(value);
+                        this.alarmList.put(key, Boolean.parseBoolean(value));
+                    }
                     break;
                 case "visionDeviationAlarm":
-                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    if (this.visionDeviationAlarm != "1".equals(value))
+                    {
+                        this.visionDeviationAlarm = Boolean.parseBoolean(value);
+                        this.alarmList.put(key, Boolean.parseBoolean(value));
+                    }
                     break;
                 case "imuRollAlarm":
-                    this.alarmList.put(key, Boolean.parseBoolean(value));
+                    if (this.imuRollAlarm != "1".equals(value))
+                    {
+                        this.imuRollAlarm = Boolean.parseBoolean(value);
+                        this.alarmList.put(key, Boolean.parseBoolean(value));
+                    }
                     break;
 //              case "pingAlarm":
-//                  this.alarmList.put(key, Boolean.parseBoolean(value));
-//                  break;
+//                    if (this.sbSpeedFbAlarm != "1".equals(value))
+//                    {
+//                    this.psSpeedFbAlarm = Boolean.parseBoolean(value);
+//                    this.alarmList.put(key, Boolean.parseBoolean(value));
+//                    }
+//                    break;
             }
         }
     }

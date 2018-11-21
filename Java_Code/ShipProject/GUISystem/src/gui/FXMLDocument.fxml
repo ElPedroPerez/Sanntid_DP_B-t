@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -37,17 +36,16 @@
                                                         <StackPane prefHeight="240.0" prefWidth="240.0">
                                                             <children>
                                                                 <Gauge fx:id="speedps" angleRange="360.0" decimals="0" maxHeight="240.0" maxValue="6000.0" maxWidth="240.0" returnToZero="true" skinType="SLIM" startAngle="0.0" startFromZero="true" title="SPEED" unit="RPM" valueVisible="false" />
-                                                                <Label fx:id="speedps_lbl" style="-fx-font-size: 60; -fx-font-family: Yu Gothic;" text="123" />
+                                                                <Label fx:id="speedps_lbl" style="-fx-font-size: 60; -fx-font-family: Yu Gothic;" text="123">
+                                                   <StackPane.margin>
+                                                      <Insets />
+                                                   </StackPane.margin></Label>
                                                             </children>
                                                         </StackPane>
                                                         <HBox prefHeight="20.0" prefWidth="245.0" />
                                                         <StackPane prefHeight="240.0" prefWidth="240.0">
                                                             <children>
-                                                                <ImageView fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                                                    <image>
-                                                                        <Image url="@img/podpos.jpg" />
-                                                                    </image>
-                                                                </ImageView>
+                                                <Gauge decimals="0" maxHeight="240.0" maxValue="360.0" maxWidth="240.0" returnToZero="true" skinType="SLIM" startFromZero="true" title="POD POS" unit="DEGREES" valueVisible="false" />
                                                                 <Gauge fx:id="podposps_cmd" angleRange="360.0" decimals="0" maxHeight="240.0" maxMeasuredValue="360.0" maxValue="360.0" maxWidth="240.0" minMeasuredValue="0.0" returnToZero="true" skinType="SLIM" startAngle="0.0" startFromZero="true" value="30.0" valueVisible="false" />
                                                                 <Gauge fx:id="podposps_fb" angleRange="360.0" decimals="0" maxHeight="215.0" maxValue="360.0" maxWidth="215.0" returnToZero="true" skinType="SLIM" startAngle="0.0" startFromZero="true" value="30.0" valueVisible="false" />
                                                                 <Label fx:id="podposps_lbl" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 60; -fx-font-family: Yu Gothic;" text="123" />
@@ -81,11 +79,7 @@
                                                         <HBox prefHeight="20.0" prefWidth="245.0" />
                                                         <StackPane prefHeight="240.0" prefWidth="240.0">
                                                             <children>
-                                                                <ImageView fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                                                    <image>
-                                                                        <Image url="@img/podpos.jpg" />
-                                                                    </image>
-                                                                </ImageView>
+                                                <Gauge decimals="0" maxHeight="240.0" maxValue="360.0" maxWidth="240.0" returnToZero="true" skinType="SLIM" startFromZero="true" title="POD POS" unit="DEGREES" valueVisible="false" />
                                                                 <Gauge fx:id="podpossb_cmd" angleRange="360.0" decimals="0" maxHeight="240.0" maxValue="359.0" maxWidth="240.0" returnToZero="true" skinType="SLIM" startAngle="350.0" value="30.0" valueVisible="false" />
                                                                 <Gauge fx:id="podpossb_fb" angleRange="360.0" decimals="0" maxHeight="215.0" maxValue="359.0" maxWidth="215.0" returnToZero="true" skinType="SLIM" startAngle="0.0" startFromZero="true" value="30.0" valueVisible="false" />
                                                                 <Label fx:id="podpossb_lbl" alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 60; -fx-font-family: Yu Gothic;" text="123" />
@@ -103,44 +97,40 @@
                                         </HBox>
                                     </right>
                                     <top>
-                              <StackPane BorderPane.alignment="CENTER">
-                                 <children>
-                                              <HBox prefHeight="55.0" prefWidth="1100.0">
-                                                  <children>
-                                                      <Button fx:id="btn_main" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMainButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" prefHeight="53.0" prefWidth="480.0" style="-fx-background-color: #364250; -fx-font-size: 16; -fx-font-family: Yu Gothic; -fx-effect: None;" text="MAIN" />
-                                                      <Button fx:id="btn_dp" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleDpButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" prefHeight="53.0" prefWidth="480.0" style="-fx-background-color: #364250; -fx-font-size: 16; -fx-font-family: Yu Gothic; -fx-effect: None;" text="DYNAMIC POSITIONING" />
-                                                      <Button fx:id="btn_alarms" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAlarmsButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" prefHeight="53.0" prefWidth="480.0" style="-fx-background-color: #364250; -fx-font-size: 16; -fx-font-family: Yu Gothic; -fx-effect: None;" text="ALARMS" />
-                                                  </children>
-                                              </HBox>
-                                 </children>
-                              </StackPane>
+                                        <StackPane BorderPane.alignment="CENTER">
+                                            <children>
+                                                <HBox prefHeight="55.0" prefWidth="1100.0">
+                                                    <children>
+                                                        <Button fx:id="btn_main" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleMainButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" prefHeight="53.0" prefWidth="480.0" style="-fx-background-color: #364250; -fx-font-size: 16; -fx-font-family: Yu Gothic; -fx-effect: None;" text="MAIN" />
+                                                        <Button fx:id="btn_dp" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleDpButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" prefHeight="53.0" prefWidth="480.0" style="-fx-background-color: #364250; -fx-font-size: 16; -fx-font-family: Yu Gothic; -fx-effect: None;" text="DYNAMIC POSITIONING" />
+                                                        <Button fx:id="btn_alarms" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAlarmsButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" prefHeight="53.0" prefWidth="480.0" style="-fx-background-color: #364250; -fx-font-size: 16; -fx-font-family: Yu Gothic; -fx-effect: None;" text="ALARMS" />
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </StackPane>
                                     </top>
                                     <center>
                                         <VBox alignment="BOTTOM_CENTER" prefHeight="819.0" prefWidth="784.0" BorderPane.alignment="BOTTOM_CENTER">
                                             <children>
-                                    <Label fx:id="title_lbl" alignment="CENTER" style="-fx-font-size: 20; -fx-font-family: Yu Gothic; -fx-font-weight: Bold;" text="MAIN">
-                                       <VBox.margin>
-                                          <Insets bottom="55.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <VBox fx:id="centerBox" prefHeight="510.0" prefWidth="764.0" spacing="30.0">
-                                       <children>
-                                                      <Tile fx:id="throttletrend" active="true" animated="true" maxHeight="240.0" prefHeight="250.0" prefWidth="744.0" skinType="SMOOTHED_CHART" />
-                                                      <Tile fx:id="speedtrend" active="true" animated="true" maxHeight="240.0" skinType="SMOOTHED_CHART" />
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </VBox.margin>
-                                    </VBox>
+                                                <Label fx:id="title_lbl" alignment="CENTER" style="-fx-font-size: 20; -fx-font-family: Yu Gothic; -fx-font-weight: Bold;" text="MAIN">
+                                                    <VBox.margin>
+                                                        <Insets bottom="55.0" />
+                                                    </VBox.margin>
+                                                </Label>
+                                                <VBox fx:id="centerBox" alignment="TOP_CENTER" minHeight="510.0" minWidth="724.0" prefHeight="510.0" prefWidth="724.0" spacing="30.0">
+                                                    <children>
+                                                        <Tile fx:id="throttletrend" active="true" animated="true" maxHeight="240.0" prefHeight="250.0" prefWidth="708.0" skinType="SMOOTHED_CHART" />
+                                                        <Tile fx:id="speedtrend" active="true" animated="true" maxHeight="240.0" skinType="SMOOTHED_CHART" />
+                                                    </children>
+                                                    <VBox.margin>
+                                                        <Insets left="30.0" right="30.0" />
+                                                    </VBox.margin>
+                                                </VBox>
                                                 <HBox alignment="BOTTOM_CENTER" prefHeight="247.0" prefWidth="784.0">
                                                     <children>
                                                         <StackPane prefHeight="240.0" prefWidth="240.0">
                                                             <children>
-                                                                <ImageView fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                                                    <image>
-                                                                        <Image url="@img/compass.jpg" />
-                                                                    </image>
-                                                                </ImageView>
+                                                <Gauge decimals="0" maxHeight="240.0" maxValue="360.0" maxWidth="240.0" returnToZero="true" skinType="SLIM" startFromZero="true" title="HEADING" valueVisible="false" />
                                                                 <Gauge fx:id="compass" decimals="0" maxHeight="240.0" maxValue="360.0" maxWidth="240.0" returnToZero="true" skinType="SLIM" startFromZero="true" value="30.0" valueVisible="false" />
                                                                 <Label fx:id="compass_lbl" style="-fx-font-size: 60; -fx-font-family: Yu Gothic;" text="123" />
                                                                 <Button fx:id="btn_lock" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleLockButtonAction" onMouseEntered="#enterHoverButtonAction" onMouseExited="#exitHoverButtonAction" opacity="0.8" prefHeight="32.0" prefWidth="81.0" style="-fx-background-color: #364250; -fx-font-size: 14; -fx-font-weight: Bold;" text="LOCK">
@@ -153,11 +143,7 @@
                                                         <VBox prefHeight="247.0" prefWidth="25.0" />
                                                         <StackPane prefHeight="240.0" prefWidth="240.0">
                                                             <children>
-                                                                <ImageView fitHeight="240.0" fitWidth="240.0" pickOnBounds="true" preserveRatio="true">
-                                                                    <image>
-                                                                        <Image url="@img/tunnelthruster.jpg" />
-                                                                    </image>
-                                                                </ImageView>
+                                                <Gauge decimals="0" maxHeight="240.0" maxValue="360.0" maxWidth="240.0" returnToZero="true" skinType="SLIM" startFromZero="true" title="THRUSTER" unit="DIRECTION" valueVisible="false" />
                                                                 <Gauge fx:id="tunnelthruster" decimals="0" maxHeight="240.0" maxWidth="240.0" returnToZero="true" rotate="45.0" skinType="SLIM" startFromZero="true" value="25.0" valueVisible="false" />
                                                                 <Label fx:id="tunnelthruster_lbl" style="-fx-font-size: 60; -fx-font-family: Yu Gothic;" text="123" />
                                                             </children>
@@ -168,6 +154,9 @@
                                                     </VBox.margin>
                                                 </HBox>
                                             </children>
+                                 <VBox.margin>
+                                    <Insets left="30.0" right="30.0" />
+                                 </VBox.margin>
                                         </VBox>
                                     </center>
                                     <left>
@@ -202,5 +191,10 @@
                 <Insets bottom="825.0" right="1170.0" />
             </StackPane.margin>
         </Label>
+      <Label fx:id="ping_lbl" text="PING: 6ms">
+         <StackPane.margin>
+            <Insets bottom="825.0" left="1350.0" />
+         </StackPane.margin>
+      </Label>
     </children>
 </StackPane>

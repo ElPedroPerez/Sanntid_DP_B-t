@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="724.0" style="-fx-background-color: #272c32;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox prefHeight="510.0" prefWidth="724.0" style="-fx-background-color: #272c32;">
+            <children>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #2e3642;">
+                    <children>
+                        <Label text="Main Propulsion PS Common Alarm" textFill="#8e9397">
+                            <font>
+                                <Font name="Roboto" size="14.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="50.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #2a323d;">
+                    <children>
+                        <Label text="Main Propulsion PS Common Alarm" textFill="#8e9397">
+                            <font>
+                                <Font name="Roboto" size="14.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="50.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #2e3642;">
+                    <children>
+                        <Label text="Main Propulsion PS Common Alarm" textFill="#8e9397">
+                            <font>
+                                <Font name="Roboto" size="14.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="50.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #2a323d;">
+                    <children>
+                        <Label text="Main Propulsion PS Common Alarm" textFill="#8e9397">
+                            <font>
+                                <Font name="Roboto" size="14.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="50.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #2e3642;">
+                    <children>
+                        <Label text="Main Propulsion PS Common Alarm" textFill="#8e9397">
+                            <font>
+                                <Font name="Roboto" size="14.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="50.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #2a323d;">
+                    <children>
+                        <Label text="Main Propulsion PS Common Alarm" textFill="#8e9397">
+                            <font>
+                                <Font name="Roboto" size="14.0" />
+                            </font>
+                            <StackPane.margin>
+                                <Insets left="50.0" />
+                            </StackPane.margin>
+                        </Label>
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></StackPane>
+                <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></StackPane>
+                <StackPane prefHeight="150.0" prefWidth="200.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <children>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="32.0" prefWidth="81.0" style="-fx-background-color: #364250; -fx-font-size: 14; -fx-font-weight: Bold; -fx-effect: None;" text="ACK" />
+               </children></StackPane>
+                <StackPane prefHeight="150.0" prefWidth="200.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></StackPane>
+            </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+        </VBox>
+    </children>
+</AnchorPane>
