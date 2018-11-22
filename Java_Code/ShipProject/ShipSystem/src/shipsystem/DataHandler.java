@@ -402,12 +402,15 @@ public class DataHandler
 
     public boolean getIc_X()
     {
+        this.setIc_X_flag(false);
         return ic_X;
     }
 
     public void setIc_X(boolean ic_X)
     {
         this.ic_X = ic_X;
+        this.setIc_X_flag(true);
+        this.setDataUpdated(true);
     }
 
     public synchronized boolean getIc_A()
@@ -425,6 +428,7 @@ public class DataHandler
 
     public boolean getIc_B()
     {
+        this.setIc_B_flag(false);
         return ic_B;
     }
 
@@ -435,6 +439,7 @@ public class DataHandler
 
     public boolean getIc_Y()
     {
+        this.setIc_Y_flag(false);
         return ic_Y;
     }
 

@@ -117,10 +117,10 @@
                                                         <Insets bottom="55.0" />
                                                     </VBox.margin>
                                                 </Label>
-                                                <VBox fx:id="centerBox" alignment="TOP_CENTER" minHeight="510.0" minWidth="724.0" prefHeight="510.0" prefWidth="724.0" spacing="30.0">
+                                                <VBox fx:id="centerBox" alignment="CENTER" minHeight="510.0" minWidth="724.0" prefHeight="510.0" prefWidth="724.0" spacing="30.0">
                                                     <children>
-                                                        <Tile fx:id="throttletrend" active="true" animated="true" maxHeight="240.0" prefHeight="250.0" prefWidth="708.0" skinType="SMOOTHED_CHART" />
-                                                        <Tile fx:id="speedtrend" active="true" animated="true" maxHeight="240.0" skinType="SMOOTHED_CHART" />
+                                                        <Tile fx:id="throttletrend" active="true" animated="true" maxHeight="210.0" prefHeight="250.0" prefWidth="708.0" skinType="SMOOTHED_CHART" />
+                                                        <Tile fx:id="speedtrend" active="true" animated="true" maxHeight="210.0" skinType="SMOOTHED_CHART" />
                                                     </children>
                                                     <VBox.margin>
                                                         <Insets left="30.0" right="30.0" />

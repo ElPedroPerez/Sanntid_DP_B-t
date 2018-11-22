@@ -397,11 +397,11 @@ public class FXMLDocumentController implements Initializable
         Label label8 = new Label();
         btn_ack = new Button();
 
-        alarmPane.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-background-color: #000000;");
-        alarmBox.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #111111;");
+        //alarmPane.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #272c32;");
+        alarmBox.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #272c32;");
         //alarmBox.setAlignment(Pos.CENTER);
 
-        vbox.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #222222;");
+        vbox.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #272c32;");
         //vbox.setAlignment(Pos.CENTER);
 
         stack1.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER_LEFT; -fx-background-color: #2e3642;");
@@ -492,9 +492,10 @@ public class FXMLDocumentController implements Initializable
         vbox.getChildren().add(stack9);
         vbox.getChildren().add(stack10);
         vbox.getChildren().add(stack11);
-        vbox.getChildren().add(stack12);
-        alarmPane.getChildren().add(vbox);
-
+        //vbox.getChildren().add(stack12);
+        // alarmPane.getChildren().add(vbox);
+        alarmBox.setAlignment(Pos.CENTER);
+        alarmBox.setPadding(new Insets(30, 0, 0, 0));
         alarmBox.getChildren().add(vbox);
 
     }
