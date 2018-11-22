@@ -168,12 +168,13 @@ public class DataHandler
         posAccuracy = 0;
 
         //Alarms
-        sbSpeedFbAlarm = listOfAlarms.get(sbSpeedFbAlarm).booleanValue();
-        psSpeedFbAlarm = listOfAlarms.get(psSpeedFbAlarm).booleanValue();
-        sbPodPosFbAlarm = listOfAlarms.get(sbPodPosFbAlarm).booleanValue();
-        psPodPosFbAlarm = listOfAlarms.get(psPodPosFbAlarm).booleanValue();
-        visionDeviationAlarm = listOfAlarms.get(visionDeviationAlarm).booleanValue();
-        imuRollAlarm = listOfAlarms.get(imuRollAlarm).booleanValue();
+        fillListOfAlarms();
+        sbSpeedFbAlarm = (boolean) listOfAlarms.get("sbSpeedFbAlarm").booleanValue();
+        psSpeedFbAlarm = (boolean) listOfAlarms.get("psSpeedFbAlarm").booleanValue();
+        sbPodPosFbAlarm = (boolean) listOfAlarms.get("sbPodPosFbAlarm").booleanValue();
+        psPodPosFbAlarm = (boolean) listOfAlarms.get("psPodPosFbAlarm").booleanValue();
+        visionDeviationAlarm = (boolean) listOfAlarms.get("visionDeviationAlarm").booleanValue();
+        imuRollAlarm = (boolean) listOfAlarms.get("imuRollAlarm").booleanValue();
         //pingAlarm = listOfAlarms.get(pingAlarm).booleanValue();
 
         //Ping variables
@@ -457,7 +458,7 @@ public class DataHandler
         this.setIc_speed_flag(false);
         return ic_speed;
     }
-    
+
     public void setIc_speed(int ic_speed)
     {
         this.ic_speed = ic_speed;
@@ -468,9 +469,9 @@ public class DataHandler
     public int getIc_angle()
     {
         this.setIc_angle_flag(false);
-        return ic_angle;        
+        return ic_angle;
     }
-    
+
     public void setIc_angle(int ic_angle)
     {
         this.ic_angle = ic_angle;
@@ -957,22 +958,22 @@ public class DataHandler
         this.setDataToRemoteUpdated(true);
         this.setDataUpdated(false);
     }
-    
+
     public byte getPodPosSBCommand()
     {
         return podPosSBCommand;
     }
-    
+
     public void setPodPosSBCommand(byte podPosSBCommand)
     {
         this.podPosSBCommand = podPosSBCommand;
     }
-    
+
     public byte getPodPosPSCommand()
     {
         return podPosPSCommand;
     }
-    
+
     public void setPodPosPSCommand(byte podPosPSCommand)
     {
         this.podPosPSCommand = podPosPSCommand;
@@ -995,6 +996,17 @@ public class DataHandler
                 + ":speedsb:" + this.getFb_speedSB()
                 + ":heading:" + this.getFb_heading()
                 + ">";
+    }
+
+    private void fillListOfAlarms()
+    {
+        this.listOfAlarms.put("sbSpeedFbAlarm", false);
+        this.listOfAlarms.put("psSpeedFbAlarm", false);
+        this.listOfAlarms.put("sbPodPosFbAlarm", false);
+        this.listOfAlarms.put("psPodPosFbAlarm", false);
+        this.listOfAlarms.put("visionDeviationAlarm", false);
+        this.listOfAlarms.put("imuRollAlarm", false);
+        //this.listOfAlarms.put("pingAlarmError", false);
     }
 
     public void handleDataFromAlarmList(String alarmName, boolean state)
