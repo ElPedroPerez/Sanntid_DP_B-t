@@ -435,6 +435,8 @@ public class DataHandler
     public void setIc_B(boolean ic_B)
     {
         this.ic_B = ic_B;
+        this.setIc_B_flag(true);
+        this.setDataUpdated(true);
     }
 
     public boolean getIc_Y()
@@ -446,6 +448,8 @@ public class DataHandler
     public void setIc_Y(boolean ic_Y)
     {
         this.ic_Y = ic_Y;
+        this.setIc_Y_flag(true);
+        this.setDataUpdated(true);
     }
 
     public int getIc_speed()
@@ -1075,7 +1079,10 @@ public class DataHandler
                     }
                     break;
                 case "speed":
-                    this.ic_speed = Integer.parseInt(value);
+                    if (this.ic_speed != Integer.parseInt(value))
+                    {
+                        this.ic_speed = Integer.parseInt(value);
+                    }
                     break;
                 case "L1":
                     if (this.ic_L1 != "1".equals(value))
@@ -1090,7 +1097,10 @@ public class DataHandler
                     }
                     break;
                 case "X":
-                    this.ic_X = "1".equals(value);
+                    if (this.ic_X != "1".equals(value))
+                    {
+                        this.setIc_X("1".equals(value));
+                    }
                     break;
                 case "A":
                     if (this.ic_A != "1".equals(value))
@@ -1099,10 +1109,16 @@ public class DataHandler
                     }
                     break;
                 case "B":
-                    this.ic_B = "1".equals(value);
+                    if (this.ic_B != "1".equals(value))
+                    {
+                        this.setIc_B("1".equals(value));
+                    }
                     break;
                 case "Y":
-                    this.ic_Y = "1".equals(value);
+                    if (this.ic_Y != "1".equals(value))
+                    {
+                        this.setIc_Y("1".equals(value));
+                    }
                     break;
                 case "Test":
                     this.Test = Integer.parseInt(value);
