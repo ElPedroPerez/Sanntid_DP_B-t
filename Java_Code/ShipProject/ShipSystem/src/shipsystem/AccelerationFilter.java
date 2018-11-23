@@ -27,10 +27,10 @@ public class AccelerationFilter implements Runnable
     double currentVelocity = 0.0;
 
     //this is the velocity we add each second while accelerating
-    double accelerationRate = 5.0;
+    double accelerationRate = 3.33;
 
     //this is the velocity we subtract each second while decelerating
-    double decelerationRate = 5.0;
+    double decelerationRate = 3.33;
 
     // Internal timer
 
@@ -59,20 +59,20 @@ public class AccelerationFilter implements Runnable
 
         //Acceleration 
         lastTime = System.nanoTime();
-        elapsedTimer = (System.nanoTime() - lastTime) / 1000000;
+        elapsedTimer = (System.nanoTime() - lastTime) / 100000;
         finalVelocity = dh.getIc_speed();
-        if (currentVelocity < finalVelocity && elapsedTimer >= 1000)
+        if (currentVelocity < finalVelocity && elapsedTimer >= 100)
         {
             currentVelocity = currentVelocity + accelerationRate;
         }
 
         //Deceleration 
-        if (currentVelocity > finalVelocity && elapsedTimer >= 1000)
+        if (currentVelocity > finalVelocity && elapsedTimer >= 100)
         {
             currentVelocity = currentVelocity - accelerationRate;
         }
 
-        if (elapsedTimer > 1)
+        if (elapsedTimer > 100)
         {
             elapsedTimer = 0;
         }
