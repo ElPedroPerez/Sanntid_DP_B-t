@@ -13,16 +13,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Overview protocol: To Arduino: Byte 0: bit 0 - stopp bit 1 - fwd bit 2 - rev
- * bit 3 - left bit 4 - right Byte 1: Left motor speed Byte 2: Right motor speed
- * Byte 3: bit 0 - left servo bit 1 - right servo bit 2 - auto/manual bit 3 -
- * start bit 7 - request feedback Byte 4: Sensitivity Byte 5: Reserved
+ * Responsible for handling data from GUI and and from arduino
  *
- * From Arduino: Byte 0: Pixy x value low byte Byte 1: Pixy x value high byte
- * Byte 2: Pixy y value low byte Byte 3: Pixy y value high byte Byte 4: Distance
- * sensor 4-30 cm Byte 5: Reserved
- *
- * @author Eivind Fugledal
+ * @author Haakon, Bjørnar, Robin
  */
 public class DataHandler
 {
@@ -175,12 +168,13 @@ public class DataHandler
         posAccuracy = 0;
 
         //Alarms
-        sbSpeedFbAlarm = listOfAlarms.get(sbSpeedFbAlarm).booleanValue();
-        psSpeedFbAlarm = listOfAlarms.get(psSpeedFbAlarm).booleanValue();
-        sbPodPosFbAlarm = listOfAlarms.get(sbPodPosFbAlarm).booleanValue();
-        psPodPosFbAlarm = listOfAlarms.get(psPodPosFbAlarm).booleanValue();
-        visionDeviationAlarm = listOfAlarms.get(visionDeviationAlarm).booleanValue();
-        imuRollAlarm = listOfAlarms.get(imuRollAlarm).booleanValue();
+        fillListOfAlarms();
+        sbSpeedFbAlarm = (boolean) listOfAlarms.get("sbSpeedFbAlarm").booleanValue();
+        psSpeedFbAlarm = (boolean) listOfAlarms.get("psSpeedFbAlarm").booleanValue();
+        sbPodPosFbAlarm = (boolean) listOfAlarms.get("sbPodPosFbAlarm").booleanValue();
+        psPodPosFbAlarm = (boolean) listOfAlarms.get("psPodPosFbAlarm").booleanValue();
+        visionDeviationAlarm = (boolean) listOfAlarms.get("visionDeviationAlarm").booleanValue();
+        imuRollAlarm = (boolean) listOfAlarms.get("imuRollAlarm").booleanValue();
         //pingAlarm = listOfAlarms.get(pingAlarm).booleanValue();
 
         //Ping variables
@@ -409,12 +403,15 @@ public class DataHandler
 
     public boolean getIc_X()
     {
+        this.setIc_X_flag(false);
         return ic_X;
     }
 
     public void setIc_X(boolean ic_X)
     {
         this.ic_X = ic_X;
+        this.setIc_X_flag(true);
+        this.setDataUpdated(true);
     }
 
     public synchronized boolean getIc_A()
@@ -432,22 +429,28 @@ public class DataHandler
 
     public boolean getIc_B()
     {
+        this.setIc_B_flag(false);
         return ic_B;
     }
 
     public void setIc_B(boolean ic_B)
     {
         this.ic_B = ic_B;
+        this.setIc_B_flag(true);
+        this.setDataUpdated(true);
     }
 
     public boolean getIc_Y()
     {
+        this.setIc_Y_flag(false);
         return ic_Y;
     }
 
     public void setIc_Y(boolean ic_Y)
     {
         this.ic_Y = ic_Y;
+        this.setIc_Y_flag(true);
+        this.setDataUpdated(true);
     }
 
     public int getIc_speed()
@@ -455,7 +458,7 @@ public class DataHandler
         this.setIc_speed_flag(false);
         return ic_speed;
     }
-    
+
     public void setIc_speed(int ic_speed)
     {
         this.ic_speed = ic_speed;
@@ -466,9 +469,9 @@ public class DataHandler
     public int getIc_angle()
     {
         this.setIc_angle_flag(false);
-        return ic_angle;        
+        return ic_angle;
     }
-    
+
     public void setIc_angle(int ic_angle)
     {
         this.ic_angle = ic_angle;
@@ -955,22 +958,22 @@ public class DataHandler
         this.setDataToRemoteUpdated(true);
         this.setDataUpdated(false);
     }
-    
+
     public byte getPodPosSBCommand()
     {
         return podPosSBCommand;
     }
-    
+
     public void setPodPosSBCommand(byte podPosSBCommand)
     {
         this.podPosSBCommand = podPosSBCommand;
     }
-    
+
     public byte getPodPosPSCommand()
     {
         return podPosPSCommand;
     }
-    
+
     public void setPodPosPSCommand(byte podPosPSCommand)
     {
         this.podPosPSCommand = podPosPSCommand;
@@ -993,6 +996,17 @@ public class DataHandler
                 + ":speedsb:" + this.getFb_speedSB()
                 + ":heading:" + this.getFb_heading()
                 + ">";
+    }
+
+    private void fillListOfAlarms()
+    {
+        this.listOfAlarms.put("sbSpeedFbAlarm", false);
+        this.listOfAlarms.put("psSpeedFbAlarm", false);
+        this.listOfAlarms.put("sbPodPosFbAlarm", false);
+        this.listOfAlarms.put("psPodPosFbAlarm", false);
+        this.listOfAlarms.put("visionDeviationAlarm", false);
+        this.listOfAlarms.put("imuRollAlarm", false);
+        //this.listOfAlarms.put("pingAlarmError", false);
     }
 
     public void handleDataFromAlarmList(String alarmName, boolean state)
@@ -1077,7 +1091,10 @@ public class DataHandler
                     }
                     break;
                 case "speed":
-                    this.ic_speed = Integer.parseInt(value);
+                    if (this.ic_speed != Integer.parseInt(value))
+                    {
+                        this.ic_speed = Integer.parseInt(value);
+                    }
                     break;
                 case "L1":
                     if (this.ic_L1 != "1".equals(value))
@@ -1092,7 +1109,10 @@ public class DataHandler
                     }
                     break;
                 case "X":
-                    this.ic_X = "1".equals(value);
+                    if (this.ic_X != "1".equals(value))
+                    {
+                        this.setIc_X("1".equals(value));
+                    }
                     break;
                 case "A":
                     if (this.ic_A != "1".equals(value))
@@ -1101,10 +1121,16 @@ public class DataHandler
                     }
                     break;
                 case "B":
-                    this.ic_B = "1".equals(value);
+                    if (this.ic_B != "1".equals(value))
+                    {
+                        this.setIc_B("1".equals(value));
+                    }
                     break;
                 case "Y":
-                    this.ic_Y = "1".equals(value);
+                    if (this.ic_Y != "1".equals(value))
+                    {
+                        this.setIc_Y("1".equals(value));
+                    }
                     break;
                 case "Test":
                     this.Test = Integer.parseInt(value);

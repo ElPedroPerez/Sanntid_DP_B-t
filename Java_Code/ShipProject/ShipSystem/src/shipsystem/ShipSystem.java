@@ -12,8 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author Haakon
+ * Main class of the shipsystem.
+ * @author Haakon, Bjørnar, Robin
  */
 public class ShipSystem
 {
