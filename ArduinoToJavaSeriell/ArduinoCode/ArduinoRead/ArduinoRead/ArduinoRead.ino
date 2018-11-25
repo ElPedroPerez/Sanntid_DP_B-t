@@ -56,7 +56,7 @@ void setup() {
 
   podStbSpeedPWM.write(700);
   podPrtSpeedPWM.write(700);
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(podStbRotationSpeedPin, OUTPUT);
   pinMode(podPrtRotationSpeedPin, OUTPUT);
@@ -157,8 +157,12 @@ void parseData() {      // split the data into its parts
 
   if (str.equals("softSpeedPod"))
   {
-    integerFromPC = map(integerFromPC, 0, 100, 700, 2000);
-    integerFromPC = constrain(integerFromPC, 700, 2000);
+    integerFromPC = map(integerFromPC, 0, 100, 1060, 2000);
+    integerFromPC = constrain(integerFromPC, 1060, 2000);
+    if (integerFromPC < 1070)
+    {
+      integerFromPC = 1060;
+    }
     podStbSpeedPWM.write(integerFromPC);
     podPrtSpeedPWM.write(integerFromPC);
   }
@@ -205,7 +209,7 @@ void parseData() {      // split the data into its parts
     }
   }
 
-if (str.equals("ThrusterCommand"))
+  if (str.equals("ThrusterCommand"))
   {
     if (integerFromPC == 0)
     {
@@ -225,7 +229,7 @@ if (str.equals("ThrusterCommand"))
 
     }
   }
-  
+
 }
 
 //============

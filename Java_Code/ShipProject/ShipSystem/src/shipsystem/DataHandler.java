@@ -888,10 +888,11 @@ public class DataHandler
 //        dataToRemote.put("cmd_speedSB", Integer.toString(getCmd_speedSB()));
 //        dataToRemote.put("cmd_speedPS", Integer.toString(getCmd_speedPS()));
 //        dataToRemote.put("cmd_speedPodRotSB", Integer.toString(getCmd_speedPodRotSB()));
-//        dataToRemote.put("cmd_speedPodRotPS", Integer.toString(getCmd_speedPodRotPS()));
-//        dataToRemote.put("cmd_podPosSB", Integer.toString(getCmd_podPosSB()));
+        dataToRemote.put("softSpeedPod", Integer.toString(getSoftSpeedPod()));
+        dataToRemote.put("case_cmd_podPosSB", Integer.toString(getPodPosPSCommand()));
+        dataToRemote.put("case_cmd_podPosPS", Integer.toString(getPodPosSBCommand()));
         dataToRemote.put("ThrusterCommand", Integer.toString(getThrusterCommand()));
-        //this.setDataToRemoteUpdated(true);
+        this.setDataToRemoteUpdated(true);
 //
 //        for (Entry e : dataToRemote.entrySet())
 //        {
