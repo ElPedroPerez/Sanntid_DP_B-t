@@ -7,7 +7,7 @@ package guisystem;
 
 import InputController.InputController;
 import gui.GUI;
-//import guisystem.Datahandler;
+//import guisystem.DataHandler;
 
 /**
  *
@@ -16,12 +16,12 @@ import gui.GUI;
 public class GUISystem
 {
 
-    private static UDPsender udpsender;
-    static final String IPADDRESS = "158.38.92.52";
+   // private static UDPsender udpsender;
+    static final String IPADDRESS = "192.168.0.101";
 //  SURFACE: 158.38.92.52   //"192.168.0.101"; //"10.16.4.27"; //"192.168.0.103";
     static final int RECEIVEPORT = 5057;
     static final int SENDPORT = 5056; //9876
-    public static Datahandler dh;
+    public static DataHandler dh;
     public static InputController inputController;
 
     /**
@@ -29,8 +29,8 @@ public class GUISystem
      */
     public static void main(String[] args)
     {
-        GUISystem.udpsender = new UDPsender();
-        dh = new Datahandler();
+        //GUISystem.udpsender = new UDPsender();
+        dh = new DataHandler();
         GUI gui = new GUI();
         inputController = new InputController(IPADDRESS, SENDPORT, dh);
 

@@ -23,10 +23,10 @@ public class UDPListener implements Runnable
 {
 
     private final int recievePort;
-    private final Datahandler dh;
+    private final DataHandler dh;
     public ConcurrentHashMap<String, String> queue = new ConcurrentHashMap<>();
 
-    public UDPListener(Datahandler dh, int recievePort)
+    public UDPListener(DataHandler dh, int recievePort)
     {
         this.recievePort = recievePort;
         this.dh = dh;

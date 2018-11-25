@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Bjørnar
  */
-public class Datahandler
+public class DataHandler
 {
 
     private String dataFromGui;
@@ -43,7 +43,7 @@ public class Datahandler
     private boolean imuRollAlarm;
     //private boolean pingAlarm;
 
-    public Datahandler()
+    public DataHandler()
     {
         guiPing = false;
         ping = 0;
@@ -133,13 +133,13 @@ public class Datahandler
         return this.dataFromGui;
     }
 
-    /**
-     * Creates and sends the data String over UDP
-     */
-    public synchronized void sendData()
-    {
-        new UDPsender().send(GUISystem.IPADDRESS, dataFromGui, GUISystem.SENDPORT);
-    }
+//    /**
+//     * Creates and sends the data String over UDP
+//     */
+//    public synchronized void sendData()
+//    {
+//        new UDPsender().send(GUISystem.IPADDRESS, dataFromGui, GUISystem.SENDPORT);
+//    }
 
     public synchronized Boolean getGuiPing()
     {

@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 /**
  * Main class of the shipsystem.
+ *
  * @author Haakon, Bjørnar, Robin
  */
 public class ShipSystem
@@ -22,11 +23,9 @@ public class ShipSystem
     private static Thread acclerationFilter;
     private static Thread alarmList;
     private static Thread controller;
-    private static Thread server;
+    private static Thread guiSender;
     private static Thread serialDataHandler;
     private static Thread udpListener;
-    private static Semaphore semaphore;
-    static SendEventState enumStateEvent;
 
     protected static String ipAddressGUI = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
     protected static int sendPort = 5057;
@@ -36,26 +35,25 @@ public class ShipSystem
      */
     public static void main(String[] args)
     {
-        semaphore = new Semaphore(1, true);
-
         dh = new DataHandler();
         dh.setThreadStatus(true);
 
         acclerationFilter = new Thread(new AccelerationFilter(dh));
-
+        guiSender = new Thread(new GUIsender(dh));
         udpListener = new Thread(new UDPListener(dh));
-
         serialDataHandler = new Thread(new SerialDataHandler(dh));
+        controller = new Thread(new Controller(dh));
         //alarmList = new Thread(new AlarmList(dh));
 
-        controller = new Thread(new Controller(dh, semaphore));
-
         controller.setName("Controller");
+        guiSender.setName("GUIsender");
         udpListener.setName("UDPListener");
         acclerationFilter.setName("AccelerationFilter");
         serialDataHandler.setName("SerialDataHandler");
+        //alarmList.setName("AlarmList");
 
         controller.start();
+        guiSender.start();
         acclerationFilter.start();
         udpListener.start();
         serialDataHandler.start();

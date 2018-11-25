@@ -49,6 +49,7 @@ public class DataHandler
     private boolean ic_speed_flag = false;
     private boolean ic_angle_flag = false;
     public boolean dataToRemoteUpdated = false;
+    public boolean dataToGuiUpdated = false;
     public boolean dataUpdated = false;
 
     public int fb_speedSB;
@@ -235,21 +236,6 @@ public class DataHandler
         return this.PIDparamChanged;
     }
 
-    //*****************************************************************
-    //*************** FROM ARDUINO METHODS*****************************
-    public void handleDataFromArduino(byte[] data)
-    {
-        // check if the array is of the same length and the requestcode has changed
-        if (data.length == this.dataFromArduino.length && data[Protocol.REQUEST_FEEDBACK.getValue()] != this.getRequestCodeFromArduino())
-        {
-            this.dataFromArduino = data;
-            //this.setDistanceSensor(data[4]);
-            this.setRequestCodeFromArduino(data[Protocol.REQUEST_FEEDBACK.getValue()]);
-            //this.setPixyXvalue(new BigInteger(Arrays.copyOfRange(data, 0, 2)).intValue());
-            //this.setPixyYvalue(new BigInteger(Arrays.copyOfRange(data, 2, 4)).intValue());
-            this.dataFromArduinoAvaliable = true;
-        }
-    }
 
     public byte[] getDataFromArduino()
     {
@@ -714,76 +700,6 @@ public class DataHandler
         this.requestCodeFromArduino = requestCodeFromArduino;
     }
 
-    //****************************************************************
-    //************** FROM GUI METHODS*********************************
-    /**
-     * Gets the byte array containing data from GUI
-     *
-     * @return The byte array
-     */
-    public byte[] getDataFromController()
-    {
-        ShipSystem.enumStateEvent = SendEventState.FALSE;
-        return this.dataToArduino;
-    }
-
-    /**
-     * Sets the byte array containing data from GUI
-     *
-     * @param data New byte array
-     */
-    public void setDataFromGUI(byte[] data)
-    {
-
-        for (int i = 0; i < 6; i++)
-        {
-            this.dataFromGui[i] = data[i];
-        }
-
-        // pid parameters
-        double P = (double) data[6] / 10.0;
-        double I = (double) data[7] / 10.0;
-        double D = (double) data[8] / 10.0;
-        double F = (double) data[9] / 10.0;    // feed fwd
-        double RR = (double) data[10] / 10.0; // ramp rate
-
-        // set new values if value changed
-        if (P != this.P)
-        {
-            this.P = P;
-            this.PIDparamChanged = true;
-        }
-        if (I != this.I)
-        {
-            this.I = I;
-            this.PIDparamChanged = true;
-        }
-        if (D != this.D)
-        {
-            this.D = D;
-            this.PIDparamChanged = true;
-        }
-        if (F != this.F)
-        {
-            this.F = F;
-            this.PIDparamChanged = true;
-        }
-        if (RR != this.RR)
-        {
-            this.RR = RR;
-            this.PIDparamChanged = true;
-        }
-
-        this.setDataFromGuiAvailable(true);
-
-        // Values below should be equal in both dataFromGui and dataToArduino
-        //this.dataToArduino[Protocol.CONTROLS.getValue()] = this.dataFromGui[Protocol.CONTROLS.getValue()];
-        //this.dataToArduino[Protocol.COMMANDS.getValue()] = this.dataFromGui[Protocol.COMMANDS.getValue()];
-        this.dataToArduino[Protocol.SENSITIVITY.getValue()] = this.dataFromGui[Protocol.SENSITIVITY.getValue()];
-
-        this.fireStateChanged();
-    }
-
     /**
      * Sets boolean flag to true or false depending on if there are new data
      * available from GUI or not
@@ -803,59 +719,6 @@ public class DataHandler
     public boolean getDataFromGuiAvailable()
     {
         return this.dataFromGuiAvailable;
-    }
-
-    /**
-     * Sets the value of sensitivity given from GUI (in percent)
-     *
-     * @param sensitivity Value between 0-100 percent
-     */
-    public void setSensitivity(byte sensitivity)
-    {
-        dataFromGui[Protocol.SENSITIVITY.getValue()] = sensitivity;
-        this.fireStateChanged();
-    }
-
-    /**
-     * Gets the sensitivity value
-     *
-     * @return Sensitivity value, between 0-100
-     */
-    public int getSensitivity()
-    {
-        return dataFromGui[Protocol.SENSITIVITY.getValue()] & 0xFF;
-    }
-
-    /**
-     * Gets the request code
-     *
-     * @return The request code
-     */
-    public byte getRequestCodeFromGui()
-    {
-        return this.dataFromGui[Protocol.REQUEST_FEEDBACK.getValue()];
-    }
-
-    public void incrementRequestCode()
-    {
-        dataToArduino[Protocol.REQUEST_FEEDBACK.getValue()]++;
-        this.fireStateChanged();
-    }
-
-    public void setRequestCodeToArduino(byte code)
-    {
-        dataToArduino[Protocol.REQUEST_FEEDBACK.getValue()] = code;
-        this.fireStateChanged();
-    }
-
-    public void fireStateChanged()
-    {
-        ShipSystem.enumStateEvent = SendEventState.TRUE;
-    }
-
-    public boolean checkSendDataAvailable()
-    {
-        return ShipSystem.enumStateEvent == SendEventState.TRUE;
     }
 
     public void setXShipPos(double xShipPos)
