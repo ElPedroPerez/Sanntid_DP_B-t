@@ -119,13 +119,6 @@ public class DataHandler
     public byte podPosSBCommand;
     public byte podPosPSCommand;
 
-    // pid parameters
-    private double P; // prop gain
-    private double I; // integral gain
-    private double D; // derivation gain
-    private double F; // feed fwd gain
-    private double RR; // output ramp rate (max delta output)
-    private boolean PIDparamChanged;
     public ConcurrentHashMap<String, String> data = new ConcurrentHashMap<>();
     public ConcurrentHashMap<String, String> dataToRemote = new ConcurrentHashMap<>();
     public ConcurrentHashMap<String, Boolean> listOfAlarms;
@@ -226,97 +219,150 @@ public class DataHandler
         this.threadStatus = threadStatus;
     }
 
-    public void setPidParamChanged(boolean state)
-    {
-        this.PIDparamChanged = state;
-    }
-
-    public boolean getPidParamChanged()
-    {
-        return this.PIDparamChanged;
-    }
-
-
     public byte[] getDataFromArduino()
     {
         return dataFromArduino;
     }
 
+    /**
+     * 
+     * @return true if button is pushed, false if not
+     */
     public synchronized boolean isIc_A_flag()
     {
         return ic_A_flag;
     }
 
+    /**
+     * 
+     * @param ic_A_flag 
+     */
     public synchronized void setIc_A_flag(boolean ic_A_flag)
     {
         this.ic_A_flag = ic_A_flag;
     }
 
+    /**
+     * 
+     * @return true if button is pushed, false if not
+     */
     public synchronized boolean isIc_R1_flag()
     {
         return ic_R1_flag;
     }
 
+    /**
+     * 
+     * @param ic_R1_flag 
+     */
     public synchronized void setIc_R1_flag(boolean ic_R1_flag)
     {
         this.ic_R1_flag = ic_R1_flag;
     }
 
+    /**
+     * 
+     * @return true if button is pushed, false if not
+     */
     public synchronized boolean isIc_L1_flag()
     {
         return ic_L1_flag;
     }
 
+    /**
+     * 
+     * @param ic_L1_flag 
+     */
     public synchronized void setIc_L1_flag(boolean ic_L1_flag)
     {
         this.ic_L1_flag = ic_L1_flag;
     }
 
+    /**
+     * 
+     * @return true if button is pushed, false if not
+     */
     public synchronized boolean isIc_B_flag()
     {
         return ic_B_flag;
     }
 
+    /**
+     * 
+     * @param ic_B_flag 
+     */
     public synchronized void setIc_B_flag(boolean ic_B_flag)
     {
         this.ic_B_flag = ic_B_flag;
     }
 
+    /**
+     * 
+     * @return true if button is pushed, false if not
+     */
     public synchronized boolean isIc_X_flag()
     {
         return ic_X_flag;
     }
 
+    /**
+     * 
+     * @param ic_X_flag 
+     */
     public synchronized void setIc_X_flag(boolean ic_X_flag)
     {
         this.ic_X_flag = ic_X_flag;
     }
 
+    /**
+     * 
+     * @return true if button is pushed, false if not
+     */
     public synchronized boolean isIc_Y_flag()
     {
         return ic_Y_flag;
     }
 
+    /**
+     * 
+     * @param ic_Y_flag 
+     */
     public synchronized void setIc_Y_flag(boolean ic_Y_flag)
     {
         this.ic_Y_flag = ic_Y_flag;
     }
 
+    /**
+     * 
+     * @return integer from controller
+     */
     public synchronized boolean isIc_speed_flag()
     {
         return ic_speed_flag;
     }
 
+    /**
+     * 
+     * @param ic_speed_flag 
+     */
     public synchronized void setIc_speed_flag(boolean ic_speed_flag)
     {
         this.ic_speed_flag = ic_speed_flag;
     }
 
+    /**
+     * 
+     * @return integer from controller
+     */
     public synchronized boolean isIc_angle_flag()
     {
         return ic_angle_flag;
     }
 
+    /**
+     * 
+     * @param ic_angle_flag 
+     */
     public synchronized void setIc_angle_flag(boolean ic_angle_flag)
     {
         this.ic_angle_flag = ic_angle_flag;

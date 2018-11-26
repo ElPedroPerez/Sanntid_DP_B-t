@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Handles data from GUI
  *
- * @author Bjørnar
+ * @author Bjørnar, Haakon, Robin
  */
 public class DataHandler
 {

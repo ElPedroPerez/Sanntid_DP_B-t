@@ -78,6 +78,9 @@ public class Logic
         this.switchCaseMotorSpeeds();
     }
 
+    /**
+     * Responsible for deciding the direction which the bow thruster should rotate
+     */
     protected void bowThrusterSignal()
     {
         if (dh.getIc_R1() && dh.isDataUpdated())
@@ -264,7 +267,7 @@ public class Logic
      */
     protected void podPosPS_OK()
     {
-        if (dh.getFb_podPosPS() <= this.calculatedAngle + 30 || dh.getFb_podPosPS() >= this.calculatedAngle - 30)
+        if (dh.getFb_podPosPS() <= this.calculatedAngle + 5 || dh.getFb_podPosPS() >= this.calculatedAngle - 5)
         {
             this.podPosPSPOK = true;
         }
@@ -279,7 +282,7 @@ public class Logic
      */
     protected void podPosSB_OK()
     {
-        if (dh.getFb_podPosSB() <= this.calculatedAngle + 30 || dh.getFb_podPosSB() >= this.calculatedAngle - 30)
+        if (dh.getFb_podPosSB() <= this.calculatedAngle + 5 || dh.getFb_podPosSB() >= this.calculatedAngle - 5)
         {
             this.podPosSBOK = true;
         }
@@ -325,177 +328,6 @@ public class Logic
                 else
                 {
                     dh.setCmd_speedPodRotPS(minSpeed);
-                }
-                break;
-            case GOREV:
-                if (dh.getFb_podPosPS() != 0)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-
-                if (dh.getFb_podPosSB() != 0)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-
-                if (dh.getFb_podPosPS() == 0 && dh.getFb_podPosSB() == 0)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOLEFT:
-                if (dh.getFb_podPosPS() != 315)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-
-                if (dh.getFb_podPosSB() != 315)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-
-                if (dh.getFb_podPosPS() == 315 && dh.getFb_podPosSB() == 315)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GORIGHT:
-                if (dh.getFb_podPosPS() != 45)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-
-                if (dh.getFb_podPosSB() != 45)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-
-                if (dh.getFb_podPosPS() == 45 && dh.getFb_podPosSB() == 45)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOFWDANDLEFT:
-                if (dh.getFb_podPosPS() != 345)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-
-                if (dh.getFb_podPosSB() != 345)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-
-                if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOFWDANDRIGHT:
-                if (dh.getFb_podPosPS() != 15)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-                if (dh.getFb_podPosSB() != 15)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-                if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOREVANDRIGHT:
-                if (dh.getFb_podPosPS() != 15)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-                if (dh.getFb_podPosSB() != 15)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-                if (dh.getFb_podPosPS() == 15 && dh.getFb_podPosSB() == 15)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
-                }
-                break;
-            case GOREVANDLEFT:
-                if (dh.getFb_podPosPS() != 345)
-                {
-                    dh.setCmd_speedPodRotPS(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-
-                if (dh.getFb_podPosSB() != 345)
-                {
-                    dh.setCmd_speedPodRotSB(maxSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotSB(minSpeed);
-                }
-
-                if (dh.getFb_podPosPS() == 345 && dh.getFb_podPosSB() == 345)
-                {
-                    dh.setCmd_speedPS(maxSpeed);
-                    dh.setCmd_speedSB(maxSpeed);
                 }
                 break;
             // unknown command

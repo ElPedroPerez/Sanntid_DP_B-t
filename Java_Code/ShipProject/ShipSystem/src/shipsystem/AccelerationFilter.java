@@ -54,6 +54,9 @@ public class AccelerationFilter implements Runnable
         }
     }
 
+    /**
+     * Adds a filter for motor acceleration
+     */
     public void accCalculation()
     {
 
