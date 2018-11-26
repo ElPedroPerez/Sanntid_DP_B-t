@@ -27,6 +27,17 @@ public class TimeBasedAlarm implements Runnable
     AlarmList alarmList;
     DataHandler dh;
 
+    /**
+     *
+     * @param dh The shared resource object of the DataHandler
+     * @param alarmList
+     * @param input
+     * @param fb
+     * @param alarmName
+     * @param time
+     * @param ack
+     * @param inhibit
+     */
     public TimeBasedAlarm(DataHandler dh, AlarmList alarmList, String input, String fb, String alarmName,
             int time, boolean ack, boolean inhibit)
     {

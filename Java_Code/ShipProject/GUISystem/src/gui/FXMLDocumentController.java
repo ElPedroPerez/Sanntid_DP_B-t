@@ -7,14 +7,12 @@ package gui;
 
 import InputController.InputController;
 import eu.hansolo.medusa.Gauge;
-import guisystem.Datahandler;
+import guisystem.DataHandler;
 import guisystem.GUISystem;
 
 import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,32 +20,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import com.gluonhq.charm.glisten.control.ProgressBar;
 import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.ChartDataBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Stack;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
 
 /**
@@ -92,7 +74,7 @@ public class FXMLDocumentController implements Initializable
     @FXML
     StackPane stack1;
 
-    Datahandler dh = GUISystem.dh;
+    DataHandler dh = GUISystem.dh;
     InputController ic = GUISystem.inputController;
 
     @FXML
@@ -102,9 +84,6 @@ public class FXMLDocumentController implements Initializable
         btn_dp_active = false;
         btn_alarms_active = false;
         title_lbl.setText("MAIN");
-//        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-//        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-
         centerBox.getChildren().clear();
         centerBox.getChildren().add(speedtrend);
         centerBox.getChildren().add(throttletrend);
@@ -117,9 +96,6 @@ public class FXMLDocumentController implements Initializable
         btn_dp_active = true;
         btn_alarms_active = false;
         title_lbl.setText("DYNAMIC POSITIONING");
-//        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-//        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-
         centerBox.getChildren().clear();
         ImageView centerImage = new ImageView();
         Image image = new Image(getClass().getResourceAsStream("img/radar.jpg"));
@@ -136,9 +112,6 @@ public class FXMLDocumentController implements Initializable
         btn_dp_active = false;
         btn_alarms_active = true;
         title_lbl.setText("ALARMS");
-
-//        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-//        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
         centerBox.getChildren().clear();
         centerBox.setAlignment(Pos.CENTER);
         centerBox.prefWidth(724);
@@ -264,7 +237,6 @@ public class FXMLDocumentController implements Initializable
     public void updatePage()
     {
         //System.out.println("updated");
-        //clock.
 
         throttleps.setProgress(ic.getBtnLyGUI());
         throttlesb.setProgress(ic.getBtnLyGUI());
@@ -285,38 +257,6 @@ public class FXMLDocumentController implements Initializable
         compass_lbl.setText(Integer.toString(dh.getFb_heading()));
 
         tunnelThruster();
-
-//        throttletrend.setValue(ic.getBtnLy());
-//        speedtrend.setValue(ic.getBtnLy());
-//
-//        throttletrend.setValue(ic.getBtnLyGUI());
-//        speedtrend.setValue(dh.getFb_speedPS());
-//        ChartData data1 = new ChartData("data1", 20);
-//        throttletrend.setChartData(DATA);
-//        speedtrend.setChartData(DATA);
-//        //System.out.println("updated (test)");
-//        throttleps.setProgress(ic.getBtnLyGUI());
-//        throttlesb.setProgress(ic.getBtnLyGUI());
-//
-//        speedps_lbl.setText(Integer.toString(ic.getBtnLy()));
-//        speedsb_lbl.setText(Integer.toString(ic.getBtnLy()));
-//        speedps.setValue(ic.getBtnLy());
-//        speedsb.setValue(ic.getBtnLy());
-//
-//        podposps_cmd.setRotate(ic.getAngleForGUI());
-//        podpossb_cmd.setRotate(ic.getAngleForGUI());
-//        podposps_fb.setRotate(ic.getAngleForGUI());
-//        podpossb_fb.setRotate(ic.getAngleForGUI());
-//        podposps_lbl.setText(Integer.toString(ic.getAngle()));
-//        podpossb_lbl.setText(Integer.toString(ic.getAngle()));
-//
-//        compass.setRotate(ic.getAngleForGUI());
-//        compass_lbl.setText(Integer.toString(ic.getAngle()));
-//
-//        tunnelThruster();
-//
-//        throttletrend.setValue(ic.getBtnLy());
-//        speedtrend.setValue(ic.getBtnLy());
     }
 
     public void tunnelThruster()
@@ -372,7 +312,6 @@ public class FXMLDocumentController implements Initializable
 
     public void buildAlarmBox()
     {
-        alarmPane = new Pane();
         alarmBox = new HBox();
         vbox = new VBox();
         stack1 = new StackPane();
@@ -397,12 +336,9 @@ public class FXMLDocumentController implements Initializable
         Label label8 = new Label();
         btn_ack = new Button();
 
-        //alarmPane.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #272c32;");
         alarmBox.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #272c32;");
-        //alarmBox.setAlignment(Pos.CENTER);
 
         vbox.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER; -fx-background-color: #272c32;");
-        //vbox.setAlignment(Pos.CENTER);
 
         stack1.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER_LEFT; -fx-background-color: #2e3642;");
         stack2.setStyle("-fx-pref-width: 724; -fx-pref-height: 510; -fx-alignment: CENTER_LEFT; -fx-background-color: #2a323d;");
@@ -467,20 +403,6 @@ public class FXMLDocumentController implements Initializable
         stack8.getChildren().add(label8);
         stack10.getChildren().add(btn_ack);
 
-//        Collection<Node> stackCollection = new Stack<>();
-//        stackCollection.add(stack1);
-//        stackCollection.add(stack2);
-//        stackCollection.add(stack3);
-//        stackCollection.add(stack4);
-//        stackCollection.add(stack5);
-//        stackCollection.add(stack6);
-//        stackCollection.add(stack7);
-//        stackCollection.add(stack8);
-//        stackCollection.add(stack9);
-//        stackCollection.add(stack10);
-//        stackCollection.add(stack11);
-//        stackCollection.add(stack12);
-        //vbox.getChildren().addAll(stackCollection);
         vbox.getChildren().add(stack1);
         vbox.getChildren().add(stack2);
         vbox.getChildren().add(stack3);
@@ -493,7 +415,7 @@ public class FXMLDocumentController implements Initializable
         vbox.getChildren().add(stack10);
         vbox.getChildren().add(stack11);
         //vbox.getChildren().add(stack12);
-        // alarmPane.getChildren().add(vbox);
+
         alarmBox.setAlignment(Pos.CENTER);
         alarmBox.setPadding(new Insets(30, 0, 0, 0));
         alarmBox.getChildren().add(vbox);
@@ -505,6 +427,8 @@ public class FXMLDocumentController implements Initializable
     {
         //checkButtonStates();
         //buildAlarmBox();
+
+        clock.setRunning(true);
         speedps_lbl.setTextFill(Color.web("#d8dbe2"));
         speedsb_lbl.setTextFill(Color.web("#d8dbe2"));
         podposps_lbl.setTextFill(Color.web("#d8dbe2"));
@@ -523,16 +447,6 @@ public class FXMLDocumentController implements Initializable
         alarm_lbl.setTextFill(Color.web("9c2f2f"));
         //btn_ack.setTextFill(Color.web("8e9397"));
 
-//        try
-//        {
-//            FXMLLoader loader = new FXMLLoader();
-//            loader.setController(this);
-//            alarmPane = (Pane) loader.load(getClass().getResource("FXML_AlarmsPane.fxml"));
-//        }
-//        catch (IOException ex)
-//        {
-//            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
     }
 
 }

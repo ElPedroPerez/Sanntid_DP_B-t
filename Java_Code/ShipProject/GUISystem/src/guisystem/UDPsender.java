@@ -10,12 +10,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Sends data throud UDP
  * @author mgrib
  */
 public class UDPsender

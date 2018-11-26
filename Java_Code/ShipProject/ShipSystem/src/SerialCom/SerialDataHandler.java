@@ -6,9 +6,6 @@
 package SerialCom;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import jssc.SerialPort;
 import shipsystem.DataHandler;
 
 /**
@@ -31,6 +28,11 @@ public class SerialDataHandler implements Runnable
     //ReadSeriellData reader = new ReadSeriellData();
     //WriteSerialData writer = new WriteSerialData();
     //Populate hashmap
+
+    /**
+     *
+     * @param dh
+     */
     public SerialDataHandler(DataHandler dh)
     {
 
@@ -67,6 +69,7 @@ public class SerialDataHandler implements Runnable
         }
     }
 
+//  TEST AREA
 //    public void readData(DataHandler dh, String comPort, int baudRate)
 //    //ConcurrentHashMap
 //    {

@@ -8,7 +8,7 @@ package alarmsystem;
 import shipsystem.DataHandler;
 
 /**
- *
+ * 
  * @author rocio
  */
 public class BooleanBasedAlarm implements Runnable
@@ -26,6 +26,17 @@ public class BooleanBasedAlarm implements Runnable
     AlarmList alarmList;
     DataHandler dh;
 
+    /**
+     * 
+     * @param dh The shared resource object of the DataHandler
+     * @param alarmList
+     * @param input
+     * @param setPoint
+     * @param alarmName
+     * @param HAlarm
+     * @param ack
+     * @param inhibit
+     */
     public BooleanBasedAlarm(DataHandler dh, AlarmList alarmList, String input, int setPoint, String alarmName,
             boolean HAlarm, boolean ack, boolean inhibit)
     {

@@ -7,26 +7,22 @@ package guisystem;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- *
+ * Listend for data throug UDP
  * @author rocio
  */
 public class UDPListener implements Runnable
 {
 
     private final int recievePort;
-    private final Datahandler dh;
+    private final DataHandler dh;
     public ConcurrentHashMap<String, String> queue = new ConcurrentHashMap<>();
 
-    public UDPListener(Datahandler dh, int recievePort)
+    public UDPListener(DataHandler dh, int recievePort)
     {
         this.recievePort = recievePort;
         this.dh = dh;

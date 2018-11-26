@@ -39,6 +39,10 @@ public class AccelerationFilter implements Runnable
     long lastTime = 0;
     long elapsedTimer = 0;
 
+    /**
+     * 
+     * @param dh
+     */
     public AccelerationFilter(DataHandler dh)
     {
         this.dh = dh;
@@ -55,6 +59,9 @@ public class AccelerationFilter implements Runnable
         }
     }
 
+    /**
+     * Adds a filter for motor acceleration
+     */
     public void accCalculation()
     {
 

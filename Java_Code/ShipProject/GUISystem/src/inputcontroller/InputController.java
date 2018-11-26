@@ -8,17 +8,10 @@ package InputController;
 import com.exlumina.j360.ButtonListener;
 import com.exlumina.j360.Controller;
 import com.exlumina.j360.ValueListener;
-import com.exlumina.j360.XInputGamepad;
-import guisystem.Datahandler;
+import guisystem.DataHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import guisystem.UDPsender;
-import java.awt.Dialog;
-import java.awt.Window;
-import java.net.DatagramSocket;
-import java.util.HashSet;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  *
@@ -28,7 +21,7 @@ public class InputController implements Runnable
 {
 
     private UDPsender udpsender;
-    private Datahandler dh;
+    private DataHandler dh;
 
     private double btnLyGUI = 0;
     private int btnLy = 0;
@@ -56,7 +49,7 @@ public class InputController implements Runnable
     private String ipAddress = "";
     private int sendPort = 0;
 
-    public InputController(String ipAddress, int sendPort, Datahandler dh)
+    public InputController(String ipAddress, int sendPort, DataHandler dh)
     {
         this.ipAddress = ipAddress;
         this.sendPort = sendPort;

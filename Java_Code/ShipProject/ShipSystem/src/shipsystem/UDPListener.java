@@ -7,13 +7,9 @@ package shipsystem;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Reads data recieved.
@@ -25,8 +21,16 @@ public class UDPListener implements Runnable
     private long timer;
     private DatagramSocket listenSocket;
     private final DataHandler dh;
+
+    /**
+     * Concurrent HashMap
+     */
     public ConcurrentHashMap<String, String> queue = new ConcurrentHashMap<>();
 
+    /**
+     * Listen for data
+     * @param dh
+     */
     public UDPListener(DataHandler dh)
     {
         this.dh = dh;

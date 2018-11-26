@@ -5,20 +5,15 @@
  */
 package guisystem;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Handles data from GUI
  *
- * @author Bjørnar
+ * @author Bjørnar, Haakon, Robin
  */
-public class Datahandler
+public class DataHandler
 {
 
     private String dataFromGui;
@@ -43,7 +38,7 @@ public class Datahandler
     private boolean imuRollAlarm;
     //private boolean pingAlarm;
 
-    public Datahandler()
+    public DataHandler()
     {
         guiPing = false;
         ping = 0;
@@ -53,14 +48,11 @@ public class Datahandler
         fb_speedSB = 0;
         //this.dataFromGui = dataFromGui;
     }
-//
-//    public void updateGUI()
-//    {
-//        setChanged();
-//        notifyObservers();
-//    }
-//
 
+    /**
+     * angle value
+     * @param angle 
+     */
     public synchronized void setAngle(int angle)
     {
         this.angle = angle;
@@ -68,56 +60,100 @@ public class Datahandler
 //        notifyObservers();
     }
 
+    /**
+     * 
+     * @return angle
+     */
     public synchronized int getAngle()
     {
         return this.angle;
     }
 
+    /**
+     * 
+     * @return pod position feedback port side
+     */
     public synchronized int getFb_podPosPS()
     {
         return fb_podPosPS;
     }
 
+    /**
+     * pod position feedback port side
+     * @param fb_podPosPS 
+     */
     public synchronized void setFb_podPosPS(int fb_podPosPS)
     {
         this.fb_podPosPS = fb_podPosPS;
     }
 
+    /**
+     * 
+     * @return pod position feedback star board
+     */
     public synchronized int getFb_podPosSB()
     {
         return fb_podPosSB;
     }
 
+    /**
+     * pod position feedback star board
+     * @param fb_podPosSB 
+     */
     public synchronized void setFb_podPosSB(int fb_podPosSB)
     {
         this.fb_podPosSB = fb_podPosSB;
     }
 
+    /**
+     * 
+     * @return speed feedback port side
+     */
     public synchronized int getFb_speedPS()
     {
         return fb_speedPS;
     }
 
+    /**
+     * speed feedback port side
+     * @param fb_speedPS 
+     */
     public synchronized void setFb_speedPS(int fb_speedPS)
     {
         this.fb_speedPS = fb_speedPS;
     }
 
+    /**
+     * 
+     * @return  speed feedback star board
+     */
     public synchronized int getFb_speedSB()
     {
         return fb_speedSB;
     }
 
+    /**
+     * speed feedback star board
+     * @param fb_speedSB 
+     */
     public synchronized void setFb_speedSB(int fb_speedSB)
     {
         this.fb_speedSB = fb_speedSB;
     }
 
+    /**
+     * 
+     * @return heading feedback
+     */
     public synchronized int getFb_heading()
     {
         return fb_heading;
     }
 
+   /**
+    * heading feedback
+    * @param fb_heading 
+    */
     public synchronized void setFb_heading(int fb_heading)
     {
         this.fb_heading = fb_heading;
@@ -133,13 +169,13 @@ public class Datahandler
         return this.dataFromGui;
     }
 
-    /**
-     * Creates and sends the data String over UDP
-     */
-    public synchronized void sendData()
-    {
-        new UDPsender().send(GUISystem.IPADDRESS, dataFromGui, GUISystem.SENDPORT);
-    }
+//    /**
+//     * Creates and sends the data String over UDP
+//     */
+//    public synchronized void sendData()
+//    {
+//        new UDPsender().send(GUISystem.IPADDRESS, dataFromGui, GUISystem.SENDPORT);
+//    }
 
     public synchronized Boolean getGuiPing()
     {

@@ -5,12 +5,8 @@
  */
 package SerialCom;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 import shipsystem.DataHandler;
@@ -29,6 +25,13 @@ public class ReadSeriellData implements Runnable
     SerialDataHandler sdh = null;
     DataHandler dh = null;
 
+    /**
+     *
+     * @param dh
+     * @param sdh
+     * @param comPort
+     * @param baudRate
+     */
     public ReadSeriellData(DataHandler dh, SerialDataHandler sdh, String comPort, int baudRate)
     {
         this.comPort = comPort;
@@ -48,6 +51,10 @@ public class ReadSeriellData implements Runnable
 
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getAvailableComPorts()
     {
         // getting serial ports list into the array
@@ -75,6 +82,11 @@ public class ReadSeriellData implements Runnable
         return portNames;
     }
 
+    /**
+     *
+     * @param comPort
+     * @param baudRate
+     */
     public void readData(String comPort, int baudRate)
     //ConcurrentHashMap
     {

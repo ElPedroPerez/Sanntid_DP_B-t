@@ -6,25 +6,28 @@
 package guisystem;
 
 /**
- *
+ * UDP ping
  * @author rocio
  */
 public class UDPping implements Runnable
 {
 
-    private Datahandler dh;
+    private DataHandler dh;
     private UDPsender udpsender;
     private String ipAddress = "";
     private int sendPort;
     private long timeout = 1500000000;
 
-    public UDPping(String ipAddress, int sendPort, Datahandler dh)
+    public UDPping(String ipAddress, int sendPort, DataHandler dh)
     {
         this.dh = dh;
         this.ipAddress = ipAddress;
         this.sendPort = sendPort;
     }
 
+    /**
+     * runs UDPping, creates UDP Sender
+     */
     @Override
     public void run()
     {
