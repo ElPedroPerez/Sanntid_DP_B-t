@@ -6,7 +6,8 @@
 package shipsystem;
 
 /**
- *
+ * Sends data using an UDPsender
+ * 
  * @author Haakon
  */
 public class GUIsender implements Runnable
@@ -17,7 +18,7 @@ public class GUIsender implements Runnable
 
     /**
      *
-     * @param dh
+     * @param dh The shared resource object of the DataHandler
      */
     public GUIsender(DataHandler dh)
     {

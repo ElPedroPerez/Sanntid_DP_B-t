@@ -59,7 +59,7 @@ public class AlarmList implements Runnable
 
     /**
      * Creates an instance of datahandler
-     * @param dh
+     * @param dh The shared resource object of the DataHandler
      */
     public AlarmList(DataHandler dh)
     {

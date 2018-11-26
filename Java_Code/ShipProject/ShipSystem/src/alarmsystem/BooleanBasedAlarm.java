@@ -28,7 +28,7 @@ public class BooleanBasedAlarm implements Runnable
 
     /**
      * 
-     * @param dh
+     * @param dh The shared resource object of the DataHandler
      * @param alarmList
      * @param input
      * @param setPoint
