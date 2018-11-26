@@ -20,7 +20,7 @@ public class ShipSystem
 {
 
     /**
-     * Main class of the ship system 
+     * Main class of the ship system
      */
     protected static DataHandler dh;
     private static Thread acclerationFilter;
@@ -31,7 +31,7 @@ public class ShipSystem
     private static Thread udpListener;
 
     /**
-     * IP address and port number 
+     * IP address and port number
      */
     protected static String ipAddressGUI = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
     protected static int sendPort = 5057;
@@ -81,76 +81,13 @@ public class ShipSystem
                 System.out.println("A: " + dh.ic_A);
                 //System.out.println("dh.setTemp_Angle: " + dh.getTemp_Angle());
                 System.out.println("R1: " + dh.ic_R1);
+                System.out.println("Angle PS POD: " + dh.fb_podPosPS);
+                System.out.println("Speed PS: " + dh.fb_speedPS);
+                System.out.println("Speed SB: " + dh.fb_speedSB);
                 Thread.sleep(250);
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
             }
-            // System.out.println("getSoftSpeedPod: " + dh.getSoftSpeedPod());
-            boolean kake = true;
-            //  System.out.println("Test value is: " + dh.getTest()); 
-            //  System.out.println("Test2 value is: " + dh.getTest2());
-            // System.out.println("Ping : " + dh.);
-            //do nothing
         }
-//        // bRYNJARS testområde
-//        while (true)
-//        {
-//            try
-//            {
-//                System.out.println("Angle from IC: " + dh.getTemp_Angle());
-//                System.out.println("Speed from IC: " + dh.getIc_speed());
-//                System.out.println("L1: " + dh.getIc_L1());
-//                System.out.println("R1: " + dh.getIc_R1());
-//                System.out.println("X: " + dh.getIc_X());
-//                System.out.println("A: " + dh.getIc_A());
-//                System.out.println("B: " + dh.getIc_B());
-//                System.out.println("Y: " + dh.getIc_Y());
-//                Thread.sleep(250);
-//            } catch (InterruptedException ex)
-//            {
-//                Logger.getLogger(ShipSystem.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-
-        // }
-//        //Robins test area
-//        dh.handleDataFromRemote();
-//        
-//        
-//        while (true)
-//        {
-//            
-//            yaw = dh.getYaw();
-//            pitch = dh.getPitch();
-//            roll = dh.getRoll();
-//
-//            fb_podPosPS = dh.getFb_podPosPS();
-//            fb_podPosSB = dh.getFb_podPosSB();
-//            fb_speedPS = dh.getFb_speedPS();
-//            fb_speedSB = dh.getFb_podPosSB();
-//
-////            System.out.println("fb_podPosPS is: " + fb_podPosPS);
-////            System.out.println("fb_podPosSB is: " + fb_podPosSB);
-////            System.out.println("fb_speedPS is: " + fb_speedPS);
-////            System.out.println("fb_speedSB is: " + fb_speedSB);
-////
-////            System.out.println("Yaw is: " + yaw);
-////            System.out.println("Pitch is: " + pitch);
-////            System.out.println("Roll is: " + roll);
-////
-////            System.out.println("Com response time: " + dh.getComResponseTime());
-//        }
-////End of Robins test area
-//        controller = new Thread(new Controller(dh, semaphore));
-//        server = new Thread(new UDPServer(semaphore, dh));        
-//        alarmList = new Thread(new alarmsystem.AlarmList(dh));
-//
-//        controller.start();
-//        server.start();
-//        alarmList.start();
     }
-//
-//        }
-
 }

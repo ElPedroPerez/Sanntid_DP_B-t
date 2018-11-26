@@ -137,40 +137,58 @@ public class Logic
     protected void calculatePodMovement()
     {
         //PS Pod rotation
-        if ((dh.getTemp_Angle() > (dh.getFb_podPosPS() + 2))
-                && dh.getTemp_Angle() < (dh.getFb_podPosPS() - 2))
+        if ((dh.getTemp_Angle() > (dh.getFb_podPosPS() + 15))
+                || dh.getTemp_Angle() < (dh.getFb_podPosPS() - 15))
         {
             if ((this.calculatedAngle - dh.getFb_podPosPS() + 360) % 360 < 180)
             // clockwise
             {
-                dh.setPodPosPSCommand((byte) 1);
+                if (dh.podPosPSCommand != 2)
+                {
+                    dh.setPodPosPSCommand((byte) 2);
+                    dh.setPodPosSBCommand((byte) 2);
+                }
             } // anti-clockwise
             else
             {
-                dh.setPodPosPSCommand((byte) 2);
+                if (dh.podPosPSCommand != 1)
+                {
+                    dh.setPodPosPSCommand((byte) 1);
+                    dh.setPodPosSBCommand((byte) 1);
+                }
             }
-        } else
+        } else if (dh.podPosPSCommand != 0)
         {
             dh.setPodPosPSCommand((byte) 0);
+            dh.setPodPosSBCommand((byte) 0);
         }
 
         //SB Pod rotation
-        if ((dh.getTemp_Angle() > (dh.getFb_podPosSB() + 2))
-                && dh.getTemp_Angle() < (dh.getFb_podPosSB() - 2))
-        {
-            if ((this.calculatedAngle - dh.getFb_podPosSB() + 360) % 360 < 180)
-            // clockwise
-            {
-                dh.setPodPosSBCommand((byte) 1);
-            } // anti-clockwise
-            else
-            {
-                dh.setPodPosSBCommand((byte) 2);
-            }
-        } else
-        {
-            dh.setPodPosSBCommand((byte) 0);
-        }
+//        if ((dh.getTemp_Angle() > (dh.getFb_podPosSB() + 20))
+//                || dh.getTemp_Angle() < (dh.getFb_podPosSB() - 20))
+//        {
+//            if ((this.calculatedAngle - dh.getFb_podPosSB() + 360) % 360 < 180)
+//            // clockwise
+//            {
+//                if (dh.podPosSBCommand != 2)
+//                {
+//                    dh.setPodPosSBCommand((byte) 2);
+//                }
+//            } // anti-clockwise
+//            else
+//            {
+//                if (dh.podPosSBCommand != 1)
+//                {
+//                    dh.setPodPosSBCommand((byte) 1);
+//                }
+//            }
+//        } else
+//        {
+//            if (dh.podPosSBCommand != 0)
+//            {
+//                dh.setPodPosSBCommand((byte) 0);
+//            }
+//        }
     }
 
     /**
