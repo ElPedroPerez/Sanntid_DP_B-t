@@ -5,7 +5,6 @@
  */
 package alarmsystem;
 
-import java.util.HashMap;
 import java.util.Map;
 import shipsystem.DataHandler;
 import java.util.concurrent.ConcurrentHashMap;

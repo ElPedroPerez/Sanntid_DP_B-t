@@ -5,12 +5,7 @@
  */
 package guisystem;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -53,13 +48,6 @@ public class DataHandler
         fb_speedSB = 0;
         //this.dataFromGui = dataFromGui;
     }
-//
-//    public void updateGUI()
-//    {
-//        setChanged();
-//        notifyObservers();
-//    }
-//
 
     /**
      * angle value

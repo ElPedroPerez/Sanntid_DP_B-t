@@ -5,11 +5,6 @@
  */
 package shipsystem;
 
-import java.util.Timer;
-import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Controller class controls the vehicle and the states of it
  *

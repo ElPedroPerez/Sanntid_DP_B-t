@@ -5,8 +5,6 @@
  */
 package SerialCom;
 
-import java.awt.BorderLayout;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import jssc.SerialPort;

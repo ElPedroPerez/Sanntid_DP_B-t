@@ -8,8 +8,8 @@ package shipsystem;
 import SerialCom.SerialDataHandler;
 import SerialCom.WriteSerialData;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -243,9 +243,7 @@ public class DataHandler
         podPosSBCommand = 0;
         podPosPSCommand = 0;
     }
-//*****************************************************************
-//********************** THREAD STATUS METHODS*********************
-
+    
     /**
      * Returns the threads status
      *

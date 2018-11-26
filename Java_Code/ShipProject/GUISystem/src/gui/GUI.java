@@ -8,11 +8,8 @@ package gui;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -70,10 +67,6 @@ public class GUI extends Application implements Runnable
                     public void run()
                     {
                         fxController.updatePage();
-                        //Button btn_main = (Button) root.lookup("btn_main");
-                        //btn_main.setText("test");
-                        //fxController.updatePage("update ");
-                        //incrementCount();
                     }
                 };
                 while (true)

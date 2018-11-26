@@ -8,17 +8,10 @@ package InputController;
 import com.exlumina.j360.ButtonListener;
 import com.exlumina.j360.Controller;
 import com.exlumina.j360.ValueListener;
-import com.exlumina.j360.XInputGamepad;
 import guisystem.DataHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import guisystem.UDPsender;
-import java.awt.Dialog;
-import java.awt.Window;
-import java.net.DatagramSocket;
-import java.util.HashSet;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  *

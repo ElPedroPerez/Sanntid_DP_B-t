@@ -13,8 +13,6 @@ import guisystem.GUISystem;
 import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,32 +20,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import com.gluonhq.charm.glisten.control.ProgressBar;
 import eu.hansolo.tilesfx.Tile;
-import eu.hansolo.tilesfx.chart.ChartData;
-import eu.hansolo.tilesfx.chart.ChartDataBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Stack;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.stage.Stage;
 
 /**
@@ -102,9 +84,6 @@ public class FXMLDocumentController implements Initializable
         btn_dp_active = false;
         btn_alarms_active = false;
         title_lbl.setText("MAIN");
-//        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-//        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-
         centerBox.getChildren().clear();
         centerBox.getChildren().add(speedtrend);
         centerBox.getChildren().add(throttletrend);
@@ -117,9 +96,6 @@ public class FXMLDocumentController implements Initializable
         btn_dp_active = true;
         btn_alarms_active = false;
         title_lbl.setText("DYNAMIC POSITIONING");
-//        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-//        btn_alarms.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-
         centerBox.getChildren().clear();
         ImageView centerImage = new ImageView();
         Image image = new Image(getClass().getResourceAsStream("img/radar.jpg"));
@@ -136,9 +112,6 @@ public class FXMLDocumentController implements Initializable
         btn_dp_active = false;
         btn_alarms_active = true;
         title_lbl.setText("ALARMS");
-
-//        btn_main.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
-//        btn_dp.setStyle("-fx-background-color: #364250; -fx-font-family: Yu Gothic; -fx-font-size: 16;");
         centerBox.getChildren().clear();
         centerBox.setAlignment(Pos.CENTER);
         centerBox.prefWidth(724);

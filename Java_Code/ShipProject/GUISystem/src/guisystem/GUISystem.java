@@ -46,6 +46,9 @@ public class GUISystem
         inputControllerThread.start();
 //        udpPingThread.start();
         udpListenerThread.start();
+        
+        
+        // TEST AREA
 //        int count = 0;
 //        while (true)
 //        {
