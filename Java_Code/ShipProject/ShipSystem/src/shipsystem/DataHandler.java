@@ -896,6 +896,8 @@ public class DataHandler
     public void setSoftSpeedPod(int softSpeed)
     {
         this.softSpeedPod = softSpeed;
+        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(false);
     }
 
     /**
@@ -967,6 +969,8 @@ public class DataHandler
     public void setPodPosSBCommand(byte podPosSBCommand)
     {
         this.podPosSBCommand = podPosSBCommand;
+        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(false);
     }
 
     public byte getPodPosPSCommand()
@@ -977,6 +981,8 @@ public class DataHandler
     public void setPodPosPSCommand(byte podPosPSCommand)
     {
         this.podPosPSCommand = podPosPSCommand;
+        this.setDataToRemoteUpdated(true);
+        this.setDataUpdated(false);
     }
 
     public String getDataToArduino()
@@ -1029,7 +1035,7 @@ public class DataHandler
         dataToRemote.put("case_cmd_podPosSB", Integer.toString(getPodPosPSCommand()));
         dataToRemote.put("case_cmd_podPosPS", Integer.toString(getPodPosSBCommand()));
         dataToRemote.put("ThrusterCommand", Integer.toString(getThrusterCommand()));
-        this.setDataToRemoteUpdated(true);
+        //this.setDataToRemoteUpdated(true);
 //
 //        for (Entry e : dataToRemote.entrySet())
 //        {

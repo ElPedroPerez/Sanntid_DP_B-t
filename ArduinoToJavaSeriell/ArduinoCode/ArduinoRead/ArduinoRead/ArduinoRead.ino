@@ -54,8 +54,8 @@ void setup() {
   podStbSpeedPWM.attach(podStbSpeedPin);
   podPrtSpeedPWM.attach(podPrtSpeedPin);
 
-  podStbSpeedPWM.write(700);
-  podPrtSpeedPWM.write(700);
+  podStbSpeedPWM.write(1060);
+  podPrtSpeedPWM.write(1060);
   Serial.begin(115200);
 
   pinMode(podStbRotationSpeedPin, OUTPUT);
@@ -157,14 +157,19 @@ void parseData() {      // split the data into its parts
 
   if (str.equals("softSpeedPod"))
   {
-    integerFromPC = map(integerFromPC, 0, 100, 1060, 2000);
-    integerFromPC = constrain(integerFromPC, 1060, 2000);
+    integerFromPC = map(integerFromPC, 0, 100, 1060, 1150);
+    integerFromPC = constrain(integerFromPC, 1060, 1150);
     if (integerFromPC < 1070)
     {
       integerFromPC = 1060;
+      podStbSpeedPWM.write(integerFromPC);
+      podPrtSpeedPWM.write(integerFromPC);
     }
-    podStbSpeedPWM.write(integerFromPC);
-    podPrtSpeedPWM.write(integerFromPC);
+    else
+    {
+      podStbSpeedPWM.write(integerFromPC);
+      podPrtSpeedPWM.write(integerFromPC + 10);
+    }
   }
 
   if (str.equals("case_cmd_podPosSB"))
@@ -193,18 +198,23 @@ void parseData() {      // split the data into its parts
     if (integerFromPC == 0)
     {
       analogWrite(podPrtRotationSpeedPin, 0);
+      // analogWrite(podStbRotationSpeedPin, 0);
     }
 
     if (integerFromPC == 1)
     {
       digitalWrite(podPrtRotationDirectionPin, true);
+      //digitalWrite(podStbRotationDirectionPin, true);
       analogWrite(podPrtRotationSpeedPin, 255);
+      //analogWrite(podStbRotationSpeedPin, 255);
     }
 
     if (integerFromPC == 2)
     {
       digitalWrite(podPrtRotationDirectionPin, false);
+      //digitalWrite(podStbRotationDirectionPin, false);
       analogWrite(podPrtRotationSpeedPin, 255);
+      //analogWrite(podStbRotationSpeedPin, 255);
 
     }
   }

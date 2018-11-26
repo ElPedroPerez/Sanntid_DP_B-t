@@ -24,9 +24,9 @@ volatile  int counterSBAngle = 0;
 volatile unsigned int counterPSSpeed = 0;
 volatile  int counterPSAngle = 0;
 
-
+byte const updateFrequenzy = 45; //Hz
 unsigned long lastTime = 0;         // will store last time value was sendt
-const long interval = 1000;         // interval at which to send result in milli second.  1000 ms = 1 second
+const long interval = 100;         // interval at which to send result in milli second.  1000 ms = 1 second
 byte const dataSize = 8;
 
 void setup() {
@@ -155,6 +155,7 @@ void ai5()
 
 
 void sendData() {
+  //delay(1000 / updateFrequenzy);
   int degreePS = map(counterPSAngle, 0, 2000, 0, 359);
   int degreeSB = map(counterSBAngle, 0, 2000, 0, 359);
 
@@ -165,20 +166,20 @@ void sendData() {
 
   //rpm = ((counter * 60) / 2000);
   //float speedOut = map(counter, 0, 2000, 0, 100);      // change from 400 pulse pr / second to 100 m/h
-  double speedOutSB = (counterSBSpeed / 16.00) * 60.00;
-  double speedOutPS = (counterPSSpeed / 16.00) * 60.00;
+  double speedOutSB = (counterSBSpeed / 16.00) * 10.00 * 60.00;
+  double speedOutPS = (counterPSSpeed / 16.00) * 10.00 * 60.00;
 
-  Serial.print("\t RPM_PS = ");
-  Serial.println(speedOutSB);
-  Serial.print("\t PS Angle = ");
-  Serial.println(degreePS);
+  // Serial.print("\t RPM_PS = ");
+  // Serial.println(speedOutSB);
+  // Serial.print("\t PS Angle = ");
+  // Serial.println(degreePS);
 
-  Serial.print("\t RPM_SB = ");
-  Serial.println(counterPSSpeed);
-  Serial.print("\t SB Angle = ");
-  Serial.println(degreeSB);
+  //Serial.print("\t RPM_SB = ");
+  //Serial.println(counterPSSpeed);
+  // Serial.print("\t SB Angle = ");
+  //Serial.println(degreeSB);
 
-  //parseData(speedOutSB, speedOutPS, degreePS, degreeSB);
+  parseData(speedOutSB, speedOutPS, degreePS, degreeSB);
 }
 
 void resetSampling() {
@@ -233,7 +234,7 @@ void parseData(int speedOutSB, int speedOutPS, int degreePS, int degreeSB)
   data[2] = "fb_speedSB";
   data[3] = String(speedOutSB);
   data[4] = "fb_podPosPS";
-  data[5] = String(degreePS);
+  data[5] = String(degreeSB);
   data[6] = "fb_podPosSB";
   data[7] = String(degreeSB);
 

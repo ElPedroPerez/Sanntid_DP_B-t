@@ -28,7 +28,7 @@ public class ShipSystem
     private static Semaphore semaphore;
     static SendEventState enumStateEvent;
 
-    protected static String ipAddressGUI = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
+    protected static String ipAddressGUI = "192.168.0.104"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
     protected static int sendPort = 5057;
 
     /**
@@ -77,6 +77,9 @@ public class ShipSystem
                 System.out.println("A: " + dh.ic_A);
                 //System.out.println("dh.setTemp_Angle: " + dh.getTemp_Angle());
                 System.out.println("R1: " + dh.ic_R1);
+                System.out.println("Angle PS POD: " + dh.fb_podPosPS);
+                System.out.println("Speed PS: " + dh.fb_speedPS);
+                System.out.println("Speed SB: " + dh.fb_speedSB);
                 Thread.sleep(250);
             }
             catch (Exception e)

@@ -9,13 +9,13 @@ import static java.lang.Math.toIntExact;
 
 /**
  * Acceleration filter is responsible for accelerate and decelerate motor speeds
+ *
  * @author rocio
  */
 public class AccelerationFilter implements Runnable
 {
 
     private final DataHandler dh;
-  
 
     //this is our target velocity while decelerating
     double initialVelocity = 0.0;
@@ -32,8 +32,9 @@ public class AccelerationFilter implements Runnable
     //this is the velocity we subtract each second while decelerating
     double decelerationRate = 3.33;
 
-    // Internal timer
+    int lastSoftSpeed = 0;
 
+    // Internal timer
     long currentTime = 0;
     long lastTime = 0;
     long elapsedTimer = 0;
@@ -41,7 +42,7 @@ public class AccelerationFilter implements Runnable
     public AccelerationFilter(DataHandler dh)
     {
         this.dh = dh;
-        
+
     }
 
     @Override
@@ -78,7 +79,10 @@ public class AccelerationFilter implements Runnable
         }
 
         int softSpeed = (int) Math.round(currentVelocity);
-        dh.setSoftSpeedPod(softSpeed);
-
+        if (softSpeed != lastSoftSpeed)
+        {
+            dh.setSoftSpeedPod(softSpeed);
+        }
+        lastSoftSpeed = softSpeed;
     }
 }

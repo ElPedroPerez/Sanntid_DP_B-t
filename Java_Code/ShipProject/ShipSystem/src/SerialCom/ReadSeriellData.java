@@ -25,6 +25,7 @@ public class ReadSeriellData implements Runnable
     boolean portIsOpen = false;
     String comPort = "";
     int baudRate = 0;
+    SerialPort serialPort;
     SerialDataHandler sdh = null;
     DataHandler dh = null;
 
@@ -39,6 +40,7 @@ public class ReadSeriellData implements Runnable
     @Override
     public void run()
     {
+        serialPort = new SerialPort(comPort);
         while (true)
         {
             readData(comPort, baudRate);
@@ -86,13 +88,14 @@ public class ReadSeriellData implements Runnable
         String end_char = ">";
         String sep_char = ":";
         //Define Serial Port # -- can be found in Device Manager or Arduino IDE
-        SerialPort serialPort = new SerialPort(comPort);
+       
 
         if (!portIsOpen)
         {
             try
             {
                 serialPort.openPort();
+                serialPort.setParams(baudRate, 8, 1, 0);
                 portIsOpen = true;
                 System.out.println(comPort + " is open");
             } catch (SerialPortException ex)
@@ -111,12 +114,12 @@ public class ReadSeriellData implements Runnable
             {
                 //serialPort.setParams(9600, 8, 1, 0);
 
-                serialPort.setParams(baudRate, 8, 1, 0);
+                //serialPort.setParams(baudRate, 8, 1, 0);
                 buffer = serialPort.readString();
                 buffer = "";
                 try
                 {
-                    Thread.sleep(250);
+                    Thread.sleep(200);
                 } catch (InterruptedException ex)
                 {
                     System.out.println("Error insomnia");
@@ -218,7 +221,7 @@ public class ReadSeriellData implements Runnable
                 //sdh.comPorts.put(comPort, true);
             } catch (Exception ex)
             {
-                // System.out.println("1 " + ex);
+                System.out.println("1 " + ex);
             }
 
         }
