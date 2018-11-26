@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- *
+ * Listend for data throug UDP
  * @author rocio
  */
 public class UDPListener implements Runnable

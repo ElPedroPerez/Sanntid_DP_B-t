@@ -11,19 +11,18 @@ import SerialCom.SerialDataHandler;
 public class Logic
 {
 
+    /**
+     *
+     */
     protected enum STATES
     {
+
+        /**
+         * States, for dp controll, manual controll, go forward and default.
+         */
         DPCONTROLL(0),
         MANUALCONTROLL(1),
-        STOP(0),
         GOFWD(1),
-        GOREV(-1),
-        GOLEFT(10),
-        GORIGHT(20),
-        GOFWDANDLEFT(11),
-        GOFWDANDRIGHT(21),
-        GOREVANDLEFT(9),
-        GOREVANDRIGHT(19),
         DEFAULT(-99);
 
         private final int value;
@@ -33,6 +32,10 @@ public class Logic
             this.value = value;
         }
 
+        /**
+         *
+         * @return
+         */
         protected int getValue()
         {
             return this.value;
@@ -66,6 +69,10 @@ public class Logic
 
     private STATES state;
 
+    /**
+     *
+     * @param dh
+     */
     public Logic(DataHandler dh)
     {
         this.dh = dh;
@@ -75,7 +82,7 @@ public class Logic
     {
         this.isServoOut = false;
 //        this.switchCaseButtonStates();
-        this.switchCaseMotorSpeeds();
+//        this.switchCaseMotorSpeeds();
     }
 
     /**
@@ -215,19 +222,20 @@ public class Logic
     }
 
     /**
-     * Sets the speed of the Port side motor equal to the speed of the controller.
+     * Sets the speed of the pod motors equal to the speed of the controller.
      */
-    protected void runPodSpeedPS()
+    protected void runPodSpeed()
     {
-        dh.setCmd_speedPS(inputSpeed);
-    }
-
-    /**
-     * Sets the speed of the Star Board side motor equal to the speed of the controller.
-     */
-    protected void runPodSpeedSB()
-    {
-        dh.setCmd_speedSB(inputSpeed);
+        if (this.podPosPSPOK && this.podPosSBOK)
+        {
+            dh.setCmd_speedPS(inputSpeed);
+            dh.setCmd_speedSB(inputSpeed);
+        }
+        else
+        {
+            dh.setCmd_speedPS(minSpeed);
+            dh.setCmd_speedSB(minSpeed);
+        }
     }
 
     /**
@@ -308,36 +316,7 @@ public class Logic
         this.setState(STATES.MANUALCONTROLL);
     }
 
-    /**
-     * sets the correct motorspeeds from state (manual mode)
-     */
-    protected void switchCaseMotorSpeeds()
-    {
-
-        switch (this.getState())
-        {
-            case STOP:
-                dh.setCmd_speedPS(minSpeed);
-                dh.setCmd_speedSB(minSpeed);
-                break;
-            case GOFWD:
-                if (this.podPosPSPOK && this.podPosSBOK)
-                {
-                    dh.setCmd_speedPodRotPS(inputSpeed);
-                }
-                else
-                {
-                    dh.setCmd_speedPodRotPS(minSpeed);
-                }
-                break;
-            // unknown command
-            case DEFAULT:
-                break;
-
-            default:
-                break;
-        }
-    }
+   
 
     /**
      * Set starboard motorspeed

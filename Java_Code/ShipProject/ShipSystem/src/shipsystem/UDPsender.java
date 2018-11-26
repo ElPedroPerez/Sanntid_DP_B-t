@@ -23,6 +23,9 @@ public class UDPsender
 
     private DatagramSocket clientSocket;
 
+    /**
+     * Sends data throud UDP
+     */
     public UDPsender()
     {
     }
@@ -48,7 +51,7 @@ public class UDPsender
      * given port.
      *
      * @param ipAddress String IP address to send to
-     * @param data Data to be sent, string.
+     * @param sendData
      * @param port Integer Port number
      */
     public synchronized void send(String ipAddress, String sendData, int port)

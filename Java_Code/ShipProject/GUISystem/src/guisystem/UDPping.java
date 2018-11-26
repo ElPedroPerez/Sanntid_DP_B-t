@@ -6,7 +6,7 @@
 package guisystem;
 
 /**
- *
+ * UDP ping
  * @author rocio
  */
 public class UDPping implements Runnable
@@ -25,6 +25,9 @@ public class UDPping implements Runnable
         this.sendPort = sendPort;
     }
 
+    /**
+     * runs UDPping, creates UDP Sender
+     */
     @Override
     public void run()
     {

@@ -15,6 +15,10 @@ public class GUIsender implements Runnable
     UDPsender udpSender = new UDPsender();
     DataHandler dh;
 
+    /**
+     *
+     * @param dh
+     */
     public GUIsender(DataHandler dh)
     {
         this.dh = dh;

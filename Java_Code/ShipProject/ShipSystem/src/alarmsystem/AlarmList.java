@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import shipsystem.UDPsender;
 
 /**
- *
+ * List of all alarms
  * @author rocio
  */
 public class AlarmList implements Runnable
@@ -22,6 +22,9 @@ public class AlarmList implements Runnable
 
     private final DataHandler dh;
 
+    /**
+     * Alarm variables
+     */
     public boolean sbSpeedFbAlarm = false;
     public boolean psSpeedFbAlarm = false;
     public boolean sbPodPosFbAlarm = false;
@@ -29,7 +32,6 @@ public class AlarmList implements Runnable
     public boolean visionDeviationAlarm = false;
     public boolean imuRollAlarm = false;
     //public boolean pingAlarm = false;
-
     public boolean inhibit_sbSpeedFbAlarm = false;
     public boolean inhibit_psSpeedFbAlarm = false;
     public boolean inhibit_sbPodPosFbAlarm = false;
@@ -38,17 +40,28 @@ public class AlarmList implements Runnable
     public boolean inhibit_imuRollAlarm = false;
     //public boolean inhibit_pingAlarm = false;
 
+    /**
+     * Timebased alarms
+     */
     TimeBasedAlarm sbSpeedFbAlarmError;
     TimeBasedAlarm psSpeedFbAlarmError;
     TimeBasedAlarm sbPodPosFbAlarmError;
     TimeBasedAlarm psPodPosFbAlarmError;
+    
+    /**
+     * Boolean based alarms
+     */
     BooleanBasedAlarm visionDeviationAlarmError;
     BooleanBasedAlarm imuRollAlarmError;
     //BooleanBasedAlarm pingAlarmError;
-
+    
     public boolean ack;
     Map<String, Integer> alarmDataList = new ConcurrentHashMap<>();
 
+    /**
+     * Creates an instance of datahandler
+     * @param dh
+     */
     public AlarmList(DataHandler dh)
     {
         this.dh = dh;
@@ -90,6 +103,9 @@ public class AlarmList implements Runnable
         }
     }
 
+    /**
+     * 
+     */
     private void populateAlarmList()
     {
         dh.listOfAlarms.put("sbSpeedFbAlarm", false);
@@ -101,6 +117,9 @@ public class AlarmList implements Runnable
         //dh.listOfAlarms.put("pingAlarm", false);
     }
 
+    /**
+     * Initiates alarm threads
+     */
     private void initiateAlarmThreads()
     {
         //Time Based Alarms
@@ -154,6 +173,9 @@ public class AlarmList implements Runnable
 
     }
 
+    /**
+     * Updates alarm data
+     */
     private void updateAlarmInputData()
     {
         while (true)

@@ -30,6 +30,11 @@ public class SerialDataHandler implements Runnable
     //ReadSeriellData reader = new ReadSeriellData();
     //WriteSerialData writer = new WriteSerialData();
     //Populate hashmap
+
+    /**
+     *
+     * @param dh
+     */
     public SerialDataHandler(DataHandler dh)
     {
 

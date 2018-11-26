@@ -25,8 +25,16 @@ public class UDPListener implements Runnable
     private long timer;
     private DatagramSocket listenSocket;
     private final DataHandler dh;
+
+    /**
+     * Concurrent HashMap
+     */
     public ConcurrentHashMap<String, String> queue = new ConcurrentHashMap<>();
 
+    /**
+     * Listen for data
+     * @param dh
+     */
     public UDPListener(DataHandler dh)
     {
         this.dh = dh;

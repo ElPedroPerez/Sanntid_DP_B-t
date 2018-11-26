@@ -27,6 +27,13 @@ public class WriteSerialData implements Runnable
     String data;
     SerialPort serialPort;
 
+    /**
+     *
+     * @param dh
+     * @param sdh
+     * @param comPort
+     * @param baudRate
+     */
     public WriteSerialData(DataHandler dh, SerialDataHandler sdh, String comPort, int baudRate)
     {
         this.dh = dh;
@@ -83,6 +90,12 @@ public class WriteSerialData implements Runnable
         }
     }
 
+    /**
+     *
+     * @param comPort
+     * @param baudRate
+     * @param data
+     */
     public void write(String comPort, int baudRate, String data)
     {
         //Declare Special Symbol Used in Serial Data Stream from Arduino

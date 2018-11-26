@@ -10,7 +10,7 @@ import gui.GUI;
 //import guisystem.DataHandler;
 
 /**
- *
+ * Main class of the GUI system
  * @author Haakon
  */
 public class GUISystem

@@ -19,6 +19,9 @@ import java.util.logging.Logger;
 public class ShipSystem
 {
 
+    /**
+     * Main class of the ship system 
+     */
     protected static DataHandler dh;
     private static Thread acclerationFilter;
     private static Thread alarmList;
@@ -27,6 +30,9 @@ public class ShipSystem
     private static Thread serialDataHandler;
     private static Thread udpListener;
 
+    /**
+     * IP address and port number 
+     */
     protected static String ipAddressGUI = "158.38.92.72"; // Bjørnar: "158.38.199.111", Håkon: "158.38.85.64", Robin: "158.38.85.192"
     protected static int sendPort = 5057;
 

@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Sends data throud UDP
  * @author mgrib
  */
 public class UDPsender

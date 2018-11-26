@@ -38,6 +38,10 @@ public class AccelerationFilter implements Runnable
     long lastTime = 0;
     long elapsedTimer = 0;
 
+    /**
+     * 
+     * @param dh
+     */
     public AccelerationFilter(DataHandler dh)
     {
         this.dh = dh;
